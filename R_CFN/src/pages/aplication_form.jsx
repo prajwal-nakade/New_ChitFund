@@ -114,7 +114,6 @@ const ApplicationForm = () => {
     if (formData.pan_image) data.append("pan_image", formData.pan_image);
     if (formData.aadhar_image) data.append("aadhar_image", formData.aadhar_image);
 
-    // Nominee
     data.append("nominee_name", nomineeData.nomineeName);
     data.append("nominee_mobile", nomineeData.nomineeMobile);
     data.append("nominee_dob", nomineeData.nomineeDob);

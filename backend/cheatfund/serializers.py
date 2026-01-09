@@ -1,5 +1,4 @@
 from rest_framework import serializers
-from django.db import transaction
 from .models import Users, Nominee
 
 class UserWithNomineeSerializer(serializers.ModelSerializer):
@@ -18,7 +17,6 @@ class UserWithNomineeSerializer(serializers.ModelSerializer):
             'nominee_name', 'nominee_mobile',
             'nominee_dob', 'relationship'
         ]
-    @transaction.atomic
     def create(self, validated_data):
         nominee_data = {
             "name": validated_data.pop("nominee_name"),
@@ -35,3 +33,18 @@ class UserWithNomineeSerializer(serializers.ModelSerializer):
         )
 
         return user
+    
+class NomineeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Nominee
+        fields = ['name', 'mobile_no', 'dob', 'relationship']
+
+    
+class GetAllEntriesSerializer(serializers.ModelSerializer):
+    nominees = NomineeSerializer(many=True, read_only = True)
+    class Meta:
+        model = Users
+        fields = ['name', 'mobile_no', 'dob', 'email',
+            'permanent_address', 'pincode',
+            'pancard_no', 'aadharcard_no',
+            'pan_image', 'aadhar_image', 'nominees']
