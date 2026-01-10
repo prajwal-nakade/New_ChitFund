@@ -1,7 +1,9 @@
 from django.db import models
 
 class Users(models.Model):
-    name = models.CharField(max_length=50)
+    firstname = models.CharField(max_length=50)
+    middlename = models.CharField(max_length=50, blank=True, null=True)
+    lastname = models.CharField(max_length=50, blank=True, null=True)
     mobile_no = models.CharField(max_length=15, unique=True)
     dob = models.DateField()
     email = models.EmailField(max_length=50, unique=True)
@@ -25,12 +27,14 @@ class Users(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.name
+        return self.firstname
 
 
 class Nominee(models.Model):
     user = models.ForeignKey(Users, on_delete=models.CASCADE, related_name="nominees")
-    name = models.CharField(max_length=50)
+    firstname = models.CharField(max_length=50, blank=True, null=True)
+    middlename = models.CharField(max_length=50, blank=True, null=True)
+    lastname = models.CharField(max_length=50, blank=True, null=True)
     mobile_no = models.CharField(max_length=15, unique=True)
     dob = models.DateField()
     relationship = models.CharField(max_length=30)
@@ -39,4 +43,4 @@ class Nominee(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.name
+        return self.firstname

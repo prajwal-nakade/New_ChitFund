@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
 import Layout from "../components/layout";
 import { userEntry } from "../api/endpoint";
-import { X } from "lucide-react";
+import { Factory, Loader2, X } from "lucide-react";
+import { toast } from "react-toastify";
 
 const ApplicationForm = () => {
   const [formData, setFormData] = useState({
-    username: "",
+    firstName: "",
+    middleName: "",
+    lastName: "",
     mobile: "",
     dob: "",
     email: "",
@@ -17,9 +20,12 @@ const ApplicationForm = () => {
     aadhar_image: null,
   });
 
+  const [loading, setLoading] = useState(false)
 
   const [nomineeData, setNomineeData] = useState({
-    nomineeName: "",
+    nominee_firstname: "",
+    nominee_middlename: "",
+    nominee_lastname: "",
     relationship: "",
     nomineeDob: "",
     nomineeMobile: "",
@@ -30,13 +36,11 @@ const ApplicationForm = () => {
     aadhar_image: null,
   });
 
-  /* USER HANDLER */
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  /* NOMINEE HANDLER — FIXED */
   const handleNomineeChange = (e) => {
     const { name, value } = e.target;
     setNomineeData((prev) => ({ ...prev, [name]: value }));
@@ -46,53 +50,27 @@ const ApplicationForm = () => {
     const { name, files } = e.target;
     if (!files || !files[0]) return;
 
-    setFormData((prev) => ({
-      ...prev,
-      [name]: files[0],
-    }));
-
-    setPreview((prev) => ({
-      ...prev,
-      [name]: files[0].name,
-    }));
+    setFormData((prev) => ({ ...prev, [name]: files[0] }));
+    setPreview((prev) => ({ ...prev, [name]: files[0].name }));
   };
 
   const removePanImage = (e) => {
     e.preventDefault();
     e.stopPropagation();
-
-    setFormData((prev) => ({
-      ...prev,
-      pan_image: null,
-    }));
-
-    setPreview((prev) => ({
-      ...prev,
-      pan_image: null,
-    }));
+    setFormData((p) => ({ ...p, pan_image: null }));
+    setPreview((p) => ({ ...p, pan_image: null }));
   };
 
   const removeAadharImage = (e) => {
     e.preventDefault();
     e.stopPropagation();
-
-    setFormData((prev) => ({
-      ...prev,
-      aadhar_image: null,
-    }));
-
-    setPreview((prev) => ({
-      ...prev,
-      aadhar_image: null,
-    }));
+    setFormData((p) => ({ ...p, aadhar_image: null }));
+    setPreview((p) => ({ ...p, aadhar_image: null }));
   };
-
 
   useEffect(() => {
     return () => {
-      Object.values(preview).forEach((url) => {
-        if (url) URL.revokeObjectURL(url);
-      });
+      Object.values(preview).forEach((v) => v && URL.revokeObjectURL(v));
     };
   }, [preview]);
 
@@ -100,9 +78,9 @@ const ApplicationForm = () => {
     e.preventDefault();
 
     const data = new FormData();
-
-    // User
-    data.append("name", formData.username);
+    data.append("firstname", formData.firstName);
+    data.append("middlename", formData.middleName);
+    data.append("lastname", formData.lastName);
     data.append("mobile_no", formData.mobile);
     data.append("dob", formData.dob);
     data.append("email", formData.email);
@@ -114,216 +92,186 @@ const ApplicationForm = () => {
     if (formData.pan_image) data.append("pan_image", formData.pan_image);
     if (formData.aadhar_image) data.append("aadhar_image", formData.aadhar_image);
 
-    data.append("nominee_name", nomineeData.nomineeName);
+    data.append("nominee_firstname", nomineeData.nominee_firstname);
+    data.append("nominee_middlename", nomineeData.nominee_middlename);
+    data.append("nominee_lastname", nomineeData.nominee_lastname);
     data.append("nominee_mobile", nomineeData.nomineeMobile);
     data.append("nominee_dob", nomineeData.nomineeDob);
     data.append("relationship", nomineeData.relationship);
 
-    const response = await userEntry(data);
-    console.log(response);
-  };
+    try {
+      setLoading(true)
+      const response = await userEntry(data);
+      if (response.success) {
+        toast.success('User Application Submited!')
+        setFormData({
+          firstName: "",
+          middleName: "",
+          lastName: "",
+          mobile: "",
+          dob: "",
+          email: "",
+          address: "",
+          pincode: "",
+          pan: "",
+          aadhar: "",
+          pan_image: null,
+          aadhar_image: null,
+        })
+        setNomineeData({
+          nominee_firstname: "",
+          nominee_middlename: "",
+          nominee_lastname: "",
+          relationship: "",
+          nomineeDob: "",
+          nomineeMobile: "",
+        })
+      }
+      else {
+        toast.error('Somthing went wrong')
+      }
+      console.log(response);
+    } catch (error) {
+      console.log(error.message)
+      setLoading(false)
+    } finally {
+      setLoading(false)
+    }
 
+  };
 
   return (
     <Layout>
-      <div className="max-w-6xl mx-auto bg-white border border-neutral-300 rounded-md p-6">
-        <h1 className="text-lg font-medium mb-6">Application Form</h1>
-
+      <div className="max-w-6xl mx-auto  rounded-md p-6">
         <form
           onSubmit={handleSubmit}
-          className="flex flex-col gap-4 w-full"
+          className="flex flex-col gap-4 w-full bg-white px-5 py-3 shadow-lg rounded-md border border-neutral-300"
         >
-          {/* Name */}
-          <div className="flex items-center w-full gap-4">
-            <div className="w-full">
-              <input
-                type="text"
-                name="username"
-                value={formData.username}
-                onChange={handleChange}
-                required
-                placeholder="Full Name"
-                className="w-full mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
-              />
-            </div>
+          <h1 className="text-lg font-medium mb-3 w-full text-start px-5 py-3 shadow-sm bg-slate-50 rounded-md text-neutral-800 tracking-tight">Application Form</h1>
 
-            {/* Mobile */}
-            <div className="w-full">
-              <input
-                type="tel"
-                name="mobile"
-                value={formData.mobile}
-                onChange={handleChange}
-                maxLength="10"
-                required
-                placeholder="Mobile Number"
-                className="w-full mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
-              />
-            </div>
+          {/* User Name */}
+          <div className="flex flex-col sm:flex-row items-center w-full gap-4">
+            <input className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm" name="firstName" value={formData.firstName} onChange={handleChange} placeholder="First Name" />
+            <input className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm" name="middleName" value={formData.middleName} onChange={handleChange} placeholder="Middle Name" />
+            <input className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm" name="lastName" value={formData.lastName} onChange={handleChange} placeholder="Last Name" />
           </div>
 
-          <div className="flex items-center gap-4 w-full">
-            {/* Email */}
-            <div className="w-full">
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-                placeholder="Email"
-                className="w-full mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
-              />
-            </div>
-
-            {/* DOB */}
-            <div className="w-full">
-              <input
-                type="date"
-                name="dob"
-                value={formData.dob}
-                onChange={handleChange}
-                required
-                placeholder="Date of birth"
-                className="w-full mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
-              />
-            </div>
+          {/* Contact */}
+          <div className="flex flex-col sm:flex-row items-center gap-4 w-full">
+            <input className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm" name="mobile" value={formData.mobile} onChange={handleChange} placeholder="Mobile" />
+            <input className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm" name="email" value={formData.email} onChange={handleChange} placeholder="Email" />
+            <input type="date" className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm" name="dob" value={formData.dob} onChange={handleChange} />
           </div>
 
           {/* Address */}
-          <div className="md:col-span-2">
-            <textarea
-              name="address"
-              value={formData.address}
-              onChange={handleChange}
-              rows="3"
-              required
-              placeholder="Permanent Address"
-              className="w-full mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
-            />
-          </div>
-          <div>
-            <input
-              type="text"
-              name="pincode"
-              value={formData.pincode}
-              onChange={handleChange}
-              maxLength="6"
-              required
-              placeholder="Pin Code"
-              className="w-104 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
-            />
-          </div>
+          <textarea className="w-full mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm" name="address" value={formData.address} onChange={handleChange} placeholder="Permanent Address" />
 
-          <div className="flex items-center w-full gap-4">
-            <div className="flex flex-col w-full ">
-              <input
-                type="text"
-                name="pan"
-                value={formData.pan}
-                onChange={handleChange}
-                required
-                placeholder="PAN number"
-                className="w-full mt-1 px-3 py-1 uppercase border border-neutral-300 rounded-md text-sm placeholder:lowercase"
-              />
-
-              <label htmlFor="pan_image" className="cursor-pointer mt-4 text-center w-full">
-                {preview.pan_image ? (
-                  <span className="text-xs text-green-600 break-all relative">
-                    {preview.pan_image}
-                    <button onClick={removePanImage} className="absolute ms-3"><X size={14} /></button>
-                  </span>
-                ) : (
+          {/* IDs */}
+          <div className="flex flex-col sm:flex-row items-center w-full gap-4">
+            <input className="w-full min-w-0 px-3 py-1 border border-neutral-300 rounded-md text-sm" name="pincode" value={formData.pincode} onChange={handleChange} placeholder="Pincode" />
+            <div className="w-full flex flex-col gap-1 relative">
+              <div className="flex items-center gap-2">
+                <input
+                  className="w-full min-w-0 px-3 py-1 border border-neutral-300 rounded-md text-sm uppercase"
+                  name="pan"
+                  value={formData.pan}
+                  onChange={handleChange}
+                  placeholder="PAN"
+                />
+                <label className="text-sm px-3 py-1 border border-neutral-300 bg-gray-200 shadow-inner rounded-md hover:bg-gray-300 cursor-pointer relative group">
+                  Upload
                   <input
-                    id="pan_image"
                     type="file"
-                    accept="image/*"
+                    hidden
                     name="pan_image"
-                    className="text-xs"
-                    onChange={handleImageChange}
-                  />
-                )}
-
-              </label>
-            </div>
-
-            {/* Aadhar */}
-            <div className="flex flex-col w-full">
-              <input
-                type="text"
-                name="aadhar"
-                value={formData.aadhar}
-                onChange={handleChange}
-                maxLength="12"
-                required
-                placeholder="Aadhar Number"
-                className="w-full mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm ms-auto"
-              />
-
-              <label htmlFor="aadhar_image" className="cursor-pointer mt-4 text-center">
-                {preview.aadhar_image ? (
-                  <span className="text-xs text-green-600 break-all relative">
-                    {preview.aadhar_image}
-                    <button onClick={removeAadharImage} className="absolute ms-3"><X size={14} /></button>
-                  </span>
-                ) : (
-                  <input
-                    id="aadhar_image"
-                    type="file"
                     accept="image/*"
-                    name="aadhar_image"
-                    className="text-xs"
                     onChange={handleImageChange}
                   />
-                )}
+                  <span className="absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap
+                   rounded bg-black px-2 py-1 text-[10px] text-white
+                   opacity-0 group-hover:opacity-100 transition-opacity">
+                    Upload PAN image
+                  </span>
+                </label>
+              </div>
 
-              </label>
+              {/* PAN PREVIEW (PI AREA) */}
+              {preview.pan_image && (
+                <div className="flex items-center gap-2 text-green-600 text-xs absolute top-8">
+                  <span className="break-all">{preview.pan_image}</span>
+                  <button type="button" onClick={removePanImage}>
+                    <X size={14} />
+                  </button>
+                </div>
+              )}
+            </div>
+
+            <div className="w-full flex flex-col gap-1 relative">
+              <div className="flex items-center gap-2">
+                <input
+                  className="w-full min-w-0 px-3 py-1 border border-neutral-300 rounded-md text-sm"
+                  name="aadhar"
+                  value={formData.aadhar}
+                  onChange={handleChange}
+                  placeholder="Aadhar"
+                />
+                <label className="text-sm px-3 py-1 border border-neutral-300 bg-gray-200 shadow-inner rounded-md hover:bg-gray-300 cursor-pointer relative group">
+                  Upload
+                  <input
+                    type="file"
+                    hidden
+                    name="aadhar_image"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                  />
+                  <span className="absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap
+                   rounded bg-black px-2 py-1 text-[10px] text-white
+                   opacity-0 group-hover:opacity-100 transition-opacity">
+                    Upload Aadhar image
+                  </span>
+                </label>
+              </div>
+
+              {/* AADHAR PREVIEW (AI AREA) */}
+              {preview.aadhar_image && (
+                <div className="flex items-center gap-2 text-green-600 text-xs absolute top-8 ms-1">
+                  <span className="break-all">{preview.aadhar_image}</span>
+                  <button type="button" onClick={removeAadharImage}>
+                    <X size={14} />
+                  </button>
+                </div>
+              )}
             </div>
           </div>
 
-          <div className="text-lg md:col-span-2 border-t border-neutral-300 pt-4 flex flex-col gap-3">
-            <h2 className="font-medium mb-2">Nominee Details</h2>
 
-            <input
-              name="nomineeName"
-              placeholder="Nominee Name"
-              value={nomineeData.nomineeName}
-              onChange={handleNomineeChange}
-              className="border border-neutral-300 px-3 py-1 rounded w-full mb-2 text-sm"
-            />
+          <div className="border-t border-neutral-300 flex flex-col gap-4 mt-4">
+            <h2 className="text-lg font-medium mt-4 w-full text-start px-5 py-3 shadow-sm bg-slate-50 rounded-md text-neutral-800 tracking-tight">Nominee Details</h2>
 
-            <input
-              name="relationship"
-              placeholder="Relationship"
-              value={nomineeData.relationship}
-              onChange={handleNomineeChange}
-              className="border border-neutral-300 px-3 py-1 rounded w-full mb-2 text-sm"
-            />
+            <div className="flex flex-col sm:flex-row gap-4 mt-4">
+              <input className="w-full min-w-0 border px-3 py-1 rounded text-sm border-neutral-300" name="nominee_firstname" value={nomineeData.nominee_firstname} onChange={handleNomineeChange} placeholder="First Name" />
+              <input className="w-full min-w-0 border px-3 py-1 rounded text-sm border-neutral-300" name="nominee_middlename" value={nomineeData.nominee_middlename} onChange={handleNomineeChange} placeholder="Middle Name" />
+              <input className="w-full min-w-0 border px-3 py-1 rounded text-sm border-neutral-300" name="nominee_lastname" value={nomineeData.nominee_lastname} onChange={handleNomineeChange} placeholder="Last Name" />
+            </div>
 
-            <input
-              type="date"
-              name="nomineeDob"
-              value={nomineeData.nomineeDob}
-              onChange={handleNomineeChange}
-              className="border border-neutral-300 px-3 py-1 rounded w-full mb-2 text-sm text-neutral-500"
-            />
-
-            <input
-              name="nomineeMobile"
-              placeholder="Nominee Mobile Number"
-              value={nomineeData.nomineeMobile}
-              onChange={handleNomineeChange}
-              className="border border-neutral-300 px-3 py-1 rounded w-full text-sm"
-            />
+            <div className="flex flex-col sm:flex-row gap-4">
+              <input className="w-full min-w-0 border px-3 py-1 rounded text-sm border-neutral-300" name="relationship" value={nomineeData.relationship} onChange={handleNomineeChange} placeholder="Relationship" />
+              <input type="date" className="w-full min-w-0 border px-3 py-1 rounded text-sm border-neutral-300" name="nomineeDob" value={nomineeData.nomineeDob} onChange={handleNomineeChange} />
+              <input className="w-full min-w-0 border px-3 py-1 rounded text-sm border-neutral-300" name="nomineeMobile" value={nomineeData.nomineeMobile} onChange={handleNomineeChange} placeholder="Mobile" />
+            </div>
           </div>
 
-          <div className="md:col-span-2 flex justify-center mt-4">
-            <button
-              type="submit"
-              className="px-6 py-1 bg-[#1d85ed] text-white rounded-md"
-            >
-              Submit Application
-            </button>
+          <div className="flex justify-center mt-4">
+            {loading ? (
+              <button className="px-6 py-1 bg-red-700 transition-all duration-300 cursor-pointer text-white rounded-md text-sm shadow-md flex items-center gap-2">
+                <Loader2 size={18} className="animate-spin" />
+                Submiting Application...
+              </button>
+            ) : (
+              <button className="px-6 py-1 bg-[#ed1d25] hover:bg-red-700 transition-all duration-300 cursor-pointer text-white rounded-md text-sm shadow-md">
+                Submit Application
+              </button>
+            )}
           </div>
         </form>
       </div>
