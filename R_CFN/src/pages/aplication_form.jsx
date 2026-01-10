@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import Layout from "../components/layout";
-import { userEntry } from "../api/endpoint";
+import { getUserEntries, userEntry } from "../api/endpoint";
 import { Factory, Loader2, X } from "lucide-react";
 import { toast } from "react-toastify";
+import UserManagement from "../components/UserManagement";
+
 
 const ApplicationForm = () => {
   const [formData, setFormData] = useState({
@@ -21,6 +23,8 @@ const ApplicationForm = () => {
   });
 
   const [loading, setLoading] = useState(false)
+
+  const [userEntriesData, setUserEntriesData] = useState([])
 
   const [nomineeData, setNomineeData] = useState({
     nominee_firstname: "",
@@ -139,6 +143,15 @@ const ApplicationForm = () => {
     }
 
   };
+    const fetchUserEntriesData = async()=>{
+      const data = await getUserEntries()
+      console.log(data)
+      setUserEntriesData(data)
+    }
+    
+  useEffect(()=>{
+    fetchUserEntriesData()
+  }, [])
 
   return (
     <Layout>
@@ -274,7 +287,9 @@ const ApplicationForm = () => {
             )}
           </div>
         </form>
+        <UserManagement data={userEntriesData}/>
       </div>
+      
     </Layout>
   );
 };
