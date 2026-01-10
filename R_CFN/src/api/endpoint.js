@@ -17,3 +17,8 @@ export const userEntry = async (payload) => {
     throw error;
   }
 };
+
+export const getUserEntries = async()=>{
+  const response = await api.get(`api/getallentries/`)
+  return response.data
+}

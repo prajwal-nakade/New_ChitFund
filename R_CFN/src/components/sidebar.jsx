@@ -1,12 +1,19 @@
 import React, { useContext, useState } from "react";
-import { LayoutDashboard, Form } from "lucide-react";
+import { LayoutDashboard, Form, ChevronDown } from "lucide-react";
 import { Link, NavLink } from "react-router-dom";
 
 const Sidebar = () => {
+  const [isMasterOpen, setIsMasterOpen] = useState(false);
+
   const Menus = [
     { title: "Menu 1", icon: <LayoutDashboard size={16} />, path: "/menu1" },
     { title: "Menu 2", icon: <LayoutDashboard size={16} />, path: "/menu2" },
-    { title: "Application", icon: <Form size={16} />, path: "/" },
+  ];
+
+  const masterSubMenus = [
+    { title: "Application Form", path: "/" },
+    { title: "Drop 2", path: "/drop2" },
+    { title: "Drop 3", path: "/drop3" },
   ];
   return (
     <div className="flex h-screen w-64 overflow-hidden">
@@ -47,6 +54,43 @@ const Sidebar = () => {
                 )}
               </NavLink>
             ))}
+            <div className="w-full">
+              <button
+                onClick={() => setIsMasterOpen(!isMasterOpen)}
+                className="flex font-medium text-sm items-center gap-3 w-full px-3 py-2 group text-[#272323] hover:bg-red-100 transition-all duration-300"
+              >
+                <span className="transition-transform duration-200 group-hover:scale-105">
+                  <Form size={16} />
+                </span>
+                Master
+                <ChevronDown
+                  size={16}
+                  className={`ml-auto transition-transform duration-200 ${
+                    isMasterOpen ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
+              {isMasterOpen && (
+                <div className="dropdown-container ml-6 mt-1 space-y-1">
+                  {masterSubMenus.map((subItem, subIdx) => (
+                    <NavLink
+                      key={subIdx}
+                      to={subItem.path}
+                      className={({ isActive }) =>
+                        `flex font-medium text-sm items-center gap-3 w-full px-3 py-2 group
+                                          ${
+                                            isActive
+                                              ? "text-[#272323] hover:bg-red-100 transition-all duration-300"
+                                              : "text-[#272323] hover:bg-red-100 transition-all duration-300"
+                                          }`
+                      }
+                    >
+                      {subItem.title}
+                    </NavLink>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </aside>
