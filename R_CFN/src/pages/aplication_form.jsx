@@ -5,7 +5,9 @@ import { X } from "lucide-react";
 
 const ApplicationForm = () => {
   const [formData, setFormData] = useState({
-    username: "",
+    firstName: "",
+    middleName: "",
+    lastName: "",
     mobile: "",
     dob: "",
     email: "",
@@ -17,9 +19,10 @@ const ApplicationForm = () => {
     aadhar_image: null,
   });
 
-
   const [nomineeData, setNomineeData] = useState({
-    nomineeName: "",
+    nominee_firstname: "",
+    nominee_middlename: "",
+    nominee_lastname: "",
     relationship: "",
     nomineeDob: "",
     nomineeMobile: "",
@@ -87,7 +90,6 @@ const ApplicationForm = () => {
     }));
   };
 
-
   useEffect(() => {
     return () => {
       Object.values(preview).forEach((url) => {
@@ -102,7 +104,11 @@ const ApplicationForm = () => {
     const data = new FormData();
 
     // User
-    data.append("name", formData.username);
+    // const fullName =
+    //   `${formData.firstName} ${formData.middleName} ${formData.lastName}`.trim();
+    data.append("firstname", formData.firstName);
+    data.append("middlename", formData.middleName);
+    data.append("lastname", formData.lastName);
     data.append("mobile_no", formData.mobile);
     data.append("dob", formData.dob);
     data.append("email", formData.email);
@@ -112,9 +118,15 @@ const ApplicationForm = () => {
     data.append("aadharcard_no", formData.aadhar);
 
     if (formData.pan_image) data.append("pan_image", formData.pan_image);
-    if (formData.aadhar_image) data.append("aadhar_image", formData.aadhar_image);
+    if (formData.aadhar_image)
+      data.append("aadhar_image", formData.aadhar_image);
 
-    data.append("nominee_name", nomineeData.nomineeName);
+    // Nominee
+    // const nomineeName =
+    //   `${formData.firstName} ${formData.middleName} ${formData.lastName}`.trim();
+    data.append("nominee_firstname", nomineeData.nominee_firstname);
+    data.append("nominee_middlename", nomineeData.nominee_middlename);
+    data.append("nominee_lastname", nomineeData.nominee_lastname);
     data.append("nominee_mobile", nomineeData.nomineeMobile);
     data.append("nominee_dob", nomineeData.nomineeDob);
     data.append("relationship", nomineeData.relationship);
@@ -123,30 +135,52 @@ const ApplicationForm = () => {
     console.log(response);
   };
 
-
   return (
     <Layout>
-      <div className="max-w-6xl mx-auto bg-white border border-neutral-300 rounded-md p-6">
-        <h1 className="text-lg font-medium mb-6">Application Form</h1>
+      <div className="max-w-6xl mx-auto border border-neutral-300 rounded-md p-6 bg-gray-50">
+        
 
-        <form
-          onSubmit={handleSubmit}
-          className="flex flex-col gap-4 w-full"
-        >
-          {/* Name */}
+        <form onSubmit={handleSubmit} className="flex flex-col gap-2 w-full bg-white px-5 py-3 shadow-lg rounded-md">
+          {/* User Name */}
+          <h1 className="text-lg font-medium mb-6">Application Form</h1>
           <div className="flex items-center w-full gap-4">
             <div className="w-full">
               <input
                 type="text"
-                name="username"
-                value={formData.username}
+                name="firstName"
+                value={formData.firstName}
                 onChange={handleChange}
                 required
-                placeholder="Full Name"
+                placeholder="First Name"
                 className="w-full mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
               />
             </div>
 
+            <div className="w-full">
+              <input
+                type="text"
+                name="middleName"
+                value={formData.middleName}
+                onChange={handleChange}
+                placeholder="Middle Name"
+                className="w-full mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
+              />
+            </div>
+
+            <div className="w-full">
+              <input
+                type="text"
+                name="lastName"
+                value={formData.lastName}
+                onChange={handleChange}
+                required
+                placeholder="Last Name"
+                className="w-full mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
+              />
+            </div>
+          </div>
+
+          <div className="flex items-center gap-4 w-full">
             {/* Mobile */}
             <div className="w-full">
               <input
@@ -160,9 +194,7 @@ const ApplicationForm = () => {
                 className="w-full mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
               />
             </div>
-          </div>
 
-          <div className="flex items-center gap-4 w-full">
             {/* Email */}
             <div className="w-full">
               <input
@@ -202,21 +234,21 @@ const ApplicationForm = () => {
               className="w-full mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
             />
           </div>
-          <div>
-            <input
-              type="text"
-              name="pincode"
-              value={formData.pincode}
-              onChange={handleChange}
-              maxLength="6"
-              required
-              placeholder="Pin Code"
-              className="w-104 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
-            />
-          </div>
 
           <div className="flex items-center w-full gap-4">
-            <div className="flex flex-col w-full ">
+            <div className="w-full">
+              <input
+                type="text"
+                name="pincode"
+                value={formData.pincode}
+                onChange={handleChange}
+                maxLength="6"
+                required
+                placeholder="Pin Code"
+                className=" w-full px-3 py-1 border border-neutral-300 rounded-md text-sm"
+              />
+            </div>
+            <div className="flex items-center w-full gap-3">
               <input
                 type="text"
                 name="pan"
@@ -224,31 +256,12 @@ const ApplicationForm = () => {
                 onChange={handleChange}
                 required
                 placeholder="PAN number"
-                className="w-full mt-1 px-3 py-1 uppercase border border-neutral-300 rounded-md text-sm placeholder:lowercase"
+                className="w-full px-3 py-1 uppercase border border-neutral-300 rounded-md text-sm placeholder:lowercase"
               />
-
-              <label htmlFor="pan_image" className="cursor-pointer mt-4 text-center w-full">
-                {preview.pan_image ? (
-                  <span className="text-xs text-green-600 break-all relative">
-                    {preview.pan_image}
-                    <button onClick={removePanImage} className="absolute ms-3"><X size={14} /></button>
-                  </span>
-                ) : (
-                  <input
-                    id="pan_image"
-                    type="file"
-                    accept="image/*"
-                    name="pan_image"
-                    className="text-xs"
-                    onChange={handleImageChange}
-                  />
-                )}
-
-              </label>
             </div>
 
             {/* Aadhar */}
-            <div className="flex flex-col w-full">
+            <div className="flex items-center gap-3 w-full">
               <input
                 type="text"
                 name="aadhar"
@@ -257,70 +270,120 @@ const ApplicationForm = () => {
                 maxLength="12"
                 required
                 placeholder="Aadhar Number"
-                className="w-full mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm ms-auto"
+                className="w-full px-3 py-1 border border-neutral-300 rounded-md text-sm ms-auto"
               />
+            </div>
+          </div>
+          <div className="flex items-center gap-4 py-1">
+            <label
+              htmlFor="pan_image"
+              className="cursor-pointer flex items-center relative border border-neutral-300 rounded-md px-3 py-1 w-81 text-sm text-neutral-500"
+            >
+              {!preview.pan_image ? (
+                <>
+                  <span>Upload PAN Image</span>
+                  <input
+                    id="pan_image"
+                    type="file"
+                    accept="image/*"
+                    name="pan_image"
+                    className="hidden"
+                    onChange={handleImageChange}
+                  />
+                </>
+              ) : (
+                <span className="flex items-center gap-2 text-green-600 w-full break-all rounded-md">
+                  {preview.pan_image}
+                  <button onClick={removePanImage} type="button">
+                    <X size={14} />
+                  </button>
+                </span>
+              )}
+            </label>
 
-              <label htmlFor="aadhar_image" className="cursor-pointer mt-4 text-center">
-                {preview.aadhar_image ? (
-                  <span className="text-xs text-green-600 break-all relative">
-                    {preview.aadhar_image}
-                    <button onClick={removeAadharImage} className="absolute ms-3"><X size={14} /></button>
-                  </span>
-                ) : (
+            <label
+              htmlFor="aadhar_image"
+              className="cursor-pointer flex items-center relative border border-neutral-300 rounded-md px-3 py-1 w-80 text-sm text-neutral-500"
+            >
+              {!preview.aadhar_image ? (
+                <>
+                  <span>Upload Aadhar Image</span>
                   <input
                     id="aadhar_image"
                     type="file"
                     accept="image/*"
                     name="aadhar_image"
-                    className="text-xs"
+                    className="hidden"
                     onChange={handleImageChange}
                   />
-                )}
-
-              </label>
-            </div>
+                </>
+              ) : (
+                <span className="flex items-center gap-2 text-green-600 w-full break-all text-sm rounded-md">
+                  {preview.aadhar_image}
+                  <button onClick={removeAadharImage} type="button">
+                    <X size={14} />
+                  </button>
+                </span>
+              )}
+            </label>
           </div>
 
           <div className="text-lg md:col-span-2 border-t border-neutral-300 pt-4 flex flex-col gap-3">
             <h2 className="font-medium mb-2">Nominee Details</h2>
+            <div className="flex w-full items-center gap-4">
+              <input
+                name="nominee_firstname"
+                placeholder="Nominee First Name"
+                value={nomineeData.nominee_firstname}
+                onChange={handleNomineeChange}
+                className="border border-neutral-300 px-3 py-1 rounded w-full  text-sm"
+              />
+              <input
+                name="nominee_middlenamee"
+                placeholder="Nominee Middle Name"
+                value={nomineeData.nominee_middlename}
+                onChange={handleNomineeChange}
+                className="border border-neutral-300 px-3 py-1 rounded w-full text-sm"
+              />
+              <input
+                name="nominee_lastname"
+                placeholder="Nominee Last Name"
+                value={nomineeData.nominee_lastname}
+                onChange={handleNomineeChange}
+                className="border border-neutral-300 px-3 py-1 rounded w-full  text-sm"
+              />
+            </div>
+            <div className="flex w-full items-center gap-4">
+              <input
+                name="relationship"
+                placeholder="Relationship"
+                value={nomineeData.relationship}
+                onChange={handleNomineeChange}
+                className="border border-neutral-300 px-3 py-1 rounded w-full text-sm"
+              />
 
-            <input
-              name="nomineeName"
-              placeholder="Nominee Name"
-              value={nomineeData.nomineeName}
-              onChange={handleNomineeChange}
-              className="border border-neutral-300 px-3 py-1 rounded w-full mb-2 text-sm"
-            />
+              <input
+                type="date"
+                name="nomineeDob"
+                value={nomineeData.nomineeDob}
+                onChange={handleNomineeChange}
+                className="border border-neutral-300 px-3 py-1 rounded w-full  text-sm text-neutral-500"
+              />
 
-            <input
-              name="relationship"
-              placeholder="Relationship"
-              value={nomineeData.relationship}
-              onChange={handleNomineeChange}
-              className="border border-neutral-300 px-3 py-1 rounded w-full mb-2 text-sm"
-            />
-
-            <input
-              type="date"
-              name="nomineeDob"
-              value={nomineeData.nomineeDob}
-              onChange={handleNomineeChange}
-              className="border border-neutral-300 px-3 py-1 rounded w-full mb-2 text-sm text-neutral-500"
-            />
-
-            <input
-              name="nomineeMobile"
-              placeholder="Nominee Mobile Number"
-              value={nomineeData.nomineeMobile}
-              onChange={handleNomineeChange}
-              className="border border-neutral-300 px-3 py-1 rounded w-full text-sm"
-            />
+              <input
+                name="nomineeMobile"
+                placeholder="Nominee Mobile Number"
+                value={nomineeData.nomineeMobile}
+                onChange={handleNomineeChange}
+                className="border border-neutral-300 px-3 py-1 rounded w-full text-sm"
+              />
+            </div>
           </div>
 
           <div className="md:col-span-2 flex justify-center mt-4">
             <button
               type="submit"
-              className="px-6 py-1 bg-[#1d85ed] text-white rounded-md"
+              className="px-6 py-1 bg-[#1d85ed] text-white rounded-md text-sm shadow-md"
             >
               Submit Application
             </button>
