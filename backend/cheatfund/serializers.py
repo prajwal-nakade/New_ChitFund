@@ -51,7 +51,7 @@ class GetAllEntriesSerializer(serializers.ModelSerializer):
         fields = ['id', 'firstname', 'middlename', 'lastname', 'mobile_no', 'dob', 'email',
             'permanent_address', 'pincode','created_at',
             'pancard_no', 'aadharcard_no',
-            'pan_image', 'aadhar_image', 'nominees']
+            'pan_image', 'aadhar_image', 'nominees', 'status']
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -59,7 +59,7 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ['id', 'firstname', 'middlename', 'lastname', 'mobile_no', 'dob', 'email',
             'permanent_address', 'pincode','created_at',
             'pancard_no', 'aadharcard_no',
-            'pan_image', 'aadhar_image']
+            'pan_image', 'aadhar_image', 'status']
         
 
 class UpdateUserSerializer(serializers.Serializer):

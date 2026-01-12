@@ -9,7 +9,11 @@ import {
 import React, { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import ViewUserDetails from "./ViewUserDetails";
+
+import { deleteUser, getUserEntries, toggleStatus } from "../api/endpoint";
+
 import { deleteUser, getUserEntries } from "../api/endpoint";
+
 import { toast } from "react-toastify";
 import EditUserDetails from "./EditUserDetails";
 
@@ -17,7 +21,7 @@ const UserManagement = ({ data, setUserEntriesData }) => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [userData, setUserData] = useState([]);
   const [activeModal, setActiveModal] = useState(null);
-  const [toggleStatus, setToggleStatus] = useState({});
+
 
   const handleSearch = (e) => {
     const keyword = e.toLowerCase();
@@ -31,12 +35,6 @@ const UserManagement = ({ data, setUserEntriesData }) => {
       );
       setUserData(filterd);
     }
-  };
-
-  const handlestatusToggle = (id) => {
-    setToggleStatus(prev => ({
-      ...prev, [id]: !prev[id]
-    }))
   };
 
   useEffect(() => {
@@ -62,6 +60,29 @@ const UserManagement = ({ data, setUserEntriesData }) => {
       </div>
     );
   }
+
+  const handleStatus = async (id, currentStatus) => {
+    const newStatus = currentStatus === "active" ? "inactive" : "active";
+
+    try {
+      const response = await toggleStatus(id, newStatus);
+
+      if (response.success) {
+        toast.success(response.message || "Status updated");
+
+        setUserData((prev) =>
+          prev.map((user) =>
+            user.id === id ? { ...user, status: newStatus } : user
+          )
+        );
+      } else {
+        toast.error(response.message || "Failed to update status");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Something went wrong");
+    }
+  };
 
   return (
     <div className="bg-white border rounded p-4 mt-10 border-neutral-300 shadow-lg">
@@ -153,6 +174,20 @@ const UserManagement = ({ data, setUserEntriesData }) => {
                     {item.permanent_address}
                   </td>
                   <td className="border border-neutral-300 text-center p-2">
+
+                    <button
+                      onClick={() => handleStatus(item.id, item.status)}
+                      className="flex items-center justify-center w-full"
+                    >
+                      {item.status === "active" ? (
+                        <ToggleRight size={20} className="text-green-500" />
+                      ) : (
+                        <ToggleLeft size={20} className="text-red-500" />
+                      )}
+                    </button>
+                  </td>
+
+
                     {item.Status}
                     <button
                       onClick={() => handlestatusToggle(item.id)
@@ -166,6 +201,7 @@ const UserManagement = ({ data, setUserEntriesData }) => {
                       )}
                     </button>
                   </td>
+
                   <td className="border border-neutral-300 text-center p-2">
                     {dayjs(item.created_at).format("DD MMM YYYY")}
                   </td>
@@ -232,3 +268,4 @@ const UserManagement = ({ data, setUserEntriesData }) => {
 };
 
 export default UserManagement;
+

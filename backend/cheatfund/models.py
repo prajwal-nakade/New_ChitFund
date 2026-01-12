@@ -11,6 +11,14 @@ class Users(models.Model):
     pincode = models.CharField(max_length=10)
     pancard_no = models.CharField(max_length=50, unique=True)
     aadharcard_no = models.CharField(max_length=12, unique=True)
+    status = models.CharField(
+        max_length=10,
+        choices=[
+            ('active', 'inactive'),
+            ('Unpaid', 'Unpaid'),
+        ],
+        default='active'
+    )
 
     pan_image = models.ImageField(
         upload_to="user_documents/pan/",

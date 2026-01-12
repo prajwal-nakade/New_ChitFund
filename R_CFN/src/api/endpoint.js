@@ -43,3 +43,11 @@ export const updateUser = async (id, formData) => {
   return res.data;
 };
 
+export const toggleStatus = async(id, newstatus)=>{
+  const response = await api.put(`api/toggleStatus/${id}/`,{
+    status : newstatus
+  })
+
+  return response.data
+}
+

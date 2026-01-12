@@ -50,3 +50,17 @@ def updateUser(request, user_id):
         return Response({'success' : True, 'message' : 'User Updated Successfully!'}, status = 200)
     else:
         return Response({'success' : False, 'error' : updatedUserData.errors}, status = 400)
+    
+@api_view(['PUT'])
+def toggleStatus(request, user_id):
+    try:
+        user = Users.objects.get(id=user_id)
+    except Users.DoesNotExist:
+        return Response({'success' : False, 'message':"User doesn't exist"}, status = 404)
+    
+    new_status = request.data.get('status')
+    if new_status not in['active','inactive']:
+        return Response({"message": "Invalid status"}, status=400)
+    user.status = new_status
+    user.save()    
+    return Response({"success" : True,"message" : 'Status updated'}, status = 200)
