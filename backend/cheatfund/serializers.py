@@ -48,7 +48,7 @@ class GetAllEntriesSerializer(serializers.ModelSerializer):
     nominees = NomineeSerializer(many=True, read_only = True)
     class Meta:
         model = Users
-        fields = ['firstname', 'middlename', 'lastname', 'mobile_no', 'dob', 'email',
+        fields = ['id', 'firstname', 'middlename', 'lastname', 'mobile_no', 'dob', 'email',
             'permanent_address', 'pincode','created_at',
             'pancard_no', 'aadharcard_no',
             'pan_image', 'aadhar_image', 'nominees']

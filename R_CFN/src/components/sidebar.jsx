@@ -16,7 +16,7 @@ const Sidebar = () => {
     { title: "Drop 3", path: "/drop3" },
   ];
   return (
-    <div className="flex h-screen w-64 overflow-hidden">
+    <div className="flex h-screen w-54 overflow-hidden opacity-0 lg:opacity-100">
       <aside className="flex flex-col h-full w-full border border-neutral-300">
         <div className="flex  w-full items-center justify-start ps-4 gap-2 border-b py-4 border-neutral-300">
           <Link to={"/"}>
