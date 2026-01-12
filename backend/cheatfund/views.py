@@ -34,6 +34,19 @@ def deleteUser(request, user_id):
     try:
         user = Users.objects.get(id=user_id)
         user.delete()
-        return Response({'success' : True, 'message':'User Deleted Successfully!'})
+        return Response({'success' : True, 'message':'User Deleted Successfully!'}, status = 200)
     except Users.DoesNotExist:
-        return Response({'success' : False, 'message':"User doesn't exist"})
+        return Response({'success' : False, 'message':"User doesn't exist"}, status = 400)
+
+@api_view(['PUT'])
+def updateUser(request, user_id):
+    try:
+        user = Users.objects.get(id=user_id)
+    except Users.DoesNotExist:
+        return Response({'success' : False, 'message':"User doesn't exist"}, status = 404)
+    updatedUserData = UpdateUserSerializer(user, data = request.data, partial=True)
+    if updatedUserData.is_valid():
+        updatedUserData.update(user, updatedUserData.validated_data )
+        return Response({'success' : True, 'message' : 'User Updated Successfully!'}, status = 200)
+    else:
+        return Response({'success' : False, 'error' : updatedUserData.errors}, status = 400)
