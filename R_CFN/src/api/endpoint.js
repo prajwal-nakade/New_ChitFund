@@ -25,3 +25,8 @@ export const getUserEntries = async()=>{
   const response = await api.get(`api/getallentries/`)
   return response.data
 }
+
+export const deleteUser = async(id)=>{
+  const response = await api.delete(`api/deleteUser/${id}/`)
+  return response.data
+}

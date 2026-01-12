@@ -1,7 +1,13 @@
 import { X } from 'lucide-react'
-import React from 'react'
+import React, { useState } from 'react'
 
 const ViewUserDetails = ({ onClose, user }) => {
+    if (!user) return null;
+    const baseUrl = import.meta.env.VITE_BASE_URL
+
+    const [preview, setPreview] = useState(null)
+
+    
     return (
         <div className='fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop'>
             <div className='max-w-5xl mx-auto '>
@@ -137,6 +143,23 @@ const ViewUserDetails = ({ onClose, user }) => {
                                     </td>
                                 </tr>
 
+                                <tr>
+                                    <th className="border-b border-neutral-300 px-5 py-3 text-left font-medium text-neutral-700">
+                                        Aadhar & PAN Images
+                                    </th>
+                                    <td className="border-b border-l border-neutral-300 px-5 py-3">
+                                        <span className="block w-full border border-neutral-300 px-3 py-1 rounded-md bg-gray-50 shadow-inner">
+                                            <div className='flex items-center gap-4'>
+                                                <img width={50} src={`${baseUrl}${user.aadhar_image}`} className='border border-neutral-300 shadow-sm cursor-pointer'
+                                                    onClick={() => setPreview(`${baseUrl}${user.aadhar_image}`)} />
+                                                <img width={50} src={`${baseUrl}${user.pan_image}`} className='border border-neutral-300 shadow-sm cursor-pointer' 
+                                                onClick={() => setPreview(`${baseUrl}${user.pan_image}`)}
+                                                />
+                                            </div>
+                                        </span>
+                                    </td>
+                                </tr>
+
                                 {/* CREATED AT */}
                                 <tr>
                                     <th className="border-b border-neutral-300 px-5 py-3 text-left font-medium text-neutral-700">
@@ -212,6 +235,31 @@ const ViewUserDetails = ({ onClose, user }) => {
 
                 </div>
             </div>
+            {preview && (
+                <div
+                    className="fixed inset-0 z-50 flex items-center justify-center bg-black/60"
+                    onClick={() => setPreview(null)}
+                >
+                    <div
+                        className="relative bg-white p-3 rounded-md shadow-lg max-w-[90vw] max-h-[90vh]"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <button
+                            className="absolute -top-8 -right-10 text-white rounded-full p-1"
+                            onClick={() => setPreview(null)}
+                        >
+                            <X size={32}/>
+                        </button>
+
+                        <img
+                            src={preview}
+                            alt="Preview"
+                            className="max-w-5xl max-h-[80vh] object-contain rounded-md"
+                        />
+                    </div>
+                </div>
+            )}
+
         </div>
     )
 }
