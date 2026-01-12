@@ -12,7 +12,7 @@ class UserWithNomineeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Users
         fields = [
-            'firstname','middlename', 'lastname', 'mobile_no', 'dob', 'email',
+            'id', 'firstname','middlename', 'lastname', 'mobile_no', 'dob', 'email',
             'permanent_address', 'pincode',
             'pancard_no', 'aadharcard_no',
             'pan_image', 'aadhar_image', 'created_at', 
@@ -52,3 +52,11 @@ class GetAllEntriesSerializer(serializers.ModelSerializer):
             'permanent_address', 'pincode','created_at',
             'pancard_no', 'aadharcard_no',
             'pan_image', 'aadhar_image', 'nominees']
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Users
+        fields = ['id', 'firstname', 'middlename', 'lastname', 'mobile_no', 'dob', 'email',
+            'permanent_address', 'pincode','created_at',
+            'pancard_no', 'aadharcard_no',
+            'pan_image', 'aadhar_image']

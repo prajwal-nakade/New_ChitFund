@@ -1,12 +1,7 @@
 import { useEffect, useState } from "react";
-import Layout from "../components/layout";
-import { getUserEntries, userEntry } from "../api/endpoint";
-import { Factory, Loader2, X } from "lucide-react";
-import { toast } from "react-toastify";
-import UserManagement from "../components/UserManagement";
+import { Loader2, X } from "lucide-react";
 
-
-const ApplicationForm = () => {
+const EditUserDetails = ({ user, onClose, getUserEntries }) => {
   const [formData, setFormData] = useState({
     firstName: "",
     middleName: "",
@@ -24,10 +19,6 @@ const ApplicationForm = () => {
 
   const [loading, setLoading] = useState(false)
 
-  const [userEntriesData, setUserEntriesData] = useState([])
-
-  
-
   const [nomineeData, setNomineeData] = useState({
     nominee_firstname: "",
     nominee_middlename: "",
@@ -42,43 +33,63 @@ const ApplicationForm = () => {
     aadhar_image: null,
   });
 
+  useEffect(() => {
+    if (!user) return;
+    const nominee = user.nominees?.[0] || {};
+    setFormData({
+      firstName: user.firstname || "",
+      middleName: user.middlename || "",
+      lastName: user.lastname || "",
+      mobile: user.mobile_no || "",
+      dob: user.dob || "",
+      email: user.email || "",
+      address: user.permanent_address || "",
+      pincode: user.pincode || "",
+      pan: user.pancard_no || "",
+      aadhar: user.aadharcard_no || "",
+      pan_image: null,
+      aadhar_image: null,
+    });
+
+    setNomineeData({
+      nominee_firstname: nominee.firstname || "",
+      nominee_middlename: nominee.middlename || "",
+      nominee_lastname: nominee.lastname || "",
+      relationship: nominee.relationship || "",
+      nomineeDob: nominee.dob || "",
+      nomineeMobile: nominee.mobile_no || "",
+    });
+  }, [user]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData((p) => ({ ...p, [name]: value }));
   };
 
   const handleNomineeChange = (e) => {
     const { name, value } = e.target;
-    setNomineeData((prev) => ({ ...prev, [name]: value }));
+    setNomineeData((p) => ({ ...p, [name]: value }));
   };
 
   const handleImageChange = (e) => {
     const { name, files } = e.target;
-    if (!files || !files[0]) return;
+    if (!files?.[0]) return;
 
-    setFormData((prev) => ({ ...prev, [name]: files[0] }));
-    setPreview((prev) => ({ ...prev, [name]: files[0].name }));
+    setFormData((p) => ({ ...p, [name]: files[0] }));
+    setPreview((p) => ({ ...p, [name]: files[0].name }));
   };
 
   const removePanImage = (e) => {
     e.preventDefault();
-    e.stopPropagation();
     setFormData((p) => ({ ...p, pan_image: null }));
     setPreview((p) => ({ ...p, pan_image: null }));
   };
 
   const removeAadharImage = (e) => {
     e.preventDefault();
-    e.stopPropagation();
     setFormData((p) => ({ ...p, aadhar_image: null }));
     setPreview((p) => ({ ...p, aadhar_image: null }));
   };
-
-  useEffect(() => {
-    return () => {
-      Object.values(preview).forEach((v) => v && URL.revokeObjectURL(v));
-    };
-  }, [preview]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -96,7 +107,8 @@ const ApplicationForm = () => {
     data.append("aadharcard_no", formData.aadhar);
 
     if (formData.pan_image) data.append("pan_image", formData.pan_image);
-    if (formData.aadhar_image) data.append("aadhar_image", formData.aadhar_image);
+    if (formData.aadhar_image)
+      data.append("aadhar_image", formData.aadhar_image);
 
     data.append("nominee_firstname", nomineeData.nominee_firstname);
     data.append("nominee_middlename", nomineeData.nominee_middlename);
@@ -105,72 +117,27 @@ const ApplicationForm = () => {
     data.append("nominee_dob", nomineeData.nomineeDob);
     data.append("relationship", nomineeData.relationship);
 
-    try {
-      setLoading(true)
-      const response = await userEntry(data);
-      if (response.success) {
-        toast.success('User Application Submited!')
-        setFormData({
-          firstName: "",
-          middleName: "",
-          lastName: "",
-          mobile: "",
-          dob: "",
-          email: "",
-          address: "",
-          pincode: "",
-          pan: "",
-          aadhar: "",
-          pan_image: null,
-          aadhar_image: null,
-        })
-        setNomineeData({
-          nominee_firstname: "",
-          nominee_middlename: "",
-          nominee_lastname: "",
-          relationship: "",
-          nomineeDob: "",
-          nomineeMobile: "",
-        })
-        setUserEntriesData(prev=> [...prev, response])
-      }
-      else {
-        toast.error('Somthing went wrong')
-      }
-      console.log(response);
-    } catch (error) {
-      console.log(error.message)
-      setLoading(false)
-    } finally {
-      setLoading(false)
+    
+
+    if (getUserEntries) {
+      await getUserEntries();
     }
 
+    onClose();
   };
-    const fetchUserEntriesData = async()=>{
-      const data = await getUserEntries()
-      console.log(data)
-      setUserEntriesData(data)
-    }
-    
-  useEffect(()=>{
-    fetchUserEntriesData()
-  }, [])
 
   return (
-<Layout>
-      <div className="max-w-6xl mx-auto  rounded-md p-6">
-        <form
-          onSubmit={handleSubmit}
-          className="flex flex-col gap-4 w-full bg-white px-5 py-3 shadow-lg rounded-md border border-neutral-300"
-        >
-          <h1 className="text-lg font-medium mb-3 w-full text-start px-5 py-3 shadow-sm bg-slate-50 rounded-md text-neutral-800 tracking-tight">
-            Application Form
-          </h1>
+    <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+      <div className="bg-white w-full max-w-7xl rounded-lg p-6">
+        <h2 className="text-lg font-semibold mb-4 w-full  px-5 py-3 bg-slate-50 shadow-sm rounded-md">Update User Details</h2>
 
+        <form onSubmit={handleSubmit} className="space-y-4">
           {/* User Name */}
           <div className="flex flex-col sm:flex-row items-center w-full gap-4">
             <div className="flex flex-col items-start w-full text-sm">
-              <label>First Name <span className="text-red-500">*</span></label>
+              <label>
+                First Name <span className="text-red-500">*</span>
+              </label>
               <input
                 className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
                 name="firstName"
@@ -181,7 +148,9 @@ const ApplicationForm = () => {
               />
             </div>
             <div className="flex flex-col items-start w-full text-sm">
-              <label className="text-sm">Middle Name <span className="text-red-500">*</span></label>
+              <label className="text-sm">
+                Middle Name <span className="text-red-500">*</span>
+              </label>
               <input
                 className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
                 name="middleName"
@@ -192,7 +161,9 @@ const ApplicationForm = () => {
               />
             </div>
             <div className="flex flex-col items-start w-full text-sm">
-              <label className="text-sm">Last Name <span className="text-red-500">*</span></label>
+              <label className="text-sm">
+                Last Name <span className="text-red-500">*</span>
+              </label>
               <input
                 className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
                 name="lastName"
@@ -207,7 +178,9 @@ const ApplicationForm = () => {
           {/* Contact */}
           <div className="flex flex-col sm:flex-row items-center gap-4 w-full">
             <div className="flex flex-col items-start w-full text-sm">
-              <label>Mobile Number <span className="text-red-500">*</span></label>
+              <label>
+                Mobile Number <span className="text-red-500">*</span>
+              </label>
               <input
                 className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
                 name="mobile"
@@ -218,7 +191,9 @@ const ApplicationForm = () => {
               />
             </div>
             <div className="flex flex-col items-start w-full text-sm">
-              <label>Email <span className="text-red-500">*</span></label>
+              <label>
+                Email <span className="text-red-500">*</span>
+              </label>
               <input
                 className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
                 name="email"
@@ -229,7 +204,9 @@ const ApplicationForm = () => {
               />
             </div>
             <div className="flex flex-col items-start w-full text-sm">
-              <label>Date of Birth <span className="text-red-500">*</span></label>
+              <label>
+                Date of Birth <span className="text-red-500">*</span>
+              </label>
               <input
                 type="date"
                 className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
@@ -243,7 +220,9 @@ const ApplicationForm = () => {
 
           {/* Address */}
           <div>
-            <label className="text-sm">Permanent Address <span className="text-red-500">*</span></label>
+            <label className="text-sm">
+              Permanent Address <span className="text-red-500">*</span>
+            </label>
             <textarea
               className="w-full mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
               name="address"
@@ -259,7 +238,9 @@ const ApplicationForm = () => {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               {/* PIN CODE */}
               <div className="flex flex-col gap-1">
-                <label className="text-sm">PIN Code <span className="text-red-500">*</span></label>
+                <label className="text-sm">
+                  PIN Code <span className="text-red-500">*</span>
+                </label>
                 <input
                   className="w-full px-3 py-1 border border-neutral-300 rounded-md"
                   name="pincode"
@@ -272,7 +253,9 @@ const ApplicationForm = () => {
 
               {/* PAN */}
               <div className="flex flex-col gap-1 relative">
-                <label className="text-sm">PAN Number <span className="text-red-500">*</span></label>
+                <label className="text-sm">
+                  PAN Number <span className="text-red-500">*</span>
+                </label>
 
                 <div className="flex items-center gap-2">
                   <input
@@ -284,7 +267,7 @@ const ApplicationForm = () => {
                     required
                   />
 
-                  <label className="px-3 py-1 border border-neutral-300 bg-gray-200 rounded-md cursor-pointer hover:bg-gray-300 shadow-inner">
+                  <label className="px-3 py-1 border border-neutral-300 bg-gray-200 rounded-md cursor-pointer hover:bg-gray-300">
                     Upload
                     <input
                       type="file"
@@ -309,7 +292,9 @@ const ApplicationForm = () => {
 
               {/* AADHAR */}
               <div className="flex flex-col gap-1 relative">
-                <label className="text-sm">Aadhar Number <span className="text-red-500">*</span></label>
+                <label className="text-sm">
+                  Aadhar Number <span className="text-red-500">*</span>
+                </label>
 
                 <div className="flex items-center gap-2">
                   <input
@@ -321,7 +306,7 @@ const ApplicationForm = () => {
                     required
                   />
 
-                  <label className="px-3 py-1 border border-neutral-300 bg-gray-200 rounded-md cursor-pointer hover:bg-gray-300 shadow-inner">
+                  <label className="px-3 py-1 border border-neutral-300 bg-gray-200 rounded-md cursor-pointer hover:bg-gray-300">
                     Upload
                     <input
                       type="file"
@@ -345,7 +330,6 @@ const ApplicationForm = () => {
               </div>
             </div>
           </div>
-
           <div className="border-t border-neutral-300 flex flex-col gap-4 mt-4">
             <h2 className="text-lg font-medium mt-4 w-full text-start px-5 py-3 shadow-sm bg-slate-50 rounded-md text-neutral-800 tracking-tight">
               Nominee Details
@@ -353,7 +337,9 @@ const ApplicationForm = () => {
 
             <div className="flex flex-col sm:flex-row gap-4 mt-4">
               <div className="flex flex-col items-start w-full text-sm">
-                <label>First Name <span className="text-red-500">*</span></label>
+                <label>
+                  First Name <span className="text-red-500">*</span>
+                </label>
                 <input
                   className="w-full min-w-0 border px-3 py-1 rounded text-sm border-neutral-300"
                   name="nominee_firstname"
@@ -364,7 +350,9 @@ const ApplicationForm = () => {
                 />
               </div>
               <div className="flex flex-col items-start w-full text-sm">
-                <label>Middle Name <span className="text-red-500">*</span></label>
+                <label>
+                  Middle Name <span className="text-red-500">*</span>
+                </label>
                 <input
                   className="w-full min-w-0 border px-3 py-1 rounded text-sm border-neutral-300"
                   name="nominee_middlename"
@@ -375,7 +363,9 @@ const ApplicationForm = () => {
                 />
               </div>
               <div className="flex flex-col items-start w-full text-sm">
-                <label>Last Name <span className="text-red-500">*</span></label>
+                <label>
+                  Last Name <span className="text-red-500">*</span>
+                </label>
                 <input
                   className="w-full min-w-0 border px-3 py-1 rounded text-sm border-neutral-300"
                   name="nominee_lastname"
@@ -389,7 +379,9 @@ const ApplicationForm = () => {
 
             <div className="flex flex-col sm:flex-row gap-4">
               <div className="flex flex-col items-start w-full text-sm">
-                <label>Relationship <span className="text-red-500">*</span></label>
+                <label>
+                  Relationship <span className="text-red-500">*</span>
+                </label>
                 <input
                   className="w-full min-w-0 border px-3 py-1 rounded text-sm border-neutral-300"
                   name="relationship"
@@ -400,7 +392,9 @@ const ApplicationForm = () => {
                 />
               </div>
               <div className="flex flex-col items-start w-full text-sm">
-                <label>Date of Birth <span className="text-red-500">*</span></label>
+                <label>
+                  Date of Birth <span className="text-red-500">*</span>
+                </label>
                 <input
                   type="date"
                   className="w-full min-w-0 border px-3 py-1 rounded text-sm border-neutral-300"
@@ -411,7 +405,9 @@ const ApplicationForm = () => {
                 />
               </div>
               <div className="flex flex-col items-start w-full text-sm">
-                <label>Mobile Number <span className="text-red-500">*</span></label>
+                <label>
+                  Mobile Number <span className="text-red-500">*</span>
+                </label>
                 <input
                   className="w-full min-w-0 border px-3 py-1 rounded text-sm border-neutral-300"
                   name="nomineeMobile"
@@ -424,25 +420,36 @@ const ApplicationForm = () => {
             </div>
           </div>
 
-          <div className="flex justify-center mt-4">
+          <div className="flex justify-end gap-2 pt-4">
+            <button
+              type="button"
+              onClick={onClose}
+              className="px-4 py-0.5 border rounded text-sm"
+            >
+              Cancel
+            </button>
+
             {loading ? (
-              <button className="px-6 py-1 bg-red-700 transition-all duration-300 cursor-pointer text-white rounded-md text-sm shadow-md flex items-center gap-2">
-                <Loader2 size={18} className="animate-spin" />
-                Submiting Application...
-              </button>
+                <button
+              type="submit"
+              className="px-4 py-1 bg-[#ed1d25] hover:bg-red-700 transition-all duration-300 cursor-pointer text-white rounded-md text-sm shadow-md flex items-center gap-2"
+            ><Loader2 size={14} className="animate-spin"/>
+              Updateing
+            </button>
             ) : (
-              <button className="px-6 py-1 bg-[#ed1d25] hover:bg-red-700 transition-all duration-300 cursor-pointer text-white rounded-md text-sm shadow-md">
-                Submit Application
-              </button>
-            )}
+                <button
+              type="submit"
+              className="px-4 py-1 bg-[#ed1d25] hover:bg-red-700 transition-all duration-300 cursor-pointer text-white rounded-md text-sm shadow-md"
+            >
+              Update
+            </button>
+            )
+        }
           </div>
         </form>
-        <UserManagement data={userEntriesData} setUserEntriesData={setUserEntriesData} />
       </div>
-    </Layout>
-
-
+    </div>
   );
 };
 
-export default ApplicationForm;
+export default EditUserDetails;
