@@ -1,14 +1,33 @@
 import { BookUser, SquarePen, Trash } from 'lucide-react'
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import dayjs from 'dayjs';
+import ViewUserDetails from './ViewUserDetails';
 
 const UserManagement = ({data}) => {
+    const [selectedUser, setSelectedUser] = useState(null)
+    const [userData, setUserData] = useState([])
+
+    const handleSearch = (e)=>{
+      const keyword = e.toLowerCase()
+      if(!keyword){
+        setUserData(data)
+      }else{
+        const filterd = data.filter(f=> f?.firstname.toLowerCase().includes(keyword))
+        setUserData(filterd)
+      }
+    }
+
+    useEffect(()=>{
+      setUserData(data)
+    }, [data])
+
+
   return (
     <div className="bg-white border rounded p-4 mt-10 border-neutral-300 shadow-lg">
       <div className='flex items-center justify-between w-full'>
             <h2 className="text-lg font-medium mb-4 tracking-tight text-neutral-800">User Management</h2>
             <div>
-                <input type="text" className='border border-neutral-300 shadow-sm text-neutral-800 text-sm px-3 py-1 placeholder:text-sm rounded-md w-64' placeholder='Search User by name' />
+                <input onChange={(e)=> handleSearch(e.target.value)} type="text" className='border border-neutral-300 shadow-sm text-neutral-800 text-sm px-3 py-1 placeholder:text-sm rounded-md w-64' placeholder='Search User by name' />
                 {/* <button>Search</button> */}
             </div>
       </div>
@@ -29,8 +48,8 @@ const UserManagement = ({data}) => {
           </thead>
 
           <tbody>
-            {data.map((item, index) => (
-              <tr key={index} className="hover:bg-gray-50">
+            {userData.map((item, index) => (
+              <tr key={item.id||index} className="hover:bg-gray-50">
                 <td className="border border-neutral-300 p-2 text-center">{index + 1}</td>
                 <td className="border border-neutral-300 p-2">
                     <div className='flex items-center gap-1 justify-center'>
@@ -57,7 +76,7 @@ const UserManagement = ({data}) => {
                         <button className='relative group  p-1 bg-red-500 text-white rounded-sm hover:bg-red-600 transition-colors duration-300 cursor-pointer'><Trash size={16}/>
                         <span className='absolute text-white bg-black -top-7 -left-3 px-3 py-0.5 rounded-md text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-200'>Delete</span>
                         </button>
-                        <button className='relative group p-1 bg-slate-400 text-white rounded-sm hover:bg-slate-500 transition-colors duration-300 cursor-pointer'><BookUser size={16}/>
+                        <button onClick={()=>setSelectedUser(item)} className='relative group p-1 bg-slate-400 text-white rounded-sm hover:bg-slate-500 transition-colors duration-300 cursor-pointer'><BookUser size={16}/>
                         <span className='absolute -top-7 -left-3 text-xs px-3 py-0.5 text-white bg-black rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-200'>
                             View
                         </span>
@@ -69,6 +88,7 @@ const UserManagement = ({data}) => {
           </tbody>
         </table>
       </div>
+      {selectedUser && (<ViewUserDetails user={selectedUser} onClose={()=> setSelectedUser(null)}/>)}
     </div>
   )
 }
