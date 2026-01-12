@@ -16,7 +16,7 @@ const UserManagement = ({ data, setUserEntriesData }) => {
     if (!keyword) {
       setUserData(data)
     } else {
-      const filterd = data.filter(f => f?.firstname.toLowerCase().includes(keyword))
+      const filterd = data.filter(f => f?.firstname.toLowerCase().includes(keyword) || f?.mobile_no.toLowerCase().includes(keyword))
       setUserData(filterd)
     }
   }
@@ -56,7 +56,7 @@ const UserManagement = ({ data, setUserEntriesData }) => {
           <div className='absolute bg-gray-200 h-full rounded-l-md  border border-neutral-300 px-2'>
             <Search size={14} className='text-neutral-500 mt-2'/>
           </div>
-          <input onChange={(e) => handleSearch(e.target.value)} type="text" className='border border-neutral-300 shadow-sm text-neutral-800 text-sm px-10 py-1 placeholder:text-sm rounded-md w-64 outline-none' placeholder='Search User by name' />
+          <input onChange={(e) => handleSearch(e.target.value)} type="text" className='border border-neutral-300 shadow-sm text-neutral-800 text-sm px-10 py-1 placeholder:text-xs rounded-md w-64 outline-none' placeholder='Search by name and Mobile no.' />
           {/* <button>Search</button> */}
         </div>
       </div>
