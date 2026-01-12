@@ -30,3 +30,16 @@ export const deleteUser = async(id)=>{
   const response = await api.delete(`api/deleteUser/${id}/`)
   return response.data
 }
+
+export const updateUser = async (id, formData) => {
+  const res = await api.put(`api/updateUser/${id}/`,
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+  return res.data;
+};
+
