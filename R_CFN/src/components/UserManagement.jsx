@@ -9,11 +9,7 @@ import {
 import React, { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import ViewUserDetails from "./ViewUserDetails";
-
 import { deleteUser, getUserEntries, toggleStatus } from "../api/endpoint";
-
-import { deleteUser, getUserEntries } from "../api/endpoint";
-
 import { toast } from "react-toastify";
 import EditUserDetails from "./EditUserDetails";
 
@@ -36,6 +32,7 @@ const UserManagement = ({ data, setUserEntriesData }) => {
       setUserData(filterd);
     }
   };
+
 
   useEffect(() => {
     setUserData(data);
@@ -70,6 +67,7 @@ const UserManagement = ({ data, setUserEntriesData }) => {
       if (response.success) {
         toast.success(response.message || "Status updated");
 
+        // 🔥 update UI immediately
         setUserData((prev) =>
           prev.map((user) =>
             user.id === id ? { ...user, status: newStatus } : user
@@ -174,7 +172,6 @@ const UserManagement = ({ data, setUserEntriesData }) => {
                     {item.permanent_address}
                   </td>
                   <td className="border border-neutral-300 text-center p-2">
-
                     <button
                       onClick={() => handleStatus(item.id, item.status)}
                       className="flex items-center justify-center w-full"
@@ -183,21 +180,6 @@ const UserManagement = ({ data, setUserEntriesData }) => {
                         <ToggleRight size={20} className="text-green-500" />
                       ) : (
                         <ToggleLeft size={20} className="text-red-500" />
-                      )}
-                    </button>
-                  </td>
-
-
-                    {item.Status}
-                    <button
-                      onClick={() => handlestatusToggle(item.id)
-                      }
-                    >
-                      {toggleStatus[item.id] ? (
-                        <ToggleLeft size={20} className="text-red-500" />
-                        
-                      ) : (
-                        <ToggleRight size={20} className="text-green-500" />
                       )}
                     </button>
                   </td>
@@ -268,4 +250,3 @@ const UserManagement = ({ data, setUserEntriesData }) => {
 };
 
 export default UserManagement;
-
