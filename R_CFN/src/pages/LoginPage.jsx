@@ -1,13 +1,39 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router'
+import { adminLogin } from '../api/endpoint'
+import { toast } from 'react-toastify'
 
 function LoginPage() {
     const navigate = useNavigate()
+    
+    const [formData, setFormData] = useState({
+        username : '',
+        password : ''
+    })
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        // Handle login logic here
+    const handleChange = (e)=>{
+        const {name, value} = e.target
+        setFormData(prev=>({...prev, [name]:value}))
     }
+
+    const handleSubmit = async(e)=>{
+        e.preventDefault()
+        try{
+            
+            const data = await adminLogin(formData)
+            console.log(data)
+            if(data.success){
+                toast.success(data.message || 'Login Success!')
+                localStorage.setItem('is_superuser', data.is_superuser)
+                setTimeout(()=>{
+                    navigate('/application-form')
+                }, 2000)
+            }
+        }catch(error){
+            console.log(error.message)
+        }
+    }
+    
   return (
     <>    
     <div className="max-w-7xl mx-auto min-h-screen flex items-center justify-center">
@@ -17,16 +43,16 @@ function LoginPage() {
             <label>
             Username:
         </label>
-        <input  className='w-full border border-neutral-300 px-3 py-2 rounded-md' type="text" name="username" placeholder='Enter Username Here...' />
+        <input onChange={handleChange} value={formData.username}  className='w-full border border-neutral-300 px-3 py-2 rounded-md' type="text" name="username" placeholder='Enter Username Here...' />
         </div>
         <div className='flex flex-col items-start justify-start gap-2 w-full'>
             <label>Password :</label>
-        <input className='w-full border border-neutral-300 px-3 py-2 rounded-md' type="password" name="password" placeholder='Enter Password Here...' />
+        <input onChange={handleChange} value={formData.password} className='w-full border border-neutral-300 px-3 py-2 rounded-md' type="password" name="password" placeholder='Enter Password Here...' />
         </div>
-        <button onClick={()=>navigate("/application-form")} className='bg-red-500 mt-4 text-white px-4 py-2 rounded-md'>Login 
+        <button className='bg-red-500 mt-4 text-white px-4 py-2 rounded-md'>Login 
             
         </button>
-        <p className='w-full text-center justify-center underline'>Don't Have account ? <Link to={'/signup'}>sign up </Link></p>
+        <p className='w-full text-center justify-center'>Don't Have account ? <Link>sign up </Link></p>
         </form>
         
     </div>

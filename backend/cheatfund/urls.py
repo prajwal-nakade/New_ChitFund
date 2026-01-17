@@ -6,5 +6,8 @@ urlpatterns = [
     path('getallentries/', getuserEntries, name="getuserEntries"),
     path('deleteUser/<int:user_id>/', deleteUser, name='deleteUser'),
     path('updateUser/<int:user_id>/', updateUser, name='updateUser'),
-    path('toggleStatus/<int:user_id>/', toggleStatus, name='toggleStatus')
+    path('toggleStatus/<int:user_id>/', toggleStatus, name='toggleStatus'),
+    path('login/', CustomTokenObtainPairView.as_view(), name='adminlogin'),
+    path('is-admin/', is_admin, name="is_admin"),
+    path('register/', register, name='register')
 ]
