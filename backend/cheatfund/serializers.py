@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Users, Nominee
+from .models import *
 
 class UserWithNomineeSerializer(serializers.ModelSerializer):
     nominee_firstname = serializers.CharField(write_only=True)
@@ -114,6 +114,22 @@ class UpdateUserSerializer(serializers.Serializer):
         nominee.save()
         
         return instance
+    
+    
+class UserRegister(serializers.ModelSerializer):
+    password = serializers.CharField(write_only = True)
+    class Meta:
+        model = UserCredentials
+        fields = ['username', 'password', 'email']
+        
+    def create(self, validated_data):
+        user = UserCredentials(
+            username = validated_data['username'],
+            email = validated_data['email']
+        )
+        user.set_password(validated_data['password'])
+        user.save()
+        return user
     
 
 

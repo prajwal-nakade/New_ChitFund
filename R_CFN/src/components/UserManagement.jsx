@@ -9,7 +9,7 @@ import {
 import React, { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import ViewUserDetails from "./ViewUserDetails";
-import { deleteUser, getUserEntries, toggleStatus } from "../api/endpoint";
+import { deleteUser, getUserEntries, is_admin, toggleStatus } from "../api/endpoint";
 import { toast } from "react-toastify";
 import EditUserDetails from "./EditUserDetails";
 
@@ -17,7 +17,7 @@ const UserManagement = ({ data, setUserEntriesData }) => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [userData, setUserData] = useState([]);
   const [activeModal, setActiveModal] = useState(null);
-
+  const [isSuperuser, setIssuperuser] = useState(false)
 
   const handleSearch = (e) => {
     const keyword = e.toLowerCase();
@@ -33,9 +33,16 @@ const UserManagement = ({ data, setUserEntriesData }) => {
     }
   };
 
+  const isAdmin = async()=>{
+    const data = await is_admin()
+    console.log(data)
+    setIssuperuser(data.is_superuser)
+  }
 
   useEffect(() => {
     setUserData(data);
+    
+    isAdmin()
   }, [data]);
 
   const handleDelete = async (id, firstname) => {
@@ -124,9 +131,11 @@ const UserManagement = ({ data, setUserEntriesData }) => {
               <th className="border border-neutral-300 text-neutral-800 font-medium p-2">
                 Address
               </th>
-              <th className="border border-neutral-300 text-neutral-800 font-medium p-2">
-                Status
-              </th>
+              {isSuperuser && (
+                <th className="border border-neutral-300 text-neutral-800 font-medium p-2">
+                  Status
+                </th>
+              )}
               <th className="border border-neutral-300 text-neutral-800 font-medium p-2">
                 Created at
               </th>
@@ -171,45 +180,52 @@ const UserManagement = ({ data, setUserEntriesData }) => {
                   <td className="border border-neutral-300 text-center p-2">
                     {item.permanent_address}
                   </td>
-                  <td className="border border-neutral-300 text-center p-2">
-                    <button
-                      onClick={() => handleStatus(item.id, item.status)}
-                      className="flex items-center justify-center w-full"
-                    >
-                      {item.status === "active" ? (
-                        <ToggleRight size={20} className="text-green-500" />
-                      ) : (
-                        <ToggleLeft size={20} className="text-red-500" />
-                      )}
-                    </button>
-                  </td>
+                  {isSuperuser && (
+                    <td className="border border-neutral-300 text-center p-2">
+                      <button
+                        onClick={() => handleStatus(item.id, item.status)}
+                        className="flex items-center justify-center w-full"
+                      >
+                        {item.status === "active" ? (
+                          <ToggleRight size={20} className="text-green-500" />
+                        ) : (
+                          <ToggleLeft size={20} className="text-red-500" />
+                        )}
+                      </button>
+                    </td>
+                  )}
 
                   <td className="border border-neutral-300 text-center p-2">
                     {dayjs(item.created_at).format("DD MMM YYYY")}
                   </td>
                   <td className="border border-neutral-300 p-2">
                     <div className="flex items-center justify-center gap-2">
-                      <button
-                        onClick={() => {
-                          setSelectedUser(item);
-                          setActiveModal("edit");
-                        }}
-                        className="p-1 bg-yellow-500 rounded-sm hover:bg-yellow-600 transition-colors duration-300 cursor-pointer relative group"
-                      >
-                        <SquarePen size={16} />
-                        <span className="absolute -top-7 -left-3 rounded-md text-xs bg-neutral-800 text-white px-4 py-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                          Edit
-                        </span>
-                      </button>
-                      <button
-                        onClick={() => handleDelete(item.id, item.firstname)}
-                        className="relative group  p-1 bg-red-500 text-white rounded-sm hover:bg-red-600 transition-colors duration-300 cursor-pointer"
-                      >
-                        <Trash size={16} />
-                        <span className="absolute text-white bg-black -top-7 -left-3 px-3 py-0.5 rounded-md text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                          Delete
-                        </span>
-                      </button>
+                      {isSuperuser && (
+                        <>
+                          <button
+                            onClick={() => {
+                              setSelectedUser(item);
+                              setActiveModal("edit");
+                            }}
+                            className="p-1 bg-yellow-500 rounded-sm hover:bg-yellow-600 transition-colors duration-300 cursor-pointer relative group"
+                          >
+                            <SquarePen size={16} />
+                            <span className="absolute -top-7 -left-3 rounded-md text-xs bg-neutral-800 text-white px-4 py-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                              Edit
+                            </span>
+                          </button>
+                          <button
+                            onClick={() => handleDelete(item.id, item.firstname)}
+                            className="relative group  p-1 bg-red-500 text-white rounded-sm hover:bg-red-600 transition-colors duration-300 cursor-pointer"
+                          >
+                            <Trash size={16} />
+                            <span className="absolute text-white bg-black -top-7 -left-3 px-3 py-0.5 rounded-md text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                              Delete
+                            </span>
+                          </button>
+                        </>
+                      )}
+
                       <button
                         onClick={() => {
                           setSelectedUser(item);

@@ -1,6 +1,14 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 
 class Users(models.Model):
+    auth_user = models.OneToOneField(
+        "UserCredentials",
+        on_delete=models.CASCADE,
+        related_name="profile",
+        null=True,      # TEMP
+        blank=True
+    )
     firstname = models.CharField(max_length=50)
     middlename = models.CharField(max_length=50, blank=True, null=True)
     lastname = models.CharField(max_length=50, blank=True, null=True)
@@ -52,3 +60,8 @@ class Nominee(models.Model):
 
     def __str__(self):
         return self.firstname
+
+
+class UserCredentials(AbstractUser):
+    def __str__(self):
+        return self.username

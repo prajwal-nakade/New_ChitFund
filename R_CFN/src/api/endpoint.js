@@ -2,6 +2,7 @@ import axios from "axios";
 
 const api = axios.create({
   baseURL: "https://rosamaria-compony-sharply.ngrok-free.dev/",
+  withCredentials : true,
   headers: {
     "ngrok-skip-browser-warning": "true",
   },
@@ -51,3 +52,13 @@ export const toggleStatus = async(id, newstatus)=>{
   return response.data
 }
 
+
+export const adminLogin = async(payload)=>{
+  const response = await api.post(`api/login/`,payload)
+  return response.data
+}
+
+export const is_admin = async()=>{
+  const response = await api.get(`api/is-admin/`)
+  return response.data
+}
