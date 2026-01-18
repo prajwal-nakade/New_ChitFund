@@ -6,14 +6,14 @@ const Sidebar = () => {
   const [isMasterOpen, setIsMasterOpen] = useState(false);
 
   const Menus = [
-    { title: "Menu 1", icon: <LayoutDashboard size={16} />, path: "/menu1" },
-    { title: "Menu 2", icon: <LayoutDashboard size={16} />, path: "/menu2" },
+    { title: "Customer Application", icon: <LayoutDashboard size={16} />, path: "/customerapplication" },
+    // { title: "Menu 2", icon: <LayoutDashboard size={16} />, path: "/menu2" },
   ];
 
   const masterSubMenus = [
-    { title: "Application Form", path: "/" },
-    { title: "Drop 2", path: "/drop2" },
-    { title: "Drop 3", path: "/drop3" },
+    { title: "Customer Master Form", path: "/" },
+    // { title: "Drop 2", path: "/drop2" },
+    // { title: "Drop 3", path: "/drop3" },
   ];
   return (
     <div className="flex h-screen w-54 overflow-hidden opacity-0 lg:opacity-100">
@@ -62,7 +62,7 @@ const Sidebar = () => {
                 <span className="transition-transform duration-200 group-hover:scale-105">
                   <Form size={16} />
                 </span>
-                Master
+                Masters
                 <ChevronDown
                   size={16}
                   className={`ml-auto transition-transform duration-200 ${

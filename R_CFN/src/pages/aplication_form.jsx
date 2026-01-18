@@ -164,7 +164,7 @@ const ApplicationForm = () => {
           className="flex flex-col gap-4 w-full bg-white px-5 py-3 shadow-lg rounded-md border border-neutral-300"
         >
           <h1 className="text-lg font-medium mb-3 w-full text-start px-5 py-3 shadow-sm bg-slate-50 rounded-md text-neutral-800 tracking-tight">
-            Application Form
+            Customer Mater Form
           </h1>
 
           {/* User Name */}

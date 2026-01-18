@@ -6,9 +6,9 @@ import ApplcationForm from "./pages/aplication_form";
   import 'react-toastify/ReactToastify.css'
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
+import CustomerApplication from "./pages/CustomerApplication";
 
 function App() {
-  const [count, setCount] = useState(0);
 
   return (
     <>
@@ -17,8 +17,7 @@ function App() {
         <Route path="/application-form" element={<ApplcationForm />} />
         <Route path="/" element={<LoginPage />} />
         <Route path="/register" element={<SignupPage />}/>
-
-       
+        <Route path="/customerapplication" element={<CustomerApplication />} />
       </Routes>
     </Router>
     <ToastContainer />
