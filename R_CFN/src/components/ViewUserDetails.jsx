@@ -11,13 +11,13 @@ const ViewUserDetails = ({ onClose, user }) => {
     return (
         <div className='fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop'>
             <div className='max-w-5xl mx-auto '>
-                <div className='flex flex-col items-center justify-center border border-neutral-300 gap-4 w-110 lg:w-200 bg-white px-5 py-3 rounded-md'>
-                    <div className='flex items-start justify-between w-full border-b border-neutral-300 bg-slate-100'>
-                        <h1 className='w-full font-medium text-xl tracking-tight text-neutral-800 pb-4 px-5 py-3'>User Details</h1>
-                        <button className='px-5 py-3' onClick={onClose}><X size={18} className='mt-2 text-red-500 ' /></button>
+                <div className='flex flex-col items-center justify-center border border-neutral-300 gap-4 w-110 lg:w-200 bg-white px-3 py-3 rounded-md'>
+                    <div className='flex items-start justify-between w-full rounded-md  bg-[#004f9e]'>
+                        <h1 className='w-full font-medium text-lg  tracking-tight text-white  px-5 py-2'>User Details</h1>
+                        <button className='px-5 py-2' onClick={onClose}><X size={18} className='mt-2 text-white' /></button>
                     </div>
 
-                    <div className="w-full border border-neutral-300 rounded-2xl overflow-y-auto max-h-[70vh]">
+                    <div className="w-full border border-neutral-300 rounded-xl overflow-y-auto max-h-[70vh]">
                         <table className="w-full rounded-sm overflow-hidden">
                             <tbody>
 
@@ -176,7 +176,7 @@ const ViewUserDetails = ({ onClose, user }) => {
                                 {user.nominees?.length > 0 && (
                                     <>
                                         <tr>
-                                            <th colSpan={2} className="px-5 py-3 font-semibold text-neutral-800 bg-slate-100 border-b border-neutral-300 text-start text-xl tracking-tight">
+                                            <th colSpan={2} className="px-3 py-2 font-semibold text-white bg-[#004f9e] border-b border-neutral-300 text-start text-md tracking-tight">
                                                 Nominee Details
                                             </th>
                                         </tr>

@@ -105,7 +105,7 @@ const Navbar = () => {
       )}
 
       {/* Navbar */}
-      <header className="flex items-center justify-between h-14 px-6 border-b border-neutral-300 bg-white">
+      <header className="flex items-center justify-between h-13.5 px-6 border-b border-neutral-300 bg-white">
         <div className="flex items-center gap-4">
           {/* Mobile toggle */}
           <button
