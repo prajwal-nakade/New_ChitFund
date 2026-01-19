@@ -11,7 +11,7 @@ const Sidebar = () => {
   ];
 
   const masterSubMenus = [
-    { title: "Customer Master Form", path: "/" },
+    { title: "Customer Master Form", path: "/application-form" },
     // { title: "Drop 2", path: "/drop2" },
     // { title: "Drop 3", path: "/drop3" },
   ];

@@ -58,7 +58,7 @@ export const adminLogin = async(payload)=>{
   return response.data
 }
 
-export const is_admin = async()=>{
+export const is_admin = async()=> {
   const response = await api.get(`api/is-admin/`)
   return response.data
 }
