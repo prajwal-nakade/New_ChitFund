@@ -47,9 +47,9 @@ const CustomerApplication = () => {
     nomineeMobile: "",
   });
 
-  const handleChange = (e)=>{
-    const {name, value} = e.target
-    setFormData(prev=>({...prev, [name]:value}))
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    setFormData(prev => ({ ...prev, [name]: value }))
   }
 
   const handleNomineeChange = (e) => {
@@ -58,27 +58,27 @@ const CustomerApplication = () => {
   };
 
   const autofillUser = (user) => {
-  setFormData({
-    firstName: user.firstname || "",
-    middleName: user.middlename || "",
-    lastName: user.lastname || "",
-    mobile: user.mobile_no || "",
-    email: user.email || "",
-    dob: user.dob || "",
-    address: user.permanent_address || "",
-    pincode: user.pincode || "",
-    pan: user.pancard_no || "",
-    aadhar: user.aadharcard_no || ""
-  })
-  setNomineeData({
-    nominee_firstname: user.nominees[0].firstname || "",
-    nominee_middlename: user.nominees[0].middlename || "",
-    nominee_lastname: user.nominees[0].lastname || "",
-    relationship: user.nominees[0].relationship || "",
-    nomineeDob: user.nominees[0].dob || "",
-    nomineeMobile: user.nominees[0].mobile_no || "",
-  })
-}
+    setFormData({
+      firstName: user.firstname || "",
+      middleName: user.middlename || "",
+      lastName: user.lastname || "",
+      mobile: user.mobile_no || "",
+      email: user.email || "",
+      dob: user.dob || "",
+      address: user.permanent_address || "",
+      pincode: user.pincode || "",
+      pan: user.pancard_no || "",
+      aadhar: user.aadharcard_no || ""
+    })
+    setNomineeData({
+      nominee_firstname: user.nominees[0].firstname || "",
+      nominee_middlename: user.nominees[0].middlename || "",
+      nominee_lastname: user.nominees[0].lastname || "",
+      relationship: user.nominees[0].relationship || "",
+      nomineeDob: user.nominees[0].dob || "",
+      nomineeMobile: user.nominees[0].mobile_no || "",
+    })
+  }
 
 
   return (
@@ -96,6 +96,7 @@ const CustomerApplication = () => {
             </div>
             <input
               onChange={(e) => handleSearch(e.target.value)}
+              value={search}
               type="text"
               className="border border-neutral-300 shadow-sm text-neutral-800 text-sm px-10 py-1 placeholder:text-xs rounded-md w-64 outline-none"
               placeholder="Enter CustomerID"
@@ -183,15 +184,32 @@ const CustomerApplication = () => {
                 required
               />
             </div>
+            <div className='flex w-full'>
+              <div className="flex flex-col items-start w-full text-sm">
+              <label>Duration<span className="text-red-500 ms-1">*</span></label>
+              <input className="w-full min-w-0 mt-1 px-3 py-1 border-l border-t border-b border-neutral-300 rounded-l-md text-sm outline-none" type='number' placeholder='eg., 1,2,3'/>
+            </div>
             <div className="flex flex-col items-start w-full text-sm">
-              <label>Duration<span className="text-red-500">*</span></label>
-              <select className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm text-neutral-500" required>
+              <label>Days/Week/Months/Years<span className="text-red-500 ms-1">*</span></label>
+              <select className="w-full min-w-0 mt-1 px-3 py-1 border-r border-t border-b border-neutral-300 rounded-r-md text-sm text-neutral-500 outline-none" required>
                 <option value="">Select Duration</option>
-                <option value="">12 month</option>
-                <option value="">24 month</option>
-                <option value="">48 month</option>
+                <option value="Days">Days</option>
+                <option value="Weeks">Weeks</option>
+                <option value="Months">Months</option>
+                <option value="Year">Year</option>
               </select>
             </div>
+            </div>
+
+          </div>
+          <div className="flex flex-col items-start w-full text-sm">
+            <label>Branch<span className="text-red-500 ms-1">*</span></label>
+            <select className=" w-full lg:w-86  min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm text-neutral-500" required>
+              <option value="">Select Branch</option>
+              <option value="">Sutgirni</option>
+              <option value="">Beed by pass</option>
+              <option value="">Harsul</option>
+            </select>
           </div>
 
           <div className='w-full shadow-sm bg-slate-50 rounded-md'>
@@ -287,8 +305,8 @@ const CustomerApplication = () => {
             <textarea
               className="w-full mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
               name="address"
-                value={formData.address}
-                onChange={handleChange}
+              value={formData.address}
+              onChange={handleChange}
               placeholder="Permanent Address"
               required
             />
@@ -301,8 +319,8 @@ const CustomerApplication = () => {
                 <input
                   className="w-full px-3 py-1 border border-neutral-300 rounded-md"
                   name="pincode"
-                    value={formData.pincode}
-                    onChange={handleChange}
+                  value={formData.pincode}
+                  onChange={handleChange}
                   placeholder="Pincode"
                   required
                 />
@@ -352,8 +370,8 @@ const CustomerApplication = () => {
                 <input
                   className="w-full min-w-0 border px-3 py-1 rounded text-sm border-neutral-300"
                   name="nominee_firstname"
-                    value={nomineeData.nominee_firstname}
-                    onChange={handleNomineeChange}
+                  value={nomineeData.nominee_firstname}
+                  onChange={handleNomineeChange}
                   placeholder="First Name"
                   required
                 />
@@ -363,8 +381,8 @@ const CustomerApplication = () => {
                 <input
                   className="w-full min-w-0 border px-3 py-1 rounded text-sm border-neutral-300"
                   name="nominee_middlename"
-                    value={nomineeData.nominee_middlename}
-                    onChange={handleNomineeChange}
+                  value={nomineeData.nominee_middlename}
+                  onChange={handleNomineeChange}
                   placeholder="Middle Name"
                   required
                 />
@@ -374,8 +392,8 @@ const CustomerApplication = () => {
                 <input
                   className="w-full min-w-0 border px-3 py-1 rounded text-sm border-neutral-300"
                   name="nominee_lastname"
-                    value={nomineeData.nominee_lastname}
-                    onChange={handleNomineeChange}
+                  value={nomineeData.nominee_lastname}
+                  onChange={handleNomineeChange}
                   placeholder="Last Name"
                   required
                 />
@@ -388,8 +406,8 @@ const CustomerApplication = () => {
                 <input
                   className="w-full min-w-0 border px-3 py-1 rounded text-sm border-neutral-300"
                   name="relationship"
-                    value={nomineeData.relationship}
-                    onChange={handleNomineeChange}
+                  value={nomineeData.relationship}
+                  onChange={handleNomineeChange}
                   placeholder="Relationship"
                   required
                 />
@@ -400,8 +418,8 @@ const CustomerApplication = () => {
                   type="date"
                   className="w-full min-w-0 border px-3 py-1 rounded text-sm border-neutral-300"
                   name="nomineeDob"
-                    value={nomineeData.nomineeDob}
-                    onChange={handleNomineeChange}
+                  value={nomineeData.nomineeDob}
+                  onChange={handleNomineeChange}
                   required
                 />
               </div>
@@ -410,8 +428,8 @@ const CustomerApplication = () => {
                 <input
                   className="w-full min-w-0 border px-3 py-1 rounded text-sm border-neutral-300"
                   name="nomineeMobile"
-                    value={nomineeData.nomineeMobile}
-                    onChange={handleNomineeChange}
+                  value={nomineeData.nomineeMobile}
+                  onChange={handleNomineeChange}
                   placeholder="Mobile"
                   required
                 />
@@ -425,7 +443,7 @@ const CustomerApplication = () => {
             <div className='mx-4 bg-white border border-neutral-300 rounded-md mb-4 px-5 py-3'>
 
               <p className='text-sm tracking-wide text-neutral-600'>
-                We am/are willing to avail prized value at maximum discount of 40% of the chit value and here by authorize the Foreman company to include my/our Name for the draw for first <input className='border-b outline-none mx-1 font-semibold text-center' /> auction/draws.</p>
+                I/We am/are willing to avail prized value at maximum discount of 40% of the chit value and here by authorize the Foreman company to include my/our Name for the draw for first <input className='border-b outline-none mx-1 font-semibold text-center' /> auction/draws.</p>
             </div>
           </div>
 
