@@ -18,22 +18,22 @@ const Navbar = () => {
 
             {/* SAME LINKS AS SIDEBAR */}
             <NavLink
-              to="/menu1"
+              to="/customerapplication"
               onClick={() => setOpen(false)}
               className="flex items-center gap-3 px-3 py-2 hover:bg-red-100"
             >
               <LayoutDashboard size={16} />
-              Menu 1
+              Customer Application
             </NavLink>
 
-            <NavLink
+            {/* <NavLink
               to="/menu2"
               onClick={() => setOpen(false)}
               className="flex items-center gap-3 px-3 py-2 hover:bg-red-100"
             >
               <LayoutDashboard size={16} />
               Menu 2
-            </NavLink>
+            </NavLink> */}
 
             {/* MASTER */}
             <button
@@ -41,7 +41,7 @@ const Navbar = () => {
               className="flex items-center gap-3 px-3 py-2 hover:bg-red-100"
             >
               <Form size={16} />
-              Master
+              Masters
               <ChevronDown
                 size={16}
                 className={`ml-auto transition-transform ${
@@ -53,14 +53,14 @@ const Navbar = () => {
             {isMasterOpen && (
               <div className="ml-6 flex flex-col gap-1">
                 <NavLink
-                  to="/"
+                  to="/application-form"
                   onClick={() => setOpen(false)}
                   className="px-3 py-2 hover:bg-red-100"
                 >
-                  Application Form
+                  Customer Master Form
                 </NavLink>
 
-                <NavLink
+                {/* <NavLink
                   to="/drop2"
                   onClick={() => setOpen(false)}
                   className="px-3 py-2 hover:bg-red-100"
@@ -74,7 +74,7 @@ const Navbar = () => {
                   className="px-3 py-2 hover:bg-red-100"
                 >
                   Drop 3
-                </NavLink>
+                </NavLink> */}
               </div>
             )}
           </nav>
