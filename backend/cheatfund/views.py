@@ -134,3 +134,51 @@ def register(request):
         return Response({'success':True, 'data' : serializer.data})
     return Response({serializer.error})
     
+    
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def create_branch(request):
+    serializer = BranchCreationSerializer(data = request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response({'success' : True, 'message':'Branch Created Successfully'}, serializer.data, status=200)
+    return Response({'success' : False}, serializer.errors, status=400)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_branch(request):
+    try:
+        branch = Branch.objects.all()
+        serializer = BranchSerializer(branch, many=True)
+        return Response(serializer.data, status=200)
+    except:
+        return Response(serializer.errors, status=400)
+    
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def create_chitDetail(request):
+    serializer = ChitDetailCreationSerializer(data = request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response({'success' : True, 'data' : serializer.data}, status=200)
+    return Response({'success' : False}, serializer.errors, status=400)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_All_ChitDetails(request):
+    try:
+        chits = ChitDetails.objects.all()
+        serializer = ChitDetailSerializer(chits, many=True)
+        return Response(serializer.data, status=200)
+    except:
+        return Response(serializer.errors, status=400)
+    
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_ChitDetails(request, chit_id):
+    try:
+        chits = ChitDetails.objects.get(id=chit_id)
+        serializer = ChitDetailSerializer(chits, many=False)
+        return Response(serializer.data, status=200)
+    except ChitDetails.DoesNotExist:
+        return Response({"detail": "Chit not found"}, status=status.HTTP_404_NOT_FOUND)

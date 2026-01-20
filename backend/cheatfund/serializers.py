@@ -54,12 +54,13 @@ class GetAllEntriesSerializer(serializers.ModelSerializer):
             'pan_image', 'aadhar_image', 'nominees', 'status']
 
 class UserSerializer(serializers.ModelSerializer):
+    nominees = NomineeSerializer(many = True,read_only=True)
     class Meta:
         model = Users
         fields = ['id', 'firstname', 'middlename', 'lastname', 'mobile_no', 'dob', 'email',
             'permanent_address', 'pincode','created_at',
             'pancard_no', 'aadharcard_no',
-            'pan_image', 'aadhar_image', 'status']
+            'pan_image', 'aadhar_image', 'status', 'nominees']
         
 
 class UpdateUserSerializer(serializers.Serializer):
@@ -131,5 +132,40 @@ class UserRegister(serializers.ModelSerializer):
         user.save()
         return user
     
+    
+class BranchCreationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Branch
+        fields = ['branchName', 'branchLocation', 'created_at', 'updated_at']
+    
+    def create(self, validated_data):
+        branch = Branch(
+            branchName = validated_data['branchName'],
+            branchLocation = validated_data['branchLocation'],
+        )
+        
+        branch.save()
+        return branch
+
+class BranchSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Branch
+        fields = ['id', 'branchName', 'branchLocation', 'created_at', 'updated_at']
+        
+class ChitDetailCreationSerializer(serializers.ModelSerializer):
+    branchName = serializers.CharField(source='branch.branchName', read_only=True)
+    
+    class Meta:
+        model = ChitDetails
+        fields = ['id', 'user', 'branch', 'ByLawsNumber', 'BylawsDate', 'GroupCode', 'TicketNmber', 'ChitValue', 'Duration', 'DurationCategory', 'created_at', 'updated_at', 'branchName']
+        
+class ChitDetailSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True)
+    branchName = serializers.CharField(source='branch.branchName', read_only=True)
+    
+    class Meta:
+        model = ChitDetails
+        fields = ['id', 'user','branch', 'ByLawsNumber', 'BylawsDate', 'GroupCode', 'TicketNmber', 'ChitValue', 'Duration', 'DurationCategory', 'created_at', 'updated_at', 'branchName']
+        
 
 

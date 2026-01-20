@@ -111,35 +111,35 @@ const UserManagement = ({ data, setUserEntriesData }) => {
 
       <div className="overflow-x-auto mt-3">
         <table className="w-full border border-neutral-300 text-sm rounded-md overflow-hidden">
-          <thead className="bg-slate-100">
+          <thead className="bg-[#004f9e] ">
             <tr>
-              <th className="border border-neutral-300 text-neutral-800 font-medium p-2">
+              <th className="border border-neutral-300 text-white font-medium p-2">
                 Sr.No.
               </th>
-              <th className="border border-neutral-300 text-neutral-800 font-medium p-2">
+              <th className="border border-neutral-300 text-white font-medium p-2">
                 Name
               </th>
-              <th className="border border-neutral-300 text-neutral-800 font-medium p-2">
+              <th className="border border-neutral-300 text-white font-medium p-2">
                 Mobile No
               </th>
-              <th className="border border-neutral-300 text-neutral-800 font-medium p-2">
+              <th className="border border-neutral-300 text-white font-medium p-2">
                 Email
               </th>
-              <th className="border border-neutral-300 text-neutral-800 font-medium p-2">
+              <th className="border border-neutral-300 text-white font-medium p-2">
                 D.O.B
               </th>
-              <th className="border border-neutral-300 text-neutral-800 font-medium p-2">
+              <th className="border border-neutral-300 text-white font-medium p-2">
                 Address
               </th>
               {isSuperuser && (
-                <th className="border border-neutral-300 text-neutral-800 font-medium p-2">
+                <th className="border border-neutral-300 text-white font-medium p-2">
                   Status
                 </th>
               )}
-              <th className="border border-neutral-300 text-neutral-800 font-medium p-2">
+              <th className="border border-neutral-300 text-white font-medium p-2">
                 Created at
               </th>
-              <th className="border border-neutral-300 text-neutral-800 font-medium p-2">
+              <th className="border border-neutral-300 text-white font-medium p-2">
                 Actions
               </th>
             </tr>

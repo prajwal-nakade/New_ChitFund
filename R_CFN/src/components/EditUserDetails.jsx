@@ -144,7 +144,7 @@ const EditUserDetails = ({ user, onClose, getUserEntries }) => {
     return (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
             <div className="bg-white w-full max-w-7xl rounded-lg p-6">
-                <h2 className="text-lg font-semibold mb-4 w-full  px-5 py-3 bg-slate-50 shadow-sm rounded-md">Update User Details</h2>
+                <h2 className="text-md font-semibold mb-2 w-full  px-5 py-2 bg-[#004f9e] text-white rounded-md">Update User Details</h2>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
                     {/* User Name */}
@@ -355,8 +355,8 @@ const EditUserDetails = ({ user, onClose, getUserEntries }) => {
                             </div>
                         </div>
                     </div>
-                    <div className="border-t border-neutral-300 flex flex-col gap-4 mt-8">
-                        <h2 className="text-lg font-medium mt-4 w-full text-start px-5 py-3 shadow-sm bg-slate-50 rounded-md text-neutral-800 tracking-tight">
+                    <div className=" flex flex-col gap-4 mt-4">
+                        <h2 className="text-md font-medium mt-4 w-full text-start px-5 py-2 bg-[#004f9e]   rounded-md text-white tracking-tight">
                             Nominee Details
                         </h2>
 
@@ -457,14 +457,14 @@ const EditUserDetails = ({ user, onClose, getUserEntries }) => {
                         {loading ? (
                             <button
                                 type="submit"
-                                className="px-4 py-1 bg-[#ed1d25] hover:bg-red-700 transition-all duration-300 cursor-pointer text-white rounded-md text-sm shadow-md flex items-center gap-2"
+                                className="px-4 py-1 bg-[#004f9e] hover:bg-[#06c] transition-all duration-300 cursor-pointer text-white rounded-md text-sm shadow-md flex items-center gap-2"
                             ><Loader2 size={14} className="animate-spin" />
                                 Updateing
                             </button>
                         ) : (
                             <button
                                 type="submit"
-                                className="px-4 py-1 bg-[#ed1d25] hover:bg-red-700 transition-all duration-300 cursor-pointer text-white rounded-md text-sm shadow-md"
+                                className="px-4 py-1 bg-[#004f9e] hover:bg-[#06c] transition-all duration-300 cursor-pointer text-white rounded-md text-sm shadow-md"
                             >
                                 Update
                             </button>

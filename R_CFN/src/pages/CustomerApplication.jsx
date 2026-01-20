@@ -1,14 +1,24 @@
 import React, { useContext, useEffect, useState } from 'react'
 import Layout from '../components/layout'
-import { Search } from 'lucide-react'
-import { getUserEntries } from '../api/endpoint'
+import { Loader2, Search } from 'lucide-react'
+import { createChit, getUserEntries } from '../api/endpoint'
 import { UserContext } from '../context/UserContext'
+import { toast } from 'react-toastify'
+import ChitManagement from '../components/ChitManagement'
+import { useNavigate } from 'react-router'
 
 const CustomerApplication = () => {
   const [loading, setLoading] = useState(false)
-  const { userData } = useContext(UserContext)
+  const { userData, branchData, fetchBranchData, allchitData ,fetchChitsData } = useContext(UserContext)
   const [search, setSearch] = useState("")
   const [data, setData] = useState([])
+  const [selectedUserID, setSelectedUserID] = useState(null)
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    fetchBranchData()
+    fetchChitsData()
+  }, [])
   const handleSearch = (value) => {
     setSearch(value)
 
@@ -47,6 +57,23 @@ const CustomerApplication = () => {
     nomineeMobile: "",
   });
 
+  const [chitData, setChitData] = useState({
+    ByLawsNumber: "",
+    BylawsDate: "",
+    GroupCode: "",
+    TicketNmber: "",
+    ChitValue: "",
+    Duration: "",
+    DurationCategory: "",
+    branch: ""
+  })
+
+  const handleChitChange = (e) => {
+    const { name, value } = e.target
+    setChitData(prev => ({ ...prev, [name]: value }))
+  }
+
+
   const handleChange = (e) => {
     const { name, value } = e.target
     setFormData(prev => ({ ...prev, [name]: value }))
@@ -58,6 +85,7 @@ const CustomerApplication = () => {
   };
 
   const autofillUser = (user) => {
+    setSelectedUserID(user.id)
     setFormData({
       firstName: user.firstname || "",
       middleName: user.middlename || "",
@@ -80,16 +108,43 @@ const CustomerApplication = () => {
     })
   }
 
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    try {
+      setLoading(true)
+      if (!selectedUserID) {
+        toast.error('Please Select User')
+      } else {
+        const payload = {
+          ...chitData,
+          user: selectedUserID
+        }
+        const data = await createChit(payload)
+        console.log(data)
+        toast.success('Chit created successfully')
+        setTimeout(()=>{
+          navigate(`/chit/print/${data.data.id}`)
+        }, 2000)
+
+      }
+    } catch (error) {
+      console.log(error.message)
+      setLoading(false)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <Layout>
       <div className="max-w-6xl mx-auto  rounded-md p-6">
-        <form
-          //   onSubmit={handleSubmit}
-          className="flex flex-col gap-4 w-full bg-white px-5 py-3 shadow-lg rounded-md border border-neutral-300"
-        ><div className='w-full text-start'>
-            <h1 className='text-2xl font-medium tracking-tight leading-tight text-neutral-800 text-shadow-sm bg-slate-100 py-3 rounded-md shadow-sm px-5'>Application Form</h1>
+        <div className='w-full text-start'>
+            <h1 className='text-xl font-medium tracking-tight leading-tight text-white bg-[#004f9e] py-2 rounded-t-md px-5'>Application Form</h1>
           </div>
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col gap-4 w-full bg-white px-5 py-3 shadow-lg rounded-b-md border border-neutral-300"
+        >
           <div className="flex items-center relative">
             <div className="absolute bg-gray-200 h-full rounded-l-md  border border-neutral-300 px-2">
               <Search size={14} className="text-neutral-500 mt-2" />
@@ -120,7 +175,7 @@ const CustomerApplication = () => {
             )}
 
           </div>
-          <h1 className="text-lg font-medium mb-3 w-full text-start px-5 py-3 shadow-sm bg-slate-50 rounded-md text-neutral-800 tracking-tight">
+          <h1 className="text-md font-medium mb-3 w-full text-start px-5 py-2 shadow-sm text-white bg-[#004f9e] rounded-md  tracking-tight">
             Chit Details
           </h1>
 
@@ -129,9 +184,9 @@ const CustomerApplication = () => {
               <label>Bylaws No. <span className="text-red-500">*</span></label>
               <input
                 className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
-                name="bylawsnumber"
-                // value={formData.firstName}
-                // onChange={handleChange}
+                name="ByLawsNumber"
+                value={chitData.ByLawsNumber}
+                onChange={handleChitChange}
                 placeholder="Bylaws No."
                 required
               />
@@ -140,10 +195,10 @@ const CustomerApplication = () => {
               <label className="text-sm">Bylaws Date <span className="text-red-500">*</span></label>
               <input
                 className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
-                name="bylawsdate"
+                name="BylawsDate"
                 type='date'
-                // value={formData.middleName}
-                // onChange={handleChange}
+                value={chitData.BylawsDate}
+                onChange={handleChitChange}
                 placeholder="Bylaws Date"
                 required
               />
@@ -152,9 +207,9 @@ const CustomerApplication = () => {
               <label className="text-sm">Group Code <span className="text-red-500">*</span></label>
               <input
                 className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
-                name="groupcode"
-                // value={formData.lastName}
-                // onChange={handleChange}
+                name="GroupCode"
+                value={chitData.GroupCode}
+                onChange={handleChitChange}
                 placeholder="Group code"
                 required
               />
@@ -165,9 +220,9 @@ const CustomerApplication = () => {
               <label>Ticket No.<span className="text-red-500">*</span></label>
               <input
                 className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
-                name="ticketnumber"
-                // value={formData.mobile}
-                // onChange={handleChange}
+                name="TicketNmber"
+                value={chitData.TicketNmber}
+                onChange={handleChitChange}
                 placeholder="Ticket No."
                 required
               />
@@ -176,43 +231,46 @@ const CustomerApplication = () => {
               <label>Chit Value <span className="text-red-500">*</span></label>
               <input
                 className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
-                name="chitvalue"
+                name="ChitValue"
                 type='number'
-                // value={formData.email}
-                // onChange={handleChange}
+                value={chitData.ChitValue}
+                onChange={handleChitChange}
                 placeholder="Chit Value"
                 required
               />
             </div>
             <div className='flex w-full'>
               <div className="flex flex-col items-start w-full text-sm">
-              <label>Duration<span className="text-red-500 ms-1">*</span></label>
-              <input className="w-full min-w-0 mt-1 px-3 py-1 border-l border-t border-b border-neutral-300 rounded-l-md text-sm outline-none" type='number' placeholder='eg., 1,2,3'/>
-            </div>
-            <div className="flex flex-col items-start w-full text-sm">
-              <label>Days/Week/Months/Years<span className="text-red-500 ms-1">*</span></label>
-              <select className="w-full min-w-0 mt-1 px-3 py-1 border-r border-t border-b border-neutral-300 rounded-r-md text-sm text-neutral-500 outline-none" required>
-                <option value="">Select Duration</option>
-                <option value="Days">Days</option>
-                <option value="Weeks">Weeks</option>
-                <option value="Months">Months</option>
-                <option value="Year">Year</option>
-              </select>
-            </div>
+                <label>Duration<span className="text-red-500 ms-1">*</span></label>
+                <input value={chitData.Duration}
+                  onChange={handleChitChange} className="w-full min-w-0 mt-1 px-3 py-1 border-l border-t border-b border-neutral-300 rounded-l-md text-sm outline-none" type='number' placeholder='eg., 1,2,3' name="Duration" />
+              </div>
+              <div className="flex flex-col items-start w-full text-sm">
+                <label>Days/Week/Months/Years<span className="text-red-500 ms-1">*</span></label>
+                <select value={chitData.DurationCategory}
+                  onChange={handleChitChange} className="w-full min-w-0 mt-1 px-3 py-1 border-r border-t border-b border-neutral-300 rounded-r-md text-sm text-neutral-500 outline-none" name="DurationCategory" required>
+                  <option value="">Select Duration</option>
+                  <option value="Days">Days</option>
+                  <option value="Weeks">Weeks</option>
+                  <option value="Months">Months</option>
+                  <option value="Year">Year</option>
+                </select>
+              </div>
             </div>
 
           </div>
           <div className="flex flex-col items-start w-full text-sm">
             <label>Branch<span className="text-red-500 ms-1">*</span></label>
-            <select className=" w-full lg:w-86  min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm text-neutral-500" required>
+            <select value={chitData.branch}
+              onChange={handleChitChange} className=" w-full lg:w-86  min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm text-neutral-500" name="branch" required>
               <option value="">Select Branch</option>
-              <option value="">Sutgirni</option>
-              <option value="">Beed by pass</option>
-              <option value="">Harsul</option>
+              {branchData.map((items) => (
+                <option key={items.id} value={items.id}>{items.branchName} – {items.branchLocation}</option>
+              ))}
             </select>
           </div>
 
-          <div className='w-full shadow-sm bg-slate-50 rounded-md'>
+          <div className='w-full shadow-sm bg-slate-100 rounded-md'>
             <h1 className="text-lg font-medium mb-3 w-full text-start px-5 py-3 text-neutral-800 tracking-tight">
               Applicant Declaration
             </h1>
@@ -223,7 +281,7 @@ const CustomerApplication = () => {
                 I/We (Name of the Co./Firm/Enterprises if applicant not Individual) Age<input className='border-b outline-none mx-1 font-semibold w-10 text-center' />Son/Wife/daughter/Proprietor/proprietress/duly authorized attorney/ Mrs<input className='border-b outline-none mx-1 font-semibold text-center' /> Request you to reserve a membership/ Ticket in the above chit/kuri being floated by you/ I have remitted this day a sum of (Rupees<input className='border-b outline-none mx-1 font-semibold text-center' /> only) being the first installment of the chit/kuri membership applied for. I/We have received and gone through a copy of the chit agreement cum bye-laws of the proposed chit/kuri being registered and conducted by you as FOREMAN COMPANY and I have read or caused to read / translated and understood the same. Knowing the conditions. Accordingly I am submitting here with, this bye law of proposed/floated chit agreement in duplicate duly filled and signed by me/us as required by you for registration of the chit under section 4 of the CHIT FUNDS ACT, 1982 and Maharashtra Chit Fund Rule 2004. I/we do hereby declare to abide by and be bounded by the rules contained therein and well any further amendments that may be made from time to time.</p>
             </div>
           </div>
-          <h1 className="text-lg font-medium mb-3 w-full text-start px-5 py-3 shadow-sm bg-slate-50 rounded-md text-neutral-800 tracking-tight">
+          <h1 className="text-md font-medium mb-3 w-full text-start px-5 py-2 shadow-sm text-white bg-[#004f9e] rounded-md tracking-tight">
             Customer Details
           </h1>
 
@@ -360,7 +418,7 @@ const CustomerApplication = () => {
           </div>
 
           <div className="border-t border-neutral-300 flex flex-col gap-4 mt-4">
-            <h2 className="text-lg font-medium mt-4 w-full text-start px-5 py-3 shadow-sm bg-slate-50 rounded-md text-neutral-800 tracking-tight">
+            <h2 className="text-md font-medium mb-3 w-full text-start px-5 py-2 shadow-sm text-white bg-[#004f9e] rounded-md tracking-tight">
               Nominee Details
             </h2>
 
@@ -436,7 +494,7 @@ const CustomerApplication = () => {
               </div>
             </div>
           </div>
-          <div className='w-full shadow-sm bg-slate-50 rounded-md'>
+          <div className='w-full shadow-sm bg-slate-100 rounded-md'>
             <h1 className="text-lg font-medium mb-3 w-full text-start px-5 py-3 text-neutral-800 tracking-tight">
               Declaration cum Authority for Bidding at Maximum Discount
             </h1>
@@ -449,18 +507,20 @@ const CustomerApplication = () => {
 
           <div className="flex justify-center mt-4">
             {loading ? (
-              <button className="px-6 py-1 bg-red-700 transition-all duration-300 cursor-pointer text-white rounded-md text-sm shadow-md flex items-center gap-2">
+              <button className="px-6 py-1 bg-[#06c] transition-all duration-300 cursor-pointer text-white rounded-md text-sm shadow-md flex items-center gap-2">
                 <Loader2 size={18} className="animate-spin" />
-                Printing Application...
+                Registering User...
               </button>
             ) : (
-              <button className="px-6 py-1 bg-[#ed1d25] hover:bg-red-700 transition-all duration-300 cursor-pointer text-white rounded-md text-sm shadow-md">
-                Print Application
+              <button className="px-6 py-1 text-white bg-[#004f9e] hover:bg-[#06c] transition-all duration-300 cursor-pointer  rounded-md text-sm shadow-md">
+                Register User
               </button>
             )}
           </div>
         </form>
+        {/* <ChitManagement data={allchitData} fetchChitsData={fetchChitsData}/> */}
       </div>
+      
     </Layout>
   )
 }

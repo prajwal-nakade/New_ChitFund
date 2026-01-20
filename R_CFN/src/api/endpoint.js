@@ -62,3 +62,23 @@ export const is_admin = async()=> {
   const response = await api.get(`api/is-admin/`)
   return response.data
 }
+
+export const getBranches = async()=>{
+  const response = await api.get(`api/getBranch/`)
+  return response.data
+}
+
+export const createChit = async(payload)=>{
+  const response = await api.post(`api/createChit/`, payload)
+  return response.data
+}
+
+export const getAllChitDetails = async()=>{
+  const response = await api.get(`api/getAllChits/`)
+  return response.data
+}
+
+export const getChitbyID = async(id)=>{
+  const response = await api.get(`api/getChit/${id}/`)
+  return response.data
+}

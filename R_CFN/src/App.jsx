@@ -7,6 +7,7 @@ import ApplcationForm from "./pages/aplication_form";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import CustomerApplication from "./pages/CustomerApplication";
+import ChitPrintPreview from "./pages/ChitPrintPreview";
 
 function App() {
 
@@ -18,6 +19,7 @@ function App() {
         <Route path="/" element={<LoginPage />} />
         <Route path="/register" element={<SignupPage />}/>
         <Route path="/customerapplication" element={<CustomerApplication />} />
+        <Route path="/chit/print/:id" element={<ChitPrintPreview />} />
       </Routes>
     </Router>
     <ToastContainer />

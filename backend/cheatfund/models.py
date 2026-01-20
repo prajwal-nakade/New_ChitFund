@@ -65,3 +65,29 @@ class Nominee(models.Model):
 class UserCredentials(AbstractUser):
     def __str__(self):
         return self.username
+    
+class Branch(models.Model):
+    branchName = models.CharField(max_length=100)
+    branchLocation = models.CharField(max_length=500)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return self.branchName
+    
+    
+class ChitDetails(models.Model):
+    user = models.ForeignKey(Users, on_delete=models.CASCADE)
+    branch = models.ForeignKey(Branch, on_delete=models.CASCADE)
+    ByLawsNumber = models.CharField(max_length=50)
+    BylawsDate = models.DateField()
+    GroupCode = models.CharField(max_length=50)
+    TicketNmber = models.CharField(max_length=50)
+    ChitValue = models.IntegerField()
+    Duration = models.IntegerField()
+    DurationCategory = models.CharField(max_length=50)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return self.ByLawsNumber

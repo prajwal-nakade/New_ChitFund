@@ -159,201 +159,225 @@ const ApplicationForm = () => {
   return (
 <Layout>
       <div className="max-w-6xl mx-auto  rounded-md p-6">
+        <h1 className="text-lg font-medium  w-full text-start px-5 py-1 rounded-t-md bg-[#004f9e]   text-white tracking-tight">
+          Customer Master Form
+        </h1>
         <form
           onSubmit={handleSubmit}
-          className="flex flex-col gap-4 w-full bg-white px-5 py-3 shadow-lg rounded-md border border-neutral-300"
+          className="flex flex-col gap-4 w-full bg-white shadow-lg rounded-b-md border border-neutral-300"
         >
-          <h1 className="text-lg font-medium mb-3 w-full text-start px-5 py-3 shadow-sm bg-slate-50 rounded-md text-neutral-800 tracking-tight">
-            Customer Mater Form
-          </h1>
-
           {/* User Name */}
-          <div className="flex flex-col sm:flex-row items-center w-full gap-4">
-            <div className="flex flex-col items-start w-full text-sm">
-              <label>First Name <span className="text-red-500">*</span></label>
-              <input
-                className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
-                name="firstName"
-                value={formData.firstName}
-                onChange={handleChange}
-                placeholder="First Name"
-                required
-              />
-            </div>
-            <div className="flex flex-col items-start w-full text-sm">
-              <label className="text-sm">Middle Name <span className="text-red-500">*</span></label>
-              <input
-                className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
-                name="middleName"
-                value={formData.middleName}
-                onChange={handleChange}
-                placeholder="Middle Name"
-                required
-              />
-            </div>
-            <div className="flex flex-col items-start w-full text-sm">
-              <label className="text-sm">Last Name <span className="text-red-500">*</span></label>
-              <input
-                className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
-                name="lastName"
-                value={formData.lastName}
-                onChange={handleChange}
-                placeholder="Last Name"
-                required
-              />
-            </div>
-          </div>
-
-          {/* Contact */}
-          <div className="flex flex-col sm:flex-row items-center gap-4 w-full">
-            <div className="flex flex-col items-start w-full text-sm">
-              <label>Mobile Number <span className="text-red-500">*</span></label>
-              <input
-                className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
-                name="mobile"
-                value={formData.mobile}
-                onChange={handleChange}
-                placeholder="Mobile"
-                required
-              />
-            </div>
-            <div className="flex flex-col items-start w-full text-sm">
-              <label>Email <span className="text-red-500">*</span></label>
-              <input
-                className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                placeholder="Email"
-                required
-              />
-            </div>
-            <div className="flex flex-col items-start w-full text-sm">
-              <label>Date of Birth <span className="text-red-500">*</span></label>
-              <input
-                type="date"
-                className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
-                name="dob"
-                value={formData.dob}
-                onChange={handleChange}
-                required
-              />
-            </div>
-          </div>
-
-          {/* Address */}
-          <div>
-            <label className="text-sm">Permanent Address <span className="text-red-500">*</span></label>
-            <textarea
-              className="w-full mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
-              name="address"
-              value={formData.address}
-              onChange={handleChange}
-              placeholder="Permanent Address"
-              required
-            />
-          </div>
-
-          {/* IDs */}
-          <div className="w-full text-sm">
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              {/* PIN CODE */}
-              <div className="flex flex-col gap-1">
-                <label className="text-sm">PIN Code <span className="text-red-500">*</span></label>
+          <div className="px-5 py-3 flex flex-col gap-4">
+            <div className="flex flex-col sm:flex-row items-center w-full gap-4">
+              <div className="flex flex-col items-start w-full text-sm">
+                <label>
+                  First Name <span className="text-red-500">*</span>
+                </label>
                 <input
-                  className="w-full px-3 py-1 border border-neutral-300 rounded-md"
-                  name="pincode"
-                  value={formData.pincode}
+                  className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
+                  name="firstName"
+                  value={formData.firstName}
                   onChange={handleChange}
-                  placeholder="Pincode"
+                  placeholder="First Name"
                   required
                 />
               </div>
-
-              {/* PAN */}
-              <div className="flex flex-col gap-1 relative">
-                <label className="text-sm">PAN Number <span className="text-red-500">*</span></label>
-
-                <div className="flex items-center gap-2">
-                  <input
-                    className="w-full px-3 py-1 border border-neutral-300 rounded-md uppercase"
-                    name="pan"
-                    value={formData.pan}
-                    onChange={handleChange}
-                    placeholder="PAN"
-                    required
-                  />
-
-                  <label className="px-3 py-1 border border-neutral-300 bg-gray-200 rounded-md cursor-pointer hover:bg-gray-300 shadow-inner">
-                    Upload
-                    <input
-                      type="file"
-                      hidden
-                      name="pan_image"
-                      accept="image/*"
-                      onChange={handleImageChange}
-                      required
-                    />
-                  </label>
-                </div>
-
-                {preview.pan_image && (
-                  <div className="flex items-center gap-2 text-green-600 text-xs -bottom-5 lg:-bottom-5 absolute">
-                    <span className="truncate">{preview.pan_image}</span>
-                    <button type="button" onClick={removePanImage}>
-                      <X size={14} />
-                    </button>
-                  </div>
-                )}
+              <div className="flex flex-col items-start w-full text-sm">
+                <label className="text-sm">
+                  Middle Name <span className="text-red-500">*</span>
+                </label>
+                <input
+                  className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
+                  name="middleName"
+                  value={formData.middleName}
+                  onChange={handleChange}
+                  placeholder="Middle Name"
+                  required
+                />
               </div>
+              <div className="flex flex-col items-start w-full text-sm">
+                <label className="text-sm">
+                  Last Name <span className="text-red-500">*</span>
+                </label>
+                <input
+                  className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
+                  name="lastName"
+                  value={formData.lastName}
+                  onChange={handleChange}
+                  placeholder="Last Name"
+                  required
+                />
+              </div>
+            </div>
 
-              {/* AADHAR */}
-              <div className="flex flex-col gap-1 relative">
-                <label className="text-sm">Aadhar Number <span className="text-red-500">*</span></label>
+            {/* Contact */}
+            <div className="flex flex-col sm:flex-row items-center gap-4 w-full">
+              <div className="flex flex-col items-start w-full text-sm">
+                <label>
+                  Mobile Number <span className="text-red-500">*</span>
+                </label>
+                <input
+                  className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
+                  name="mobile"
+                  value={formData.mobile}
+                  onChange={handleChange}
+                  placeholder="Mobile"
+                  required
+                />
+              </div>
+              <div className="flex flex-col items-start w-full text-sm">
+                <label>
+                  Email <span className="text-red-500">*</span>
+                </label>
+                <input
+                  className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder="Email"
+                  required
+                />
+              </div>
+              <div className="flex flex-col items-start w-full text-sm">
+                <label>
+                  Date of Birth <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="date"
+                  className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
+                  name="dob"
+                  value={formData.dob}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            </div>
 
-                <div className="flex items-center gap-2">
+            {/* Address */}
+            <div>
+              <label className="text-sm">
+                Permanent Address <span className="text-red-500">*</span>
+              </label>
+              <textarea
+                className="w-full mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
+                name="address"
+                value={formData.address}
+                onChange={handleChange}
+                placeholder="Permanent Address"
+                required
+              />
+            </div>
+
+            {/* IDs */}
+            <div className="w-full text-sm">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                {/* PIN CODE */}
+                <div className="flex flex-col gap-1">
+                  <label className="text-sm">
+                    PIN Code <span className="text-red-500">*</span>
+                  </label>
                   <input
                     className="w-full px-3 py-1 border border-neutral-300 rounded-md"
-                    name="aadhar"
-                    value={formData.aadhar}
+                    name="pincode"
+                    value={formData.pincode}
                     onChange={handleChange}
-                    placeholder="Aadhar"
+                    placeholder="Pincode"
                     required
                   />
-
-                  <label className="px-3 py-1 border border-neutral-300 bg-gray-200 rounded-md cursor-pointer hover:bg-gray-300 shadow-inner">
-                    Upload
-                    <input
-                      type="file"
-                      hidden
-                      name="aadhar_image"
-                      accept="image/*"
-                      onChange={handleImageChange}
-                      required
-                    />
-                  </label>
                 </div>
 
-                {preview.aadhar_image && (
-                  <div className="flex items-center gap-2 text-green-600 text-xs -bottom-5 absolute">
-                    <span className="truncate">{preview.aadhar_image}</span>
-                    <button type="button" onClick={removeAadharImage}>
-                      <X size={14} />
-                    </button>
+                {/* PAN */}
+                <div className="flex flex-col gap-1 relative">
+                  <label className="text-sm">
+                    PAN Number <span className="text-red-500">*</span>
+                  </label>
+
+                  <div className="flex items-center gap-2">
+                    <input
+                      className="w-full px-3 py-1 border border-neutral-300 rounded-md uppercase"
+                      name="pan"
+                      value={formData.pan}
+                      onChange={handleChange}
+                      placeholder="PAN"
+                      required
+                    />
+
+                    <label className="px-3 py-1 border border-neutral-300 bg-gray-200 rounded-md cursor-pointer hover:bg-gray-300 shadow-inner">
+                      Upload
+                      <input
+                        type="file"
+                        hidden
+                        name="pan_image"
+                        accept="image/*"
+                        onChange={handleImageChange}
+                        required
+                      />
+                    </label>
                   </div>
-                )}
+
+                  {preview.pan_image && (
+                    <div className="flex items-center gap-2 text-green-600 text-xs -bottom-5 lg:-bottom-5 absolute">
+                      <span className="truncate">{preview.pan_image}</span>
+                      <button type="button" onClick={removePanImage}>
+                        <X size={14} />
+                      </button>
+                    </div>
+                  )}
+                </div>
+
+                {/* AADHAR */}
+                <div className="flex flex-col gap-1 relative">
+                  <label className="text-sm">
+                    Aadhar Number <span className="text-red-500">*</span>
+                  </label>
+
+                  <div className="flex items-center gap-2">
+                    <input
+                      className="w-full px-3 py-1 border border-neutral-300 rounded-md"
+                      name="aadhar"
+                      value={formData.aadhar}
+                      onChange={handleChange}
+                      placeholder="Aadhar"
+                      required
+                    />
+
+                    <label className="px-3 py-1 border border-neutral-300 bg-gray-200 rounded-md cursor-pointer hover:bg-gray-300 shadow-inner">
+                      Upload
+                      <input
+                        type="file"
+                        hidden
+                        name="aadhar_image"
+                        accept="image/*"
+                        onChange={handleImageChange}
+                        required
+                      />
+                    </label>
+                  </div>
+
+                  {preview.aadhar_image && (
+                    <div className="flex items-center gap-2 text-green-600 text-xs -bottom-5 absolute">
+                      <span className="truncate">{preview.aadhar_image}</span>
+                      <button type="button" onClick={removeAadharImage}>
+                        <X size={14} />
+                      </button>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>
 
-          <div className="border-t border-neutral-300 flex flex-col gap-4 mt-4">
-            <h2 className="text-lg font-medium mt-4 w-full text-start px-5 py-3 shadow-sm bg-slate-50 rounded-md text-neutral-800 tracking-tight">
+          <div className=" flex flex-col gap-4 mt-1">
+            <h2 className="text-lg font-medium mt-4 w-full text-start px-5 py-1  bg-[#004f9e]  text-white  tracking-tight">
               Nominee Details
             </h2>
 
-            <div className="flex flex-col sm:flex-row gap-4 mt-4">
+            <div className="px-5 py-3 flex flex-col gap-4">
+              <div className="flex flex-col sm:flex-row gap-4 mt-4">
               <div className="flex flex-col items-start w-full text-sm">
-                <label>First Name <span className="text-red-500">*</span></label>
+                <label>
+                  First Name <span className="text-red-500">*</span>
+                </label>
                 <input
                   className="w-full min-w-0 border px-3 py-1 rounded text-sm border-neutral-300"
                   name="nominee_firstname"
@@ -364,7 +388,9 @@ const ApplicationForm = () => {
                 />
               </div>
               <div className="flex flex-col items-start w-full text-sm">
-                <label>Middle Name <span className="text-red-500">*</span></label>
+                <label>
+                  Middle Name <span className="text-red-500">*</span>
+                </label>
                 <input
                   className="w-full min-w-0 border px-3 py-1 rounded text-sm border-neutral-300"
                   name="nominee_middlename"
@@ -375,7 +401,9 @@ const ApplicationForm = () => {
                 />
               </div>
               <div className="flex flex-col items-start w-full text-sm">
-                <label>Last Name <span className="text-red-500">*</span></label>
+                <label>
+                  Last Name <span className="text-red-500">*</span>
+                </label>
                 <input
                   className="w-full min-w-0 border px-3 py-1 rounded text-sm border-neutral-300"
                   name="nominee_lastname"
@@ -389,7 +417,9 @@ const ApplicationForm = () => {
 
             <div className="flex flex-col sm:flex-row gap-4">
               <div className="flex flex-col items-start w-full text-sm">
-                <label>Relationship <span className="text-red-500">*</span></label>
+                <label>
+                  Relationship <span className="text-red-500">*</span>
+                </label>
                 <input
                   className="w-full min-w-0 border px-3 py-1 rounded text-sm border-neutral-300"
                   name="relationship"
@@ -400,7 +430,9 @@ const ApplicationForm = () => {
                 />
               </div>
               <div className="flex flex-col items-start w-full text-sm">
-                <label>Date of Birth <span className="text-red-500">*</span></label>
+                <label>
+                  Date of Birth <span className="text-red-500">*</span>
+                </label>
                 <input
                   type="date"
                   className="w-full min-w-0 border px-3 py-1 rounded text-sm border-neutral-300"
@@ -411,7 +443,9 @@ const ApplicationForm = () => {
                 />
               </div>
               <div className="flex flex-col items-start w-full text-sm">
-                <label>Mobile Number <span className="text-red-500">*</span></label>
+                <label>
+                  Mobile Number <span className="text-red-500">*</span>
+                </label>
                 <input
                   className="w-full min-w-0 border px-3 py-1 rounded text-sm border-neutral-300"
                   name="nomineeMobile"
@@ -422,22 +456,26 @@ const ApplicationForm = () => {
                 />
               </div>
             </div>
+            </div>
           </div>
 
-          <div className="flex justify-center mt-4">
+          <div className="flex justify-center mt-4 pb-3">
             {loading ? (
               <button className="px-6 py-1 bg-red-700 transition-all duration-300 cursor-pointer text-white rounded-md text-sm shadow-md flex items-center gap-2">
                 <Loader2 size={18} className="animate-spin" />
                 Submiting Application...
               </button>
             ) : (
-              <button className="px-6 py-1 bg-[#ed1d25] hover:bg-red-700 transition-all duration-300 cursor-pointer text-white rounded-md text-sm shadow-md">
+              <button className="px-6 py-1 bg-[#004f9e] hover:bg-[#06c] transition-all duration-300 cursor-pointer text-white rounded-md text-sm shadow-md">
                 Submit Application
               </button>
             )}
           </div>
         </form>
-        <UserManagement data={userEntriesData} setUserEntriesData={setUserEntriesData} />
+        <UserManagement
+          data={userEntriesData}
+          setUserEntriesData={setUserEntriesData}
+        />
       </div>
     </Layout>
 

@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import { getUserEntries } from "../api/endpoint";
+import { getAllChitDetails, getBranches, getUserEntries } from "../api/endpoint";
 
 export const UserContext = createContext()
 
@@ -17,8 +17,28 @@ export const UserContextProvider = (props)=>{
         fetchUserEntriesData()
     }, [])
 
+    const [branchData, setBranchData] = useState([])
+    const [allchitData, setAllChitData] = useState([])
+
+    const fetchBranchData = async()=>{
+        const data = await getBranches()
+        console.log(data)
+        setBranchData(data)
+    }
+    const fetchChitsData = async()=>{
+        const data = await getAllChitDetails()
+        console.log(data)
+        setAllChitData(data)
+    }
+
+    useEffect(()=>{
+        fetchBranchData()
+        fetchChitsData()
+    }, [])
+
+    
     const value = {
-        userData
+        userData, branchData, fetchBranchData, fetchChitsData, allchitData
     }
 
     return(
