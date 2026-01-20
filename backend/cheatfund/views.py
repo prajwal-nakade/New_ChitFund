@@ -182,3 +182,15 @@ def get_ChitDetails(request, chit_id):
         return Response(serializer.data, status=200)
     except ChitDetails.DoesNotExist:
         return Response({"detail": "Chit not found"}, status=status.HTTP_404_NOT_FOUND)
+    
+@api_view(['POST'])
+def logout(request):
+    try:
+        res = Response()
+        res.data = {'success':True}
+        res.delete_cookie('access_token', path='/', samesite='None')
+        res.delete_cookie('refresh_token', path='/', samesite='None')
+        
+        return res
+    except:
+        return Response({'success':False})

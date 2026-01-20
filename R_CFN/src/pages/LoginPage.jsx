@@ -2,9 +2,11 @@ import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router'
 import { adminLogin } from '../api/endpoint'
 import { toast } from 'react-toastify'
+import { Loader2 } from 'lucide-react'
 
 function LoginPage() {
     const navigate = useNavigate()
+    const [loading, setLoading] = useState(false)
     
     const [formData, setFormData] = useState({
         username : '',
@@ -18,6 +20,7 @@ function LoginPage() {
 
     const handleSubmit = async(e)=>{
         e.preventDefault()
+        setLoading(true)
         try{
             
             const data = await adminLogin(formData)
@@ -31,6 +34,9 @@ function LoginPage() {
             }
         }catch(error){
             console.log(error.message)
+            setLoading(false)
+        }finally{
+            setLoading(false)
         }
     }
     
@@ -49,10 +55,17 @@ function LoginPage() {
             <label>Password :</label>
         <input onChange={handleChange} value={formData.password} className='w-full border border-neutral-300 px-3 py-2 rounded-md' type="password" name="password" placeholder='Enter Password Here...' />
         </div>
-        <button className='bg-red-500 mt-4 text-white px-4 py-2 rounded-md'>Login 
+        {loading ? (
+            <button className='bg-[#06c] mt-4 text-white px-4 py-2 rounded-md flex items-center justify-center gap-2'><Loader2 size={18} className='animate-spin'/>Letting You In... 
             
         </button>
-        <p className='w-full text-center justify-center'>Don't Have account ? <Link>sign up </Link></p>
+        ) : (
+            <button className='bg-[#004f9e] mt-4 text-white px-4 py-2 rounded-md'>Login 
+            
+        </button>
+        )}
+        
+        <p className='w-full text-center justify-center'>Don't Have account ? <Link to={'/register'}>Sign Up </Link></p>
         </form>
         
     </div>

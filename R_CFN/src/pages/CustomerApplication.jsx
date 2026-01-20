@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router'
 
 const CustomerApplication = () => {
   const [loading, setLoading] = useState(false)
-  const { userData, branchData, fetchBranchData, allchitData ,fetchChitsData } = useContext(UserContext)
+  const { userData, branchData, fetchBranchData, allchitData, fetchChitsData } = useContext(UserContext)
   const [search, setSearch] = useState("")
   const [data, setData] = useState([])
   const [selectedUserID, setSelectedUserID] = useState(null)
@@ -122,7 +122,7 @@ const CustomerApplication = () => {
         const data = await createChit(payload)
         console.log(data)
         toast.success('Chit created successfully')
-        setTimeout(()=>{
+        setTimeout(() => {
           navigate(`/chit/print/${data.data.id}`)
         }, 2000)
 
@@ -139,8 +139,8 @@ const CustomerApplication = () => {
     <Layout>
       <div className="max-w-6xl mx-auto  rounded-md p-6">
         <div className='w-full text-start'>
-            <h1 className='text-xl font-medium tracking-tight leading-tight text-white bg-[#004f9e] py-2 rounded-t-md px-5'>Application Form</h1>
-          </div>
+          <h1 className='text-xl font-medium tracking-tight leading-tight text-white bg-[#004f9e] py-2 rounded-t-md px-5'>Application Form</h1>
+        </div>
         <form
           onSubmit={handleSubmit}
           className="flex flex-col gap-4 w-full bg-white px-5 py-3 shadow-lg rounded-b-md border border-neutral-300"
@@ -239,16 +239,32 @@ const CustomerApplication = () => {
                 required
               />
             </div>
-            <div className='flex w-full'>
+            <div className="flex w-full">
               <div className="flex flex-col items-start w-full text-sm">
-                <label>Duration<span className="text-red-500 ms-1">*</span></label>
-                <input value={chitData.Duration}
-                  onChange={handleChitChange} className="w-full min-w-0 mt-1 px-3 py-1 border-l border-t border-b border-neutral-300 rounded-l-md text-sm outline-none" type='number' placeholder='eg., 1,2,3' name="Duration" />
+                <label>
+                  Duration<span className="text-red-500 ms-1">*</span>
+                </label>
+                <input
+                  value={chitData.Duration}
+                  onChange={handleChitChange}
+                  className="w-full min-w-0 mt-1 px-3 py-1 border-l border-t border-b border-neutral-300 rounded-l-md text-sm outline-none"
+                  type="number"
+                  placeholder="eg., 1,2,3"
+                  name="Duration"
+                />
               </div>
+
               <div className="flex flex-col items-start w-full text-sm">
-                <label>Days/Week/Months/Years<span className="text-red-500 ms-1">*</span></label>
-                <select value={chitData.DurationCategory}
-                  onChange={handleChitChange} className="w-full min-w-0 mt-1 px-3 py-1 border-r border-t border-b border-neutral-300 rounded-r-md text-sm text-neutral-500 outline-none" name="DurationCategory" required>
+                <label>
+                  Days/Week/Months/Years<span className="text-red-500 ms-1">*</span>
+                </label>
+                <select
+                  value={chitData.DurationCategory}
+                  onChange={handleChitChange}
+                  className="w-full min-w-0 mt-1 px-3 py-[4.5px] md:py-[5] border-r border-t border-b border-neutral-300 rounded-r-md text-sm text-neutral-500 outline-none"
+                  name="DurationCategory"
+                  required
+                >
                   <option value="">Select Duration</option>
                   <option value="Days">Days</option>
                   <option value="Weeks">Weeks</option>
@@ -257,6 +273,7 @@ const CustomerApplication = () => {
                 </select>
               </div>
             </div>
+
 
           </div>
           <div className="flex flex-col items-start w-full text-sm">
@@ -520,7 +537,7 @@ const CustomerApplication = () => {
         </form>
         {/* <ChitManagement data={allchitData} fetchChitsData={fetchChitsData}/> */}
       </div>
-      
+
     </Layout>
   )
 }

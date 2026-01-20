@@ -1,10 +1,24 @@
 import React, { useState } from "react";
 import { Bell, Search, User, Menu, X, LayoutDashboard, Form, ChevronDown } from "lucide-react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { logout } from "../api/endpoint";
+import { toast } from "react-toastify";
 
 const Navbar = () => {
+  const navigate = useNavigate()
   const [open, setOpen] = useState(false);
   const [isMasterOpen, setIsMasterOpen] = useState(false);
+
+  const handleLogout = async () => {
+    try {
+      const data = await logout()
+      toast.success('Logout successful')
+      navigate('/')
+    } catch (err) {
+      toast.error('Logout failed')
+    }
+  }
+
 
   return (
     <>
@@ -44,9 +58,8 @@ const Navbar = () => {
               Masters
               <ChevronDown
                 size={16}
-                className={`ml-auto transition-transform ${
-                  isMasterOpen ? "rotate-180" : ""
-                }`}
+                className={`ml-auto transition-transform ${isMasterOpen ? "rotate-180" : ""
+                  }`}
               />
             </button>
 
@@ -77,12 +90,19 @@ const Navbar = () => {
                 </NavLink> */}
               </div>
             )}
+            <button
+              onClick={handleLogout}
+              className="mt-4 px-3 py-2 border border-red-500 text-red-600 rounded hover:bg-red-50"
+            >
+              Logout
+            </button>
           </nav>
         </div>
       )}
 
       {/* Navbar */}
       <header className="flex items-center justify-between h-14 px-6 border-b border-neutral-300 bg-white">
+
         <div className="flex items-center gap-4">
           {/* Mobile toggle */}
           <button
@@ -92,6 +112,16 @@ const Navbar = () => {
             {open ? <X size={22} /> : <Menu size={22} />}
           </button>
         </div>
+        {/* Desktop logout only */}
+        <div className="hidden md:block">
+          <button
+            onClick={handleLogout}
+            className="px-3 py-1.5 border border-red-500 text-red-600 rounded hover:bg-red-50 text-sm"
+          >
+            Logout
+          </button>
+        </div>
+
       </header>
     </>
   );
