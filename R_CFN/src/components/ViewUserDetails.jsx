@@ -9,7 +9,7 @@ const ViewUserDetails = ({ onClose, user }) => {
 
     
     return (
-        <div className='fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop'>
+         <div className='fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop'>
             <div className='max-w-5xl mx-auto '>
                 <div className='flex flex-col items-center justify-center border border-neutral-300 gap-4 w-110 lg:w-200 bg-white px-3 py-3 rounded-md'>
                     <div className='flex items-start justify-between w-full rounded-md  bg-[#004f9e]'>

@@ -1,29 +1,39 @@
-import React, { useContext, useEffect, useState } from "react";
-import Layout from "../components/layout";
-import { Search, Loader2 } from "lucide-react";
-import { getUserEntries } from "../api/endpoint";
-import { UserContext } from "../context/UserContext";
+import React, { useContext, useEffect, useState } from 'react'
+import Layout from '../components/layout'
+import { Loader2, Search } from 'lucide-react'
+import { createChit, getUserEntries } from '../api/endpoint'
+import { UserContext } from '../context/UserContext'
+import { toast } from 'react-toastify'
+import ChitManagement from '../components/ChitManagement'
+import { useNavigate } from 'react-router'
 
 const CustomerApplication = () => {
-  const [loading, setLoading] = useState(false);
-  const { userData } = useContext(UserContext);
-  const [search, setSearch] = useState("");
-  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false)
+  const { userData, branchData, fetchBranchData, allchitData ,fetchChitsData } = useContext(UserContext)
+  const [search, setSearch] = useState("")
+  const [data, setData] = useState([])
+  const [selectedUserID, setSelectedUserID] = useState(null)
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    fetchBranchData()
+    fetchChitsData()
+  }, [])
   const handleSearch = (value) => {
-    setSearch(value);
+    setSearch(value)
 
     if (!value.trim()) {
-      setData([]);
-      return;
+      setData([])
+      return
     }
 
-    const keyword = value.trim();
-    const filtered = userData.filter((f) =>
-      String(f?.mobile_no).includes(keyword),
-    );
+    const keyword = value.trim()
+    const filtered = userData.filter(f =>
+      String(f?.mobile_no).includes(keyword)
+    )
 
-    setData(filtered);
-  };
+    setData(filtered)
+  }
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -47,10 +57,27 @@ const CustomerApplication = () => {
     nomineeMobile: "",
   });
 
+  const [chitData, setChitData] = useState({
+    ByLawsNumber: "",
+    BylawsDate: "",
+    GroupCode: "",
+    TicketNmber: "",
+    ChitValue: "",
+    Duration: "",
+    DurationCategory: "",
+    branch: ""
+  })
+
+  const handleChitChange = (e) => {
+    const { name, value } = e.target
+    setChitData(prev => ({ ...prev, [name]: value }))
+  }
+
+
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+    const { name, value } = e.target
+    setFormData(prev => ({ ...prev, [name]: value }))
+  }
 
   const handleNomineeChange = (e) => {
     const { name, value } = e.target;
@@ -58,6 +85,7 @@ const CustomerApplication = () => {
   };
 
   const autofillUser = (user) => {
+    setSelectedUserID(user.id)
     setFormData({
       firstName: user.firstname || "",
       middleName: user.middlename || "",
@@ -68,8 +96,8 @@ const CustomerApplication = () => {
       address: user.permanent_address || "",
       pincode: user.pincode || "",
       pan: user.pancard_no || "",
-      aadhar: user.aadharcard_no || "",
-    });
+      aadhar: user.aadharcard_no || ""
+    })
     setNomineeData({
       nominee_firstname: user.nominees[0].firstname || "",
       nominee_middlename: user.nominees[0].middlename || "",
@@ -77,19 +105,44 @@ const CustomerApplication = () => {
       relationship: user.nominees[0].relationship || "",
       nomineeDob: user.nominees[0].dob || "",
       nomineeMobile: user.nominees[0].mobile_no || "",
-    });
-  };
+    })
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    try {
+      setLoading(true)
+      if (!selectedUserID) {
+        toast.error('Please Select User')
+      } else {
+        const payload = {
+          ...chitData,
+          user: selectedUserID
+        }
+        const data = await createChit(payload)
+        console.log(data)
+        toast.success('Chit created successfully')
+        setTimeout(()=>{
+          navigate(`/chit/print/${data.data.id}`)
+        }, 2000)
+
+      }
+    } catch (error) {
+      console.log(error.message)
+      setLoading(false)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <Layout>
       <div className="max-w-6xl mx-auto  rounded-md p-6">
-        <div className="w-full text-start">
-          <h1 className="text-xl font-medium tracking-tight leading-tight text-white  bg-[#004f9e]  py-2 rounded-t-md  px-5">
-            Application Form
-          </h1>
-        </div>
+        <div className='w-full text-start'>
+            <h1 className='text-xl font-medium tracking-tight leading-tight text-white bg-[#004f9e] py-2 rounded-t-md px-5'>Application Form</h1>
+          </div>
         <form
-          //   onSubmit={handleSubmit}
+          onSubmit={handleSubmit}
           className="flex flex-col gap-4 w-full bg-white px-5 py-3 shadow-lg rounded-b-md border border-neutral-300"
         >
           <div className="flex items-center relative">
@@ -105,14 +158,14 @@ const CustomerApplication = () => {
             />
             {search && data.length > 0 && (
               <div className="absolute top-full left-0 w-64 bg-white border border-neutral-300 rounded shadow z-10">
-                {data.map((item) => (
+                {data.map(item => (
                   <div
                     key={item.id}
                     className="px-3 py-2 text-sm hover:bg-gray-100 cursor-pointer"
                     onClick={() => {
-                      setData([]);
-                      setSearch(item.mobile_no);
-                      autofillUser(item);
+                      setData([])
+                      setSearch(item.mobile_no)
+                      autofillUser(item)
                     }}
                   >
                     {item.firstname} – {item.mobile_no}
@@ -120,173 +173,121 @@ const CustomerApplication = () => {
                 ))}
               </div>
             )}
+
           </div>
-          <h1 className="text-md font-medium mb-3 w-full text-start px-5 py-2 shadow-sm bg-[#004f9e] rounded-md text-white tracking-tight">
+          <h1 className="text-md font-medium mb-3 w-full text-start px-5 py-2 shadow-sm text-white bg-[#004f9e] rounded-md  tracking-tight">
             Chit Details
           </h1>
 
-          <div className="px-5 py-3 flex flex-col gap-4">
-            <div className="flex flex-col sm:flex-row items-center w-full gap-4">
-              <div className="flex flex-col items-start w-full text-sm">
-                <label>
-                  Bylaws No. <span className="text-red-500">*</span>
-                </label>
-                <input
-                  className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
-                  name="bylawsnumber"
-                  // value={formData.firstName}
-                  // onChange={handleChange}
-                  placeholder="Bylaws No."
-                  required
-                />
-              </div>
-              <div className="flex flex-col items-start w-full text-sm">
-                <label className="text-sm">
-                  Bylaws Date <span className="text-red-500">*</span>
-                </label>
-                <input
-                  className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
-                  name="bylawsdate"
-                  type="date"
-                  // value={formData.middleName}
-                  // onChange={handleChange}
-                  placeholder="Bylaws Date"
-                  required
-                />
-              </div>
-              <div className="flex flex-col items-start w-full text-sm">
-                <label className="text-sm">
-                  Group Code <span className="text-red-500">*</span>
-                </label>
-                <input
-                  className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
-                  name="groupcode"
-                  // value={formData.lastName}
-                  // onChange={handleChange}
-                  placeholder="Group code"
-                  required
-                />
-              </div>
-            </div>
-            <div className="flex flex-col sm:flex-row items-center gap-4 w-full">
-              <div className="flex flex-col items-start w-full text-sm">
-                <label>
-                  Ticket No.<span className="text-red-500">*</span>
-                </label>
-                <input
-                  className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
-                  name="ticketnumber"
-                  // value={formData.mobile}
-                  // onChange={handleChange}
-                  placeholder="Ticket No."
-                  required
-                />
-              </div>
-              <div className="flex flex-col items-start w-full text-sm">
-                <label>
-                  Chit Value <span className="text-red-500">*</span>
-                </label>
-                <input
-                  className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
-                  name="chitvalue"
-                  type="number"
-                  // value={formData.email}
-                  // onChange={handleChange}
-                  placeholder="Chit Value"
-                  required
-                />
-              </div>
-              <div className="flex w-full">
-                <div className="flex flex-col items-start w-full text-sm">
-                  <label>
-                    Duration<span className="text-red-500 ms-1">*</span>
-                  </label>
-                  <input
-                    className="w-full min-w-0 mt-1 px-3 py-1 border-l border-t border-b border-neutral-300 rounded-l-md text-sm text-neutral-500 outline-none"
-                    type="number"
-                    placeholder="eg., 1,2,3"
-                  />
-                </div>
-                <div className="flex flex-col items-start w-full text-sm">
-                  <label>
-                    Days/Week/Months/Years
-                    <span className="text-red-500 ms-1">*</span>
-                  </label>
-                  <select
-                    className="w-full min-w-0 mt-1 px-3 py-1 border-r border-t border-b border-neutral-300 rounded-r-md text-sm text-neutral-500 outline-none"
-                    required
-                  >
-                    <option value="">Select Duration</option>
-                    <option value="Days">Days</option>
-                    <option value="Weeks">Weeks</option>
-                    <option value="Months">Months</option>
-                    <option value="Year">Year</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-            <div className="flex flex-col items-start w-full text-sm">
-              <label>
-                Branch<span className="text-red-500 ms-1">*</span>
-              </label>
-              <select
-                className=" w-full lg:w-86  min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm text-neutral-500"
-                required
-              >
-                <option value="">Select Branch</option>
-                <option value="">Sutgirni</option>
-                <option value="">Beed by pass</option>
-                <option value="">Harsul</option>
-              </select>
-            </div>
-
-            <div className="w-full shadow-sm bg-slate-100 rounded-md">
-              <h1 className="text-lg font-medium mb-3 w-full text-start px-5 py-3 text-neutral-800 tracking-tight">
-                Applicant Declaration
-              </h1>
-              <div className="mx-4 bg-white border border-neutral-300 rounded-md mb-4 px-5 py-3">
-                <p className="text-sm tracking-wide text-neutral-600">
-                  Dear Sir,
-                  <br />
-                  <br />
-                  I/We (Name of the Co./Firm/Enterprises if applicant not
-                  Individual) Age
-                  <input className="border-b outline-none mx-1 font-semibold w-10 text-center" />
-                  Son/Wife/daughter/Proprietor/proprietress/duly authorized
-                  attorney/ Mrs
-                  <input className="border-b outline-none mx-1 font-semibold text-center" />{" "}
-                  Request you to reserve a membership/ Ticket in the above
-                  chit/kuri being floated by you/ I have remitted this day a sum
-                  of (Rupees
-                  <input className="border-b outline-none mx-1 font-semibold text-center" />{" "}
-                  only) being the first installment of the chit/kuri membership
-                  applied for. I/We have received and gone through a copy of the
-                  chit agreement cum bye-laws of the proposed chit/kuri being
-                  registered and conducted by you as FOREMAN COMPANY and I have
-                  read or caused to read / translated and understood the same.
-                  Knowing the conditions. Accordingly I am submitting here with,
-                  this bye law of proposed/floated chit agreement in duplicate
-                  duly filled and signed by me/us as required by you for
-                  registration of the chit under section 4 of the CHIT FUNDS
-                  ACT, 1982 and Maharashtra Chit Fund Rule 2004. I/we do hereby
-                  declare to abide by and be bounded by the rules contained
-                  therein and well any further amendments that may be made from
-                  time to time.
-                </p>
-              </div>
-            </div>
-          </div>
-          <h1 className="text-md font-medium mb-3 w-full text-start px-5 py-2 shadow-sm bg-[#004f9e] rounded-md text-white tracking-tight">
-            Customer Details
-          </h1>
-                    
-          <div className="px-5 py-3 flex flex-col gap-4">
-              
           <div className="flex flex-col sm:flex-row items-center w-full gap-4">
             <div className="flex flex-col items-start w-full text-sm">
-              <label>
-                First Name <span className="text-red-500">*</span>
-              </label>
+              <label>Bylaws No. <span className="text-red-500">*</span></label>
+              <input
+                className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
+                name="ByLawsNumber"
+                value={chitData.ByLawsNumber}
+                onChange={handleChitChange}
+                placeholder="Bylaws No."
+                required
+              />
+            </div>
+            <div className="flex flex-col items-start w-full text-sm">
+              <label className="text-sm">Bylaws Date <span className="text-red-500">*</span></label>
+              <input
+                className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
+                name="BylawsDate"
+                type='date'
+                value={chitData.BylawsDate}
+                onChange={handleChitChange}
+                placeholder="Bylaws Date"
+                required
+              />
+            </div>
+            <div className="flex flex-col items-start w-full text-sm">
+              <label className="text-sm">Group Code <span className="text-red-500">*</span></label>
+              <input
+                className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
+                name="GroupCode"
+                value={chitData.GroupCode}
+                onChange={handleChitChange}
+                placeholder="Group code"
+                required
+              />
+            </div>
+          </div>
+          <div className="flex flex-col sm:flex-row items-center gap-4 w-full">
+            <div className="flex flex-col items-start w-full text-sm">
+              <label>Ticket No.<span className="text-red-500">*</span></label>
+              <input
+                className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
+                name="TicketNmber"
+                value={chitData.TicketNmber}
+                onChange={handleChitChange}
+                placeholder="Ticket No."
+                required
+              />
+            </div>
+            <div className="flex flex-col items-start w-full text-sm">
+              <label>Chit Value <span className="text-red-500">*</span></label>
+              <input
+                className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
+                name="ChitValue"
+                type='number'
+                value={chitData.ChitValue}
+                onChange={handleChitChange}
+                placeholder="Chit Value"
+                required
+              />
+            </div>
+            <div className='flex w-full'>
+              <div className="flex flex-col items-start w-full text-sm">
+                <label>Duration<span className="text-red-500 ms-1">*</span></label>
+                <input value={chitData.Duration}
+                  onChange={handleChitChange} className="w-full min-w-0 mt-1 px-3 py-1 border-l border-t border-b border-neutral-300 rounded-l-md text-sm outline-none" type='number' placeholder='eg., 1,2,3' name="Duration" />
+              </div>
+              <div className="flex flex-col items-start w-full text-sm">
+                <label>Days/Week/Months/Years<span className="text-red-500 ms-1">*</span></label>
+                <select value={chitData.DurationCategory}
+                  onChange={handleChitChange} className="w-full min-w-0 mt-1 px-3 py-1 border-r border-t border-b border-neutral-300 rounded-r-md text-sm text-neutral-500 outline-none" name="DurationCategory" required>
+                  <option value="">Select Duration</option>
+                  <option value="Days">Days</option>
+                  <option value="Weeks">Weeks</option>
+                  <option value="Months">Months</option>
+                  <option value="Year">Year</option>
+                </select>
+              </div>
+            </div>
+
+          </div>
+          <div className="flex flex-col items-start w-full text-sm">
+            <label>Branch<span className="text-red-500 ms-1">*</span></label>
+            <select value={chitData.branch}
+              onChange={handleChitChange} className=" w-full lg:w-86  min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm text-neutral-500" name="branch" required>
+              <option value="">Select Branch</option>
+              {branchData.map((items) => (
+                <option key={items.id} value={items.id}>{items.branchName} – {items.branchLocation}</option>
+              ))}
+            </select>
+          </div>
+
+          <div className='w-full shadow-sm bg-slate-100 rounded-md'>
+            <h1 className="text-lg font-medium mb-3 w-full text-start px-5 py-3 text-neutral-800 tracking-tight">
+              Applicant Declaration
+            </h1>
+            <div className='mx-4 bg-white border border-neutral-300 rounded-md mb-4 px-5 py-3'>
+
+              <p className='text-sm tracking-wide text-neutral-600'>
+                Dear Sir,<br /><br />
+                I/We (Name of the Co./Firm/Enterprises if applicant not Individual) Age<input className='border-b outline-none mx-1 font-semibold w-10 text-center' />Son/Wife/daughter/Proprietor/proprietress/duly authorized attorney/ Mrs<input className='border-b outline-none mx-1 font-semibold text-center' /> Request you to reserve a membership/ Ticket in the above chit/kuri being floated by you/ I have remitted this day a sum of (Rupees<input className='border-b outline-none mx-1 font-semibold text-center' /> only) being the first installment of the chit/kuri membership applied for. I/We have received and gone through a copy of the chit agreement cum bye-laws of the proposed chit/kuri being registered and conducted by you as FOREMAN COMPANY and I have read or caused to read / translated and understood the same. Knowing the conditions. Accordingly I am submitting here with, this bye law of proposed/floated chit agreement in duplicate duly filled and signed by me/us as required by you for registration of the chit under section 4 of the CHIT FUNDS ACT, 1982 and Maharashtra Chit Fund Rule 2004. I/we do hereby declare to abide by and be bounded by the rules contained therein and well any further amendments that may be made from time to time.</p>
+            </div>
+          </div>
+          <h1 className="text-md font-medium mb-3 w-full text-start px-5 py-2 shadow-sm text-white bg-[#004f9e] rounded-md tracking-tight">
+            Customer Details
+          </h1>
+
+          <div className="flex flex-col sm:flex-row items-center w-full gap-4">
+            <div className="flex flex-col items-start w-full text-sm">
+              <label>First Name <span className="text-red-500">*</span></label>
               <input
                 className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
                 name="firstName"
@@ -297,9 +298,7 @@ const CustomerApplication = () => {
               />
             </div>
             <div className="flex flex-col items-start w-full text-sm">
-              <label className="text-sm">
-                Middle Name <span className="text-red-500">*</span>
-              </label>
+              <label className="text-sm">Middle Name <span className="text-red-500">*</span></label>
               <input
                 className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
                 name="middleName"
@@ -310,9 +309,7 @@ const CustomerApplication = () => {
               />
             </div>
             <div className="flex flex-col items-start w-full text-sm">
-              <label className="text-sm">
-                Last Name <span className="text-red-500">*</span>
-              </label>
+              <label className="text-sm">Last Name <span className="text-red-500">*</span></label>
               <input
                 className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
                 name="lastName"
@@ -324,11 +321,10 @@ const CustomerApplication = () => {
             </div>
           </div>
 
+
           <div className="flex flex-col sm:flex-row items-center gap-4 w-full">
             <div className="flex flex-col items-start w-full text-sm">
-              <label>
-                Mobile Number <span className="text-red-500">*</span>
-              </label>
+              <label>Mobile Number <span className="text-red-500">*</span></label>
               <input
                 className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
                 name="mobile"
@@ -339,9 +335,7 @@ const CustomerApplication = () => {
               />
             </div>
             <div className="flex flex-col items-start w-full text-sm">
-              <label>
-                Email <span className="text-red-500">*</span>
-              </label>
+              <label>Email <span className="text-red-500">*</span></label>
               <input
                 className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
                 name="email"
@@ -352,9 +346,7 @@ const CustomerApplication = () => {
               />
             </div>
             <div className="flex flex-col items-start w-full text-sm">
-              <label>
-                Date of Birth <span className="text-red-500">*</span>
-              </label>
+              <label>Date of Birth <span className="text-red-500">*</span></label>
               <input
                 type="date"
                 className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
@@ -367,9 +359,7 @@ const CustomerApplication = () => {
           </div>
 
           <div>
-            <label className="text-sm">
-              Permanent Address <span className="text-red-500">*</span>
-            </label>
+            <label className="text-sm">Permanent Address <span className="text-red-500">*</span></label>
             <textarea
               className="w-full mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
               name="address"
@@ -383,9 +373,7 @@ const CustomerApplication = () => {
           <div className="w-full text-sm">
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div className="flex flex-col gap-1">
-                <label className="text-sm">
-                  PIN Code <span className="text-red-500">*</span>
-                </label>
+                <label className="text-sm">PIN Code <span className="text-red-500">*</span></label>
                 <input
                   className="w-full px-3 py-1 border border-neutral-300 rounded-md"
                   name="pincode"
@@ -397,9 +385,7 @@ const CustomerApplication = () => {
               </div>
 
               <div className="flex flex-col gap-1 relative">
-                <label className="text-sm">
-                  PAN Number <span className="text-red-500">*</span>
-                </label>
+                <label className="text-sm">PAN Number <span className="text-red-500">*</span></label>
 
                 <div className="flex items-center gap-2">
                   <input
@@ -414,9 +400,7 @@ const CustomerApplication = () => {
               </div>
 
               <div className="flex flex-col gap-1 relative">
-                <label className="text-sm">
-                  Aadhar Number <span className="text-red-500">*</span>
-                </label>
+                <label className="text-sm">Aadhar Number <span className="text-red-500">*</span></label>
 
                 <div className="flex items-center gap-2">
                   <input
@@ -427,23 +411,20 @@ const CustomerApplication = () => {
                     placeholder="Aadhar"
                     required
                   />
-                  </div>
+
                 </div>
               </div>
             </div>
-        </div>
+          </div>
 
-          <div className="  flex flex-col gap-4 ">
-            <h2 className="text-md font-medium mt-4 w-full text-start px-5 py-2 shadow-sm bg-[#004f9e] rounded-md text-white tracking-tight">
+          <div className="border-t border-neutral-300 flex flex-col gap-4 mt-4">
+            <h2 className="text-md font-medium mb-3 w-full text-start px-5 py-2 shadow-sm text-white bg-[#004f9e] rounded-md tracking-tight">
               Nominee Details
             </h2>
 
-           <div className="px-5 py-3 flex flex-col gap-4">
-             <div className="flex flex-col sm:flex-row gap-4 mt-4">
+            <div className="flex flex-col sm:flex-row gap-4 mt-4">
               <div className="flex flex-col items-start w-full text-sm">
-                <label>
-                  First Name <span className="text-red-500">*</span>
-                </label>
+                <label>First Name <span className="text-red-500">*</span></label>
                 <input
                   className="w-full min-w-0 border px-3 py-1 rounded text-sm border-neutral-300"
                   name="nominee_firstname"
@@ -454,9 +435,7 @@ const CustomerApplication = () => {
                 />
               </div>
               <div className="flex flex-col items-start w-full text-sm">
-                <label>
-                  Middle Name <span className="text-red-500">*</span>
-                </label>
+                <label>Middle Name <span className="text-red-500">*</span></label>
                 <input
                   className="w-full min-w-0 border px-3 py-1 rounded text-sm border-neutral-300"
                   name="nominee_middlename"
@@ -467,9 +446,7 @@ const CustomerApplication = () => {
                 />
               </div>
               <div className="flex flex-col items-start w-full text-sm">
-                <label>
-                  Last Name <span className="text-red-500">*</span>
-                </label>
+                <label>Last Name <span className="text-red-500">*</span></label>
                 <input
                   className="w-full min-w-0 border px-3 py-1 rounded text-sm border-neutral-300"
                   name="nominee_lastname"
@@ -483,9 +460,7 @@ const CustomerApplication = () => {
 
             <div className="flex flex-col sm:flex-row gap-4">
               <div className="flex flex-col items-start w-full text-sm">
-                <label>
-                  Relationship <span className="text-red-500">*</span>
-                </label>
+                <label>Relationship <span className="text-red-500">*</span></label>
                 <input
                   className="w-full min-w-0 border px-3 py-1 rounded text-sm border-neutral-300"
                   name="relationship"
@@ -496,9 +471,7 @@ const CustomerApplication = () => {
                 />
               </div>
               <div className="flex flex-col items-start w-full text-sm">
-                <label>
-                  Date of Birth <span className="text-red-500">*</span>
-                </label>
+                <label>Date of Birth <span className="text-red-500">*</span></label>
                 <input
                   type="date"
                   className="w-full min-w-0 border px-3 py-1 rounded text-sm border-neutral-300"
@@ -509,9 +482,7 @@ const CustomerApplication = () => {
                 />
               </div>
               <div className="flex flex-col items-start w-full text-sm">
-                <label>
-                  Mobile Number <span className="text-red-500">*</span>
-                </label>
+                <label>Mobile Number <span className="text-red-500">*</span></label>
                 <input
                   className="w-full min-w-0 border px-3 py-1 rounded text-sm border-neutral-300"
                   name="nomineeMobile"
@@ -522,20 +493,15 @@ const CustomerApplication = () => {
                 />
               </div>
             </div>
-           </div>
           </div>
-          <div className="w-full shadow-sm bg-slate-100 rounded-md">
+          <div className='w-full shadow-sm bg-slate-100 rounded-md'>
             <h1 className="text-lg font-medium mb-3 w-full text-start px-5 py-3 text-neutral-800 tracking-tight">
               Declaration cum Authority for Bidding at Maximum Discount
             </h1>
-            <div className="mx-4 bg-white border border-neutral-300 rounded-md mb-4 px-5 py-3">
-              <p className="text-sm tracking-wide text-neutral-600">
-                I/We am/are willing to avail prized value at maximum discount of
-                40% of the chit value and here by authorize the Foreman company
-                to include my/our Name for the draw for first{" "}
-                <input className="border-b outline-none mx-1 font-semibold text-center" />{" "}
-                auction/draws.
-              </p>
+            <div className='mx-4 bg-white border border-neutral-300 rounded-md mb-4 px-5 py-3'>
+
+              <p className='text-sm tracking-wide text-neutral-600'>
+                I/We am/are willing to avail prized value at maximum discount of 40% of the chit value and here by authorize the Foreman company to include my/our Name for the draw for first <input className='border-b outline-none mx-1 font-semibold text-center' /> auction/draws.</p>
             </div>
           </div>
 
@@ -543,18 +509,20 @@ const CustomerApplication = () => {
             {loading ? (
               <button className="px-6 py-1 bg-[#06c] transition-all duration-300 cursor-pointer text-white rounded-md text-sm shadow-md flex items-center gap-2">
                 <Loader2 size={18} className="animate-spin" />
-                Printing Application...
+                Registering User...
               </button>
             ) : (
-              <button className="px-6 py-1 bg-[#004f9e] hover:bg-[#06c] transition-all duration-300 cursor-pointer text-white rounded-md text-sm shadow-md">
-                Print Application
+              <button className="px-6 py-1 text-white bg-[#004f9e] hover:bg-[#06c] transition-all duration-300 cursor-pointer  rounded-md text-sm shadow-md">
+                Register User
               </button>
             )}
           </div>
         </form>
+        {/* <ChitManagement data={allchitData} fetchChitsData={fetchChitsData}/> */}
       </div>
+      
     </Layout>
-  );
-};
+  )
+}
 
-export default CustomerApplication;
+export default CustomerApplication

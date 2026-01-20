@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { LayoutDashboard, Form, ChevronDown, ClipboardType } from "lucide-react";
+import { LayoutDashboard, Form, ChevronDown, ClipboardType, icons } from "lucide-react";
 import { Link, NavLink } from "react-router-dom";
 
 const Sidebar = () => {
@@ -11,14 +11,14 @@ const Sidebar = () => {
   ];
 
   const masterSubMenus = [
-    { title: "Customer Master Form", icon: <ClipboardType size={16}/>  ,path: "/application-form" },
+    { title: "Customer Master Form", icon : <ClipboardType size={16}/>, path: "/application-form" },
     // { title: "Drop 2", path: "/drop2" },
     // { title: "Drop 3", path: "/drop3" },
   ];
   return (
     <div className="flex h-screen w-60 overflow-hidden opacity-0 lg:opacity-100 bg-[#004f9e]  ">
       <aside className="flex flex-col h-full w-full ">
-        <div className="flex  w-full items-center justify-start ps-4 gap-2 border-b py-4 bg-[#004f9e] border-neutral-300">
+        <div className="flex  w-full items-center justify-start ps-4 gap-2 py-4 bg-[#004f9e] border-neutral-300">
           <Link to={"/"}>
             <div className="flex flex-col items-start justify-start leading-tight ">
               <h1 className="font-medium  text-white  ">Chit Fund Management</h1>

@@ -96,8 +96,8 @@ const UserManagement = ({ data, setUserEntriesData }) => {
           User Management
         </h2>
         <div className="flex items-center relative">
-          <div className="absolute bg-red-50 h-full rounded-l-md  border border-neutral-300 px-2">
-            <Search size={14} className="text-red-500 mt-2" />
+          <div className="absolute bg-gray-200 h-full rounded-l-md  border border-neutral-300 px-2">
+            <Search size={14} className="text-neutral-500 mt-2" />
           </div>
           <input
             onChange={(e) => handleSearch(e.target.value)}
@@ -111,7 +111,7 @@ const UserManagement = ({ data, setUserEntriesData }) => {
 
       <div className="overflow-x-auto mt-3">
         <table className="w-full border border-neutral-300 text-sm rounded-md overflow-hidden">
-          <thead className="bg-[#004f9e]">
+          <thead className="bg-[#004f9e] ">
             <tr>
               <th className="border border-neutral-300 text-white font-medium p-2">
                 Sr.No.
