@@ -90,8 +90,8 @@ const ChitPrintPreview = () => {
           <div className="mb-4">
             <div className="flex justify-between mb-2 gap-4">
               <div className="flex items-center w-1/3">
-                <label className="w-40 text-sm font-medium">Byelaws No. & Date:</label>
-                <div className="border-b border-gray-800 flex-1 text-center">
+                <label className="w-40 text-sm font-medium">Byelaws No.:</label>
+                <div className="border-b border-gray-800 w-full text-center">
                   <span className="font-medium text-sm">{chitDetails.ByLawsNumber}</span>
                 </div>
               </div>
@@ -141,15 +141,13 @@ const ChitPrintPreview = () => {
             <div className="text-sm mb-3">
               <p className="mb-2 text-justify leading-6">
                 I/We (Name of the Co./Firm/Enterprises if applicant not Individual)
-                <span className="inline-block min-w-40 border-b border-gray-800 mx-1 text-center font-medium align-bottom">
-                  {`${user.firstname} ${user.middlename} ${user.lastname}`}
-                </span>
+                <input value={`${user.firstname} ${user.middlename} ${user.lastname}`} className="inline-block min-w-40 border-b border-gray-800 mx-1 text-center font-medium align-bottom outline-none"/>
                 Age
-                <span className="inline-block min-w-8 border-b border-gray-800 mx-1 text-center align-bottom"></span>
+                <input className="inline-block min-w-4 border-b border-gray-800 mx-1 text-center align-bottom outline-none"/>
                 Son/Wife/daughter/Proprietor/proprietress/duly authorized attorney/ Mrs
-                <span className="inline-block min-w-16 border-b border-gray-800 mx-1 text-center align-bottom"></span>
+                <input className="inline-block min-w-16 border-b border-gray-800 mx-1 text-center align-bottom outline-none"/>
                 Request you to reserve a membership/ Ticket in the above chit/kuri being floated by you/ I have remitted this day a sum of (Rupees
-                <span className="inline-block min-w-16 border-b border-gray-800 mx-1 text-center align-bottom"></span>
+                <input className="inline-block min-w-16 border-b border-gray-800 mx-1 text-center align-bottom outline-none"/>
                 only) being the first installment of the chit/kuri membership applied for.
                 I/We have received and gone through a copy of the chit agreement cum bye-laws of the proposed chit/kuri being registered and conducted by you as FOREMAN COMPANY and I have read or caused to read / translated and understood the same. Knowing the conditions. Accordingly I am submitting here with, this bye law of proposed/floated chit agreement in duplicate duly filled and signed by me/us as required by you for registration of the chit under section 4 of the CHIT FUNDS ACT, 1982 and Maharashtra Chit Fund Rule 2004. I/we do hereby declare to abide by and be bounded by the rules contained therein and well any further amendments that may be made from time to time.
               </p>
@@ -219,7 +217,7 @@ const ChitPrintPreview = () => {
               </div>
 
               <div className="flex items-center w-1/3">
-                <label className="w-24 text-sm font-medium">Adhar No.:</label>
+                <label className="w-24 text-sm font-medium">Aadhar No.:</label>
                 <div className="border-b border-gray-800 flex-1 text-center">
                   <span className="font-medium text-sm">{user.aadharcard_no}</span>
                 </div>

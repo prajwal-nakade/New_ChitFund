@@ -82,3 +82,8 @@ export const getChitbyID = async(id)=>{
   const response = await api.get(`api/getChit/${id}/`)
   return response.data
 }
+
+export const logout = async()=>{
+  const response = await api.post(`api/logout/`)
+  return response.data
+}

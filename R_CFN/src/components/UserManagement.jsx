@@ -102,7 +102,7 @@ const UserManagement = ({ data, setUserEntriesData }) => {
           <input
             onChange={(e) => handleSearch(e.target.value)}
             type="text"
-            className="border border-neutral-300 shadow-sm text-neutral-800 text-sm px-10 py-1 placeholder:text-xs rounded-md w-64 outline-none"
+            className="border border-neutral-300 shadow-sm text-neutral-800 text-sm px-10 py-1 placeholder:text-xs rounded-md w-68 outline-none"
             placeholder="Search by name and Mobile no."
           />
           {/* <button>Search</button> */}

@@ -1,25 +1,24 @@
 import React, { useState } from "react";
-import {
-  Menu,
-  X,
-  LayoutDashboard,
-  Form,
-  ChevronDown,
-} from "lucide-react";
+import { Bell, Search, User, Menu, X, LayoutDashboard, Form, ChevronDown } from "lucide-react";
 import { NavLink, useNavigate } from "react-router-dom";
+import { logout } from "../api/endpoint";
+import { toast } from "react-toastify";
 
 const Navbar = () => {
+  const navigate = useNavigate()
   const [open, setOpen] = useState(false);
   const [isMasterOpen, setIsMasterOpen] = useState(false);
-  const navigate = useNavigate();
 
-  const handleLogout = () => {
-    // clear auth data (adjust if you use cookies/context)
-    localStorage.removeItem("token");
+  const handleLogout = async () => {
+    try {
+      const data = await logout()
+      toast.success('Logout successful')
+      navigate('/')
+    } catch (err) {
+      toast.error('Logout failed')
+    }
+  }
 
-    setOpen(false);
-    navigate("/");
-  };
 
   return (
     <>
@@ -31,7 +30,7 @@ const Navbar = () => {
               <X size={18} />
             </button>
 
-            {/* Menu links */}
+            {/* SAME LINKS AS SIDEBAR */}
             <NavLink
               to="/customerapplication"
               onClick={() => setOpen(false)}
@@ -50,7 +49,7 @@ const Navbar = () => {
               Menu 2
             </NavLink> */}
 
-            {/* Master dropdown */}
+            {/* MASTER */}
             <button
               onClick={() => setIsMasterOpen(!isMasterOpen)}
               className="flex items-center gap-3 px-3 py-2 hover:bg-red-100"
@@ -59,9 +58,8 @@ const Navbar = () => {
               Masters
               <ChevronDown
                 size={16}
-                className={`ml-auto transition-transform ${
-                  isMasterOpen ? "rotate-180" : ""
-                }`}
+                className={`ml-auto transition-transform ${isMasterOpen ? "rotate-180" : ""
+                  }`}
               />
             </button>
 
@@ -92,8 +90,6 @@ const Navbar = () => {
                 </NavLink> */}
               </div>
             )}
-
-            {/* Mobile Logout */}
             <button
               onClick={handleLogout}
               className="mt-4 px-3 py-2 border border-red-500 text-red-600 rounded hover:bg-red-50"
@@ -105,7 +101,8 @@ const Navbar = () => {
       )}
 
       {/* Navbar */}
-      <header className="flex items-center justify-between h-13.5 px-6 border-b border-neutral-300 bg-white">
+      <header className="flex items-center justify-between h-14 px-6 border-b border-neutral-300 bg-white">
+
         <div className="flex items-center gap-4">
           {/* Mobile toggle */}
           <button
@@ -115,16 +112,16 @@ const Navbar = () => {
             {open ? <X size={22} /> : <Menu size={22} />}
           </button>
         </div>
+        {/* Desktop logout only */}
+        <div className="hidden md:block">
+          <button
+            onClick={handleLogout}
+            className="px-3 py-1.5 border border-red-500 text-red-600 rounded hover:bg-red-50 text-sm"
+          >
+            Logout
+          </button>
+        </div>
 
-        {/* Desktop Logout */}
-        <button
-          onClick={handleLogout}
-          className="hidden md:inline-flex items-center gap-2 px-4 py-1.5 
-                     text-sm font-medium border border-red-500 text-red-600 
-                     rounded hover:bg-red-50 transition"
-        >
-          Logout
-        </button>
       </header>
     </>
   );

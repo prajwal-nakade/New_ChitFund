@@ -35,10 +35,13 @@ function SignupPage() {
           <label>Password :</label>
           <input className='w-full border border-neutral-300 px-3 py-2 rounded-md' type="password" name="password" placeholder="Enter Password Here..." />
         </div>
-        <button className="bg-red-500 mt-4 text-white px-4 py-2 rounded-md ">
+        <button className="bg-[#004f9e] mt-4 text-white px-4 py-2 rounded-md ">
           Sign Up
         </button>
+        <p className='w-full text-center justify-center'>Already Have account ? <Link to={'/'}>Login </Link></p>
       </form>
+
+      
       </div>
     </>
   );
