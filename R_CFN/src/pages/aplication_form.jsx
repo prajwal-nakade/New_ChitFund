@@ -5,7 +5,6 @@ import { Factory, Loader2, X } from "lucide-react";
 import { toast } from "react-toastify";
 import UserManagement from "../components/UserManagement";
 
-
 const ApplicationForm = () => {
   const [formData, setFormData] = useState({
     firstName: "",
@@ -22,11 +21,9 @@ const ApplicationForm = () => {
     aadhar_image: null,
   });
 
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
-  const [userEntriesData, setUserEntriesData] = useState([])
-
-  
+  const [userEntriesData, setUserEntriesData] = useState([]);
 
   const [nomineeData, setNomineeData] = useState({
     nominee_firstname: "",
@@ -96,7 +93,8 @@ const ApplicationForm = () => {
     data.append("aadharcard_no", formData.aadhar);
 
     if (formData.pan_image) data.append("pan_image", formData.pan_image);
-    if (formData.aadhar_image) data.append("aadhar_image", formData.aadhar_image);
+    if (formData.aadhar_image)
+      data.append("aadhar_image", formData.aadhar_image);
 
     data.append("nominee_firstname", nomineeData.nominee_firstname);
     data.append("nominee_middlename", nomineeData.nominee_middlename);
@@ -106,10 +104,10 @@ const ApplicationForm = () => {
     data.append("relationship", nomineeData.relationship);
 
     try {
-      setLoading(true)
+      setLoading(true);
       const response = await userEntry(data);
       if (response.success) {
-        toast.success('User Application Submited!')
+        toast.success("User Application Submited!");
         setFormData({
           firstName: "",
           middleName: "",
@@ -123,7 +121,7 @@ const ApplicationForm = () => {
           aadhar: "",
           pan_image: null,
           aadhar_image: null,
-        })
+        });
         setNomineeData({
           nominee_firstname: "",
           nominee_middlename: "",
@@ -131,33 +129,31 @@ const ApplicationForm = () => {
           relationship: "",
           nomineeDob: "",
           nomineeMobile: "",
-        })
-        setUserEntriesData(prev=> [...prev, response])
-      }
-      else {
-        toast.error('Somthing went wrong')
+        });
+        setUserEntriesData((prev) => [...prev, response]);
+      } else {
+        toast.error("Somthing went wrong");
       }
       console.log(response);
     } catch (error) {
-      console.log(error.message)
-      setLoading(false)
+      console.log(error.message);
+      setLoading(false);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-
   };
-    const fetchUserEntriesData = async()=>{
-      const data = await getUserEntries()
-      console.log(data)
-      setUserEntriesData(data)
-    }
-    
-  useEffect(()=>{
-    fetchUserEntriesData()
-  }, [])
+  const fetchUserEntriesData = async () => {
+    const data = await getUserEntries();
+    console.log(data);
+    setUserEntriesData(data);
+  };
+
+  useEffect(() => {
+    fetchUserEntriesData();
+  }, []);
 
   return (
-<Layout>
+    <Layout>
       <div className="max-w-6xl mx-auto  rounded-md p-6">
         <h1 className="text-lg font-medium  w-full text-start px-5 py-1 rounded-t-md bg-[#004f9e]   text-white tracking-tight">
           Customer Master Form
@@ -478,8 +474,6 @@ const ApplicationForm = () => {
         />
       </div>
     </Layout>
-
-
   );
 };
 
