@@ -9,6 +9,7 @@ import SignupPage from "./pages/SignupPage";
 import CustomerApplication from "./pages/CustomerApplication";
 import ChitPrintPreview from "./pages/ChitPrintPreview";
 import ApplicationViewMaster from "./pages/ApplicationViewMaster";
+import ChitAgreement from "./pages/ChitAgreement"
 
 function App() {
 
@@ -22,6 +23,7 @@ function App() {
         <Route path="/customerapplication" element={<CustomerApplication />} />
         <Route path="/chit/print/:id" element={<ChitPrintPreview />} />
         <Route path="/viewapplications" element={<ApplicationViewMaster />} />
+        <Route path="/ChitAgreement" element={<ChitAgreement/>}/>
       </Routes>
     </Router>
     <ToastContainer />

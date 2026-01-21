@@ -149,7 +149,7 @@ const ChitPrintPreview = () => {
           {/* Letter Content */}
           <div className="mb-4 border-t-2 pt-3">
             <p className="text-sm mb-2">Dear Sir,</p>
-            <div className="text-sm mb-3">
+            <div className="text-xs mb-3">
               <p className="mb-2 text-justify ">
                 I/We (Name of the Co./Firm/Enterprises if applicant not
                 Individual)
@@ -330,7 +330,7 @@ const ChitPrintPreview = () => {
                   </p>
                 </div>
               </div>
-              <p className="text-base font-medium">Yours Faithfully,</p>
+              <p className="text-base font-medium mt-3">Yours Faithfully,</p>
             </div>
           </div>
         </div>
