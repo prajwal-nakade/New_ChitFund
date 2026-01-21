@@ -224,7 +224,8 @@ const ChitAgreement = () => {
 
           <div className="flex flex-col items-start w-full text-sm">
             <label>
-              Last date for Payment of Installment is <span className="text-red-500">*</span>
+              Last date for Payment of Installment is{" "}
+              <span className="text-red-500">*</span>
             </label>
             <input
               type="date"
@@ -233,6 +234,112 @@ const ChitAgreement = () => {
             />
           </div>
         </div>
+
+        <div className="w-full items-start px-3 py-1 border-t border-neutral-400">
+          <h2 className="text-base  font-medium">
+            Date of Commencement and termination of Chit{" "}
+          </h2>
+        </div>
+        <div className="flex w-full px-5 pb-2 border-neutral-200 gap-4">
+          <div className="flex flex-col items-start w-full text-sm  ">
+            <label>
+              Date of Commencement <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="date"
+              placeholder="Date of Commencement "
+              className="border border-neutral-300 w-full rounded-md px-3 py-1"
+            />
+          </div>
+
+          <div className="flex flex-col items-start w-full text-sm">
+            <label>
+              Date of Termination <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="date"
+              placeholder="Date of Termination
+             "
+              className="border border-neutral-300 w-full rounded-md px-3 py-1"
+            />
+          </div>
+        </div>
+
+        <div className="w-full items-start px-3 pt-2 border-t border-neutral-400">
+          <h2 className="text-base  font-medium">
+            The Date , time and Place at which the chit is to be Drawn
+          </h2>
+        </div>
+        <div className="flex w-full px-5 border-neutral-200 gap-4">
+          <div className="flex flex-col items-start w-full text-sm  ">
+            <label>
+              First Auction shall be held on{" "}
+              <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="date"
+              placeholder="Date of Commencement "
+              className="border border-neutral-300 w-full rounded-md px-3 py-1"
+            />
+          </div>
+
+          <div className="flex flex-col items-start w-full text-sm">
+            <label>
+              Subsequent Auction on Every{" "}
+              <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="date"
+              placeholder="Date of Termination
+             "
+              className="border border-neutral-300 w-full rounded-md px-3 py-1"
+            />
+          </div>
+        </div>
+
+        <div className="flex w-full px-5 border-neutral-200 gap-4">
+          <div className="flex flex-col items-start w-full text-sm">
+            <label>
+              Time 1 <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="time"
+              placeholder="Time of Auction"
+              className="border border-neutral-300 w-full rounded-md px-3 py-1"
+            />
+          </div>
+
+          <div className="flex flex-col items-start w-full text-sm">
+            <label>
+              Time 2 <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="time"
+              placeholder="Time of Auction"
+              className="border border-neutral-300 w-full rounded-md px-3 py-1"
+            />
+          </div>
+
+          <div className="flex flex-col items-start w-full text-sm">
+            <label>
+              at Foreman's offices situated at
+              <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              placeholder="Branch"
+              className="border border-neutral-300 w-full rounded-md px-3 py-1"
+            />
+          </div>
+        </div>
+
+        <div className="flex-col w-full px-5 border-neutral-200 border-t pt-3 gap-4">
+          <h1 className="text-base font-medium py-1">Registrar with whom the Bye-Laws have been Registered <span className="text-red-500">*</span> </h1>
+          <input type="text"
+          placeholder="Branch"
+          className="border border-neutral-300 w-full rounded-md px-3 py-1" />
+        </div>
+
 
         {/* Submit */}
         <div className="flex justify-center mt-4 pb-4">
