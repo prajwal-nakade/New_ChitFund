@@ -7,12 +7,14 @@ const Sidebar = () => {
 
   const Menus = [
     { title: "Customer Application", icon: <LayoutDashboard size={16} />, path: "/customerapplication" },
+    { title: "Chit Agreement", icon : <ClipboardList size={16}/>, path: "/ChitAgreement" },
     // { title: "Menu 2", icon: <LayoutDashboard size={16} />, path: "/menu2" },
   ];
 
   const masterSubMenus = [
     { title: "Customer Master Form", icon : <ClipboardType size={16}/>, path: "/application-form" },
     { title: "View Applications Masters", icon : <ClipboardList size={16}/>, path: "/viewapplications" },
+    
     // { title: "Drop 3", path: "/drop3" },
   ];
   return (
