@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import { Printer, Search } from "lucide-react";
+import { useNavigate } from "react-router";
 
 const ChitManagement = ({ data = [], fetchChitsData }) => {
+  const navigate = useNavigate()
   const [chitData, setChitData] = useState([]);
 
   useEffect(() => {
@@ -118,7 +120,7 @@ const ChitManagement = ({ data = [], fetchChitsData }) => {
                   <td className="border p-2 text-center">
                     {dayjs(item.created_at).format("DD MMM YYYY")}
                   </td>
-                  <td className="border relative group "><button className=" text-white w-full flex items-center justify-center text-center cursor-pointer"><div className="bg-green-500 p-1.5 shadow-sm rounded-md hover:bg-green-700"> 
+                  <td className="border relative group "><button onClick={()=> navigate(`/chit/print/${item.id}`)} className=" text-white w-full flex items-center justify-center text-center cursor-pointer"><div className="bg-green-500 p-1.5 shadow-sm rounded-md hover:bg-green-700"> 
                     <span className="bg-black text-white shadow-sm px-4 py-1 rounded-md text-xs tracking-tight opacity-0 absolute group-hover:opacity-100 -top-6 right-3">Print</span>
                     <Printer size={18}/></div></button></td>
                 </tr>
