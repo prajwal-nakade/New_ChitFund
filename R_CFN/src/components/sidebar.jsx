@@ -6,13 +6,16 @@ const Sidebar = () => {
   const [isMasterOpen, setIsMasterOpen] = useState(false);
 
   const Menus = [
-    { title: "Customer Application", icon: <LayoutDashboard size={16} />, path: "/customerapplication" },
+    { title: "Application Form", icon: <LayoutDashboard size={16} />, path: "/customerapplication" },
+    { title: "View Applications", icon : <ClipboardList size={16}/>, path: "/viewapplications" },
+    { title: "Chit Agreement", icon : <ClipboardList size={16}/>, path: "/ChitAgreement" },
     // { title: "Menu 2", icon: <LayoutDashboard size={16} />, path: "/menu2" },
   ];
 
   const masterSubMenus = [
-    { title: "Customer Master Form", icon : <ClipboardType size={16}/>, path: "/application-form" },
-    { title: "View Applications Masters", icon : <ClipboardList size={16}/>, path: "/viewapplications" },
+    { title: "Customer Master", icon : <ClipboardType size={16}/>, path: "/application-form" },
+    { title: "Branch Master", icon : <ClipboardType size={16}/>, path: "/branch-master" },
+    
     // { title: "Drop 3", path: "/drop3" },
   ];
   return (
@@ -35,7 +38,7 @@ const Sidebar = () => {
                   `flex font-medium text-sm items-center gap-3 w-full px-3 py-2 group
                                     ${
                                       isActive
-                                        ?  "text-white hover:bg-[#06c] hover:text-white transition-all duration-300"
+                                        ?  "text-white bg-[#06c] hover:bg-[#06c] hover:text-white transition-all duration-300"
                                         : " text-white hover:bg-[#06c] hover:text-white transition-all duration-300"
                                     }`
                 }
@@ -44,7 +47,7 @@ const Sidebar = () => {
                   <>
                     <span
                       className={`transition-transform duration-200 ${
-                        isActive ? "scale-105" : "group-hover:scale-105"
+                        isActive ? "scale-105 " : "group-hover:scale-105"
                       }`}
                     >
                       {items.icon}
@@ -80,7 +83,7 @@ const Sidebar = () => {
                         `flex font-medium text-xs items-center gap-2 w-full px-3 py-2 group
                                           ${
                                             isActive
-                                              ? " text-white hover:bg-[#06c] hover:text-white transition-all duration-300"
+                                              ? " text-white bg-[#06c] hover:bg-[#06c] hover:text-white transition-all duration-300"
                                               : " text-white hover:bg-[#06c] hover:text-white transition-all duration-300"
                                           }`
                       }

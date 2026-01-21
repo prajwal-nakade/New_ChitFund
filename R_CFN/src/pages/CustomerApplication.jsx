@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import Layout from '../components/layout'
-import { Loader2, Search } from 'lucide-react'
+import { Loader2, Search, X } from 'lucide-react'
 import { createChit, getUserEntries } from '../api/endpoint'
 import { UserContext } from '../context/UserContext'
 import { toast } from 'react-toastify'
@@ -13,6 +13,7 @@ const CustomerApplication = () => {
   const [search, setSearch] = useState("")
   const [data, setData] = useState([])
   const [selectedUserID, setSelectedUserID] = useState(null)
+  const [userApplications, setUserApplication] = useState([])
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -27,10 +28,12 @@ const CustomerApplication = () => {
       return
     }
 
-    const keyword = value.trim()
-    const filtered = userData.filter(f =>
-      String(f?.mobile_no).includes(keyword)
-    )
+    const keyword = value.trim().toLowerCase()
+    const filtered = userData.filter((f) =>
+      String(f?.CustomerID || "")
+        .toLowerCase()
+        .includes(keyword)
+      || f?.mobile_no.toLowerCase().includes(keyword))
 
     setData(filtered)
   }
@@ -106,6 +109,9 @@ const CustomerApplication = () => {
       nomineeDob: user.nominees[0].dob || "",
       nomineeMobile: user.nominees[0].mobile_no || "",
     })
+
+    const application = allchitData.filter(chit => chit.user === user.id || chit.user?.id === user.id)
+    setUserApplication(application)
   }
 
   const handleSubmit = async (e) => {
@@ -121,9 +127,9 @@ const CustomerApplication = () => {
         }
         const data = await createChit(payload)
         console.log(data)
-        toast.success('Chit created successfully')
+        toast.success(`Chit created successfully with Application ID: ${data.application_id}`)
         setTimeout(() => {
-          navigate(`/chit/print/${data.data.id}`)
+          navigate(`/chit/print/${data.id}`)
         }, 2000)
 
       }
@@ -133,6 +139,19 @@ const CustomerApplication = () => {
     } finally {
       setLoading(false)
     }
+  }
+
+  const autoFillChitDetails = (chit) => {
+    setChitData({
+      ByLawsNumber: chit.ByLawsNumber || "",
+      BylawsDate: chit.BylawsDate || "",
+      GroupCode: chit.GroupCode || "",
+      TicketNmber: chit.TicketNmber || "",
+      ChitValue:chit.ChitValue || "",
+      Duration: chit.Duration || "",
+      DurationCategory: chit.DurationCategory || "",
+      branch: chit.branch || ""
+    })
   }
 
   return (
@@ -145,43 +164,90 @@ const CustomerApplication = () => {
           onSubmit={handleSubmit}
           className="flex flex-col gap-4 w-full bg-white px-5 py-3 shadow-lg rounded-b-md border border-neutral-300"
         >
-          <div className="flex items-center relative">
-            <div className="absolute bg-gray-200 h-full rounded-l-md  border border-neutral-300 px-2">
-              <Search size={14} className="text-neutral-500 mt-2" />
+          <div className='flex items-center gap-3'>
+            <div className="flex items-center relative">
+              <div className="absolute bg-gray-200 h-full rounded-l-md  border border-neutral-300 px-2">
+                <Search size={14} className="text-neutral-500 mt-2" />
+              </div>
+              <input
+                onChange={(e) => handleSearch(e.target.value)}
+                value={search}
+                type="text"
+                className="border border-neutral-300 shadow-sm text-neutral-800 text-sm px-10 py-1 placeholder:text-xs rounded-md w-78 outline-none uppercase"
+                placeholder="Enter CustomerID or mobile no."
+              />
+              {search && data.length > 0 && (
+                <div className="absolute top-full left-0 w-78 bg-white border border-neutral-300 rounded shadow z-10">
+                  {data.map(item => (
+                    <div
+                      key={item.id}
+                      className="px-3 py-2 text-sm hover:bg-gray-100 cursor-pointer"
+                      onClick={() => {
+                        setData([])
+                        setSearch(item.CustomerID)
+                        autofillUser(item)
+                      }}
+                    >
+                      {item.firstname} – {item.mobile_no}
+                    </div>
+                  ))}
+                </div>
+              )}
+
             </div>
-            <input
-              onChange={(e) => handleSearch(e.target.value)}
-              value={search}
-              type="text"
-              className="border border-neutral-300 shadow-sm text-neutral-800 text-sm px-10 py-1 placeholder:text-xs rounded-md w-64 outline-none"
-              placeholder="Enter CustomerID"
-            />
-            {search && data.length > 0 && (
-              <div className="absolute top-full left-0 w-64 bg-white border border-neutral-300 rounded shadow z-10">
-                {data.map(item => (
+
+
+            <div className="flex items-center">
+              <input
+                type="text"
+                disabled
+                className="border border-neutral-300 shadow-sm text-neutral-800 text-sm px-3 py-1 placeholder:text-xs rounded-md w-64 outline-none uppercase cursor-not-allowed bg-slate-50"
+                placeholder="Application ID"
+              />
+            </div>
+          </div>
+          {userApplications.length > 0 && (
+            <div className="mt-3 border border-neutral-300 rounded-md bg-white shadow-sm w-full">
+              <div className="text-sm font-medium px-4 py-2 bg-slate-100 w-full flex items-center justify-between">
+                <h3 className='w-full'>Previous Applications</h3>
+                <button onClick={() => setUserApplication([])} className='w-full items-end justify-end flex'>
+                  <X size={18} className="text-red-500" />
+                </button>
+              </div>
+
+              <div className="divide-y">
+                {userApplications.map(app => (
                   <div
-                    key={item.id}
-                    className="px-3 py-2 text-sm hover:bg-gray-100 cursor-pointer"
-                    onClick={() => {
-                      setData([])
-                      setSearch(item.mobile_no)
-                      autofillUser(item)
-                    }}
+                    key={app.id}
+                    className="flex justify-between items-center px-4 py-2 text-sm hover:bg-gray-50"
                   >
-                    {item.firstname} – {item.mobile_no}
+                    <div onClick={()=>autoFillChitDetails(app)}>
+                      <p className="font-medium">
+                        APP_ID - {app.application_id}
+                      </p>
+                      <p className="text-neutral-500">
+                        {app.GroupCode} • ₹{app.ChitValue}
+                      </p>
+                    </div>
+
+                    <button
+                      onClick={() => navigate(`/chit/print/${app.id}`)}
+                      className="text-blue-600 text-xs hover:underline"
+                    >
+                      View
+                    </button>
                   </div>
                 ))}
               </div>
-            )}
-
-          </div>
+            </div>
+          )}
           <h1 className="text-md font-medium mb-3 w-full text-start px-5 py-2 shadow-sm text-white bg-[#004f9e] rounded-md  tracking-tight">
             Chit Details
           </h1>
 
           <div className="flex flex-col sm:flex-row items-center w-full gap-4">
             <div className="flex flex-col items-start w-full text-sm">
-              <label>Bylaws No. <span className="text-red-500">*</span></label>
+              <label>Byelaws No. <span className="text-red-500">*</span></label>
               <input
                 className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
                 name="ByLawsNumber"
@@ -192,7 +258,7 @@ const CustomerApplication = () => {
               />
             </div>
             <div className="flex flex-col items-start w-full text-sm">
-              <label className="text-sm">Bylaws Date <span className="text-red-500">*</span></label>
+              <label className="text-sm">Byelaws Date <span className="text-red-500">*</span></label>
               <input
                 className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
                 name="BylawsDate"

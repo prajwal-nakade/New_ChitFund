@@ -1,4 +1,4 @@
-from django.db import models
+from django.db import models, transaction
 from django.contrib.auth.models import AbstractUser
 
 class Users(models.Model):
@@ -7,8 +7,29 @@ class Users(models.Model):
         on_delete=models.CASCADE,
         related_name="profile",
         null=True,      # TEMP
-        blank=True
+        blank=True,
     )
+    CustomerID = models.CharField(max_length=20, unique=True, null=True, blank=True, editable=False)
+    def save(self, *args, **kwargs):
+        if not self.CustomerID:
+            with transaction.atomic():
+                last_user = (
+                    Users.objects
+                    .select_for_update()
+                    .exclude(CustomerID__isnull=True)
+                    .order_by('-id')
+                    .first()
+                )
+
+                if last_user and last_user.CustomerID:
+                    last_number = int(last_user.CustomerID.replace("CUST", ""))
+                else:
+                    last_number = 0
+
+                self.CustomerID = f"CUST{last_number + 1:05d}"
+
+        super().save(*args, **kwargs)
+
     firstname = models.CharField(max_length=50)
     middlename = models.CharField(max_length=50, blank=True, null=True)
     lastname = models.CharField(max_length=50, blank=True, null=True)
@@ -77,6 +98,11 @@ class Branch(models.Model):
     
     
 class ChitDetails(models.Model):
+    application_id = models.PositiveBigIntegerField(
+        unique=True,
+        null=True,
+        editable=False
+    )
     user = models.ForeignKey(Users, on_delete=models.CASCADE)
     branch = models.ForeignKey(Branch, on_delete=models.CASCADE)
     ByLawsNumber = models.CharField(max_length=50)
@@ -88,6 +114,22 @@ class ChitDetails(models.Model):
     DurationCategory = models.CharField(max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    
+    def save(self, *args, **kwargs):
+        if not self.application_id:
+            with transaction.atomic():
+                last_app = (
+                    ChitDetails.objects
+                    .select_for_update()
+                    .order_by("-application_id")
+                    .exclude(application_id__isnull=True)
+                    .first()
+                )
+                self.application_id = (
+                    last_app.application_id + 1 if last_app else 1
+                )
+
+        super().save(*args, **kwargs)
     
     def __str__(self):
         return self.ByLawsNumber

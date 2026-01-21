@@ -51,7 +51,7 @@ class GetAllEntriesSerializer(serializers.ModelSerializer):
         fields = ['id', 'firstname', 'middlename', 'lastname', 'mobile_no', 'dob', 'email',
             'permanent_address', 'pincode','created_at',
             'pancard_no', 'aadharcard_no',
-            'pan_image', 'aadhar_image', 'nominees', 'status']
+            'pan_image', 'aadhar_image', 'nominees', 'status', 'CustomerID']
 
 class UserSerializer(serializers.ModelSerializer):
     nominees = NomineeSerializer(many = True,read_only=True)
@@ -154,10 +154,10 @@ class BranchSerializer(serializers.ModelSerializer):
         
 class ChitDetailCreationSerializer(serializers.ModelSerializer):
     branchName = serializers.CharField(source='branch.branchName', read_only=True)
-    
+    application_id = serializers.IntegerField(read_only=True)
     class Meta:
         model = ChitDetails
-        fields = ['id', 'user', 'branch', 'ByLawsNumber', 'BylawsDate', 'GroupCode', 'TicketNmber', 'ChitValue', 'Duration', 'DurationCategory', 'created_at', 'updated_at', 'branchName']
+        fields = ['id', 'user', 'branch', 'ByLawsNumber', 'BylawsDate', 'GroupCode', 'TicketNmber', 'ChitValue', 'Duration', 'DurationCategory', 'created_at', 'updated_at', 'branchName', 'application_id']
         
 class ChitDetailSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
@@ -165,7 +165,7 @@ class ChitDetailSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = ChitDetails
-        fields = ['id', 'user','branch', 'ByLawsNumber', 'BylawsDate', 'GroupCode', 'TicketNmber', 'ChitValue', 'Duration', 'DurationCategory', 'created_at', 'updated_at', 'branchName']
+        fields = ['id', 'user','branch', 'ByLawsNumber', 'BylawsDate', 'GroupCode', 'TicketNmber', 'ChitValue', 'Duration', 'DurationCategory', 'created_at', 'updated_at', 'branchName', 'application_id']
         
 
 
