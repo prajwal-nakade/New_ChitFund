@@ -461,13 +461,13 @@ const ApplicationForm = () => {
 
           <div className="flex justify-center mt-4 pb-3">
             {loading ? (
-              <button className="px-6 py-1 bg-red-700 transition-all duration-300 cursor-pointer text-white rounded-md text-sm shadow-md flex items-center gap-2">
+              <button className="px-6 py-1 bg-[#06c] transition-all duration-300 cursor-pointer text-white rounded-md text-sm shadow-md flex items-center gap-2">
                 <Loader2 size={18} className="animate-spin" />
-                Submiting Application...
+                Registering Customer...
               </button>
             ) : (
               <button className="px-6 py-1 bg-[#004f9e] hover:bg-[#06c] transition-all duration-300 cursor-pointer text-white rounded-md text-sm shadow-md">
-                Submit Application
+                Register Customer
               </button>
             )}
           </div>

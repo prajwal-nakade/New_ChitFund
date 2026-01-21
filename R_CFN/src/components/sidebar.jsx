@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { LayoutDashboard, Form, ChevronDown, ClipboardType, icons } from "lucide-react";
+import { LayoutDashboard, Form, ChevronDown, ClipboardType, ClipboardList } from "lucide-react";
 import { Link, NavLink } from "react-router-dom";
 
 const Sidebar = () => {
@@ -12,7 +12,7 @@ const Sidebar = () => {
 
   const masterSubMenus = [
     { title: "Customer Master Form", icon : <ClipboardType size={16}/>, path: "/application-form" },
-    // { title: "Drop 2", path: "/drop2" },
+    { title: "View Applications Masters", icon : <ClipboardList size={16}/>, path: "/viewapplications" },
     // { title: "Drop 3", path: "/drop3" },
   ];
   return (

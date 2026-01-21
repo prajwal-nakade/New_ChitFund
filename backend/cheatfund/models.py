@@ -12,7 +12,7 @@ class Users(models.Model):
     firstname = models.CharField(max_length=50)
     middlename = models.CharField(max_length=50, blank=True, null=True)
     lastname = models.CharField(max_length=50, blank=True, null=True)
-    mobile_no = models.CharField(max_length=15, unique=True)
+    mobile_no = models.CharField(max_length=15)
     dob = models.DateField()
     email = models.EmailField(max_length=50, unique=True)
     permanent_address = models.CharField(max_length=300)
@@ -51,7 +51,7 @@ class Nominee(models.Model):
     firstname = models.CharField(max_length=50, blank=True, null=True)
     middlename = models.CharField(max_length=50, blank=True, null=True)
     lastname = models.CharField(max_length=50, blank=True, null=True)
-    mobile_no = models.CharField(max_length=15, unique=True)
+    mobile_no = models.CharField(max_length=15)
     dob = models.DateField()
     relationship = models.CharField(max_length=30)
 
