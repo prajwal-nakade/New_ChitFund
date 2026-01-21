@@ -304,7 +304,7 @@ const ApplicationForm = () => {
                         type="file"
                         hidden
                         name="pan_image"
-                        accept="image/*"
+                        accept=".png,.jpg,.jpeg"
                         onChange={handleImageChange}
                         required
                       />
@@ -343,7 +343,7 @@ const ApplicationForm = () => {
                         type="file"
                         hidden
                         name="aadhar_image"
-                        accept="image/*"
+                        accept=".png,.jpg,.jpeg"
                         onChange={handleImageChange}
                         required
                       />

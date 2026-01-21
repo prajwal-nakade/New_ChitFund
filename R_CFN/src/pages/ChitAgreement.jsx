@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Layout from "../components/layout";
 
-const AgreementOfChit = () => {
+const ChitAgreement = () => {
   const [formData, setFormData] = useState({
     srNo: "",
     branch: "",
@@ -248,4 +248,4 @@ const AgreementOfChit = () => {
   );
 };
 
-export default AgreementOfChit;
+export default ChitAgreement;

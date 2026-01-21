@@ -160,7 +160,7 @@ def create_chitDetail(request):
     serializer = ChitDetailCreationSerializer(data = request.data)
     if serializer.is_valid():
         serializer.save()
-        return Response({'success' : True, 'data' : serializer.data}, status=200)
+        return Response({'success' : True, **serializer.data}, status=200)
     return Response({'success' : False}, serializer.errors, status=400)
 
 @api_view(['GET'])

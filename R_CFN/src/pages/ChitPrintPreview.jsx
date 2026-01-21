@@ -69,10 +69,10 @@ const ChitPrintPreview = () => {
             <p>CIN NO.U64990MH2023PTC400938</p>
           </div>
           <div className="flex items-center justify-center w-full  ">
-            <img src="/Logo2.png" alt="" width={100}/>
+            <img src="/Logo2.png" alt="" width={100} />
             <div className="mx-auto text-center mb-4 pt-2 flex flex-col justify-center items-center w-full">
               <img src="/Logo.png" alt="" width={300} />
-              <div className="text-xs border-t border-neutral-300 pt-2">
+              <div className="text-xs pt-2">
                 <p>
                   Plot No.7, Gut No.216, Satara Road, Near Ahilyabai Holkar
                   Chauk, Satara Parisar, Chh. Sambhajinagar.
@@ -98,6 +98,14 @@ const ChitPrintPreview = () => {
                   </span>
                 </div>
               </div>
+              <div className="flex items-center w-1/3">
+                <label className="w-50 text-sm font-medium">Byelaws Date:</label>
+                <div className="border-b border-gray-800 w-full text-center">
+                  <span className="font-medium text-sm">
+                    {chitDetails.BylawsDate}
+                  </span>
+                </div>
+              </div>
 
               <div className="flex items-center w-1/3">
                 <label className="w-28 text-sm font-medium">Group Code:</label>
@@ -108,6 +116,10 @@ const ChitPrintPreview = () => {
                 </div>
               </div>
 
+
+            </div>
+
+            <div className="flex justify-between">
               <div className="flex items-center w-1/3">
                 <label className="w-20 text-sm font-medium">TKT No.:</label>
                 <div className="border-b border-gray-800 flex-1 text-center">
@@ -116,9 +128,6 @@ const ChitPrintPreview = () => {
                   </span>
                 </div>
               </div>
-            </div>
-
-            <div className="flex justify-between">
               <div className="flex items-center w-1/3">
                 <label className="w-24 text-sm font-medium">Chit Value:</label>
                 <div className="border-b border-gray-800 flex-1 text-center">
@@ -320,7 +329,7 @@ const ChitPrintPreview = () => {
                   Declaration cum Authority for Bidding at Maximum Discount
                 </h1>
                 <div className="  rounded-md  py-1">
-                  <p className="text-sm tracking-wide text-neutral-600 text-justify">
+                  <p className="text-xs tracking-wide text-neutral-600 text-justify">
                     <span className="ms-15"></span> I/We am/are willing to avail
                     prized value at maximum discount of 40% of the chit value
                     and here by authorize the Foreman company to include my/our
@@ -330,7 +339,7 @@ const ChitPrintPreview = () => {
                   </p>
                 </div>
               </div>
-              <p className="text-base font-medium mt-3">Yours Faithfully,</p>
+              <p className="text-base font-medium mt-4">Yours Faithfully,</p>
             </div>
           </div>
         </div>
