@@ -38,7 +38,7 @@ export const UserContextProvider = (props)=>{
 
     
     const value = {
-        userData, branchData, fetchBranchData, fetchChitsData, allchitData
+        userData, branchData, fetchBranchData, fetchChitsData, allchitData, fetchUserEntriesData
     }
 
     return(

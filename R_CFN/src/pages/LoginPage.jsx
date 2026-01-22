@@ -37,6 +37,7 @@ function LoginPage() {
                 toast.error('Invalid Credentials')
             }
         } catch (error) {
+            toast.error('Invalid Credentials')
             console.log(error.message)
             setLoading(false)
         } finally {
