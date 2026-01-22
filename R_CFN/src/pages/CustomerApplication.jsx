@@ -13,6 +13,7 @@ const CustomerApplication = () => {
   const [search, setSearch] = useState("")
   const [data, setData] = useState([])
   const [selectedUserID, setSelectedUserID] = useState(null)
+  const [selectedApplicatioID, setSelectedApplicationID] = useState(null)
   const [userApplications, setUserApplication] = useState([])
   const navigate = useNavigate()
 
@@ -142,6 +143,7 @@ const CustomerApplication = () => {
   }
 
   const autoFillChitDetails = (chit) => {
+    setSelectedApplicationID(chit.application_id)
     setChitData({
       ByLawsNumber: chit.ByLawsNumber || "",
       BylawsDate: chit.BylawsDate || "",
@@ -201,7 +203,8 @@ const CustomerApplication = () => {
               <input
                 type="text"
                 disabled
-                className="border border-neutral-300 shadow-sm text-neutral-800 text-sm px-3 py-1 placeholder:text-xs rounded-md w-64 outline-none uppercase cursor-not-allowed bg-slate-50"
+                value={`Application No. : ${selectedApplicatioID || "" }`}
+                className="border border-neutral-300 shadow-sm text-neutral-800 text-xs px-3 py-1 placeholder:text-xs rounded-md w-64 outline-none uppercase cursor-not-allowed bg-slate-50 text-center"
                 placeholder="Application ID"
               />
             </div>
@@ -231,6 +234,7 @@ const CustomerApplication = () => {
                     </div>
 
                     <button
+                    type="button"
                       onClick={() => navigate(`/chit/print/${app.id}`)}
                       className="text-blue-600 text-xs hover:underline"
                     >
