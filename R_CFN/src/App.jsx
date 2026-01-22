@@ -25,7 +25,7 @@ function App() {
         <Route path="/chit/print/:id" element={<ChitPrintPreview />} />
         <Route path="/viewapplications" element={<ApplicationViewMaster />} />
         <Route path="/ChitAgreement" element={<ChitAgreement />} />
-        <Route path="/agreementprintpreview" element={<AgreementPrintPreview/>}/>
+        <Route path="/AgreementPrintPreview" element={<AgreementPrintPreview />} />
       </Routes>
     </Router>
     <ToastContainer />

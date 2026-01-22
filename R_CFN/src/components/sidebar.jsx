@@ -1,21 +1,21 @@
 import React, { useContext, useState } from "react";
-import { LayoutDashboard, Form, ChevronDown, ClipboardType, ClipboardList } from "lucide-react";
+import { LayoutDashboard, Form, ChevronDown, ClipboardType, ClipboardList, User, MapPin, GraduationCap, Handshake, Table, Table2 } from "lucide-react";
 import { Link, NavLink } from "react-router-dom";
 
 const Sidebar = () => {
   const [isMasterOpen, setIsMasterOpen] = useState(false);
 
   const Menus = [
-    { title: "Application Form", icon: <LayoutDashboard size={16} />, path: "/customerapplication" },
-    { title: "View Applications", icon : <ClipboardList size={16}/>, path: "/viewapplications" },
-    { title: "Chit Agreement", icon : <ClipboardList size={16}/>, path: "/ChitAgreement" },
+    { title: "Application Form", icon: <ClipboardList size={16} />, path: "/customerapplication" },
+    { title: "View Applications", icon : <Table2 size={16}/>, path: "/viewapplications" },
+    { title: "Chit Agreement", icon : <Handshake size={16}/>, path: "/ChitAgreement" },
     { title: "Agreement Print Preview", icon : <ClipboardList size={16}/>, path: "/AgreementPrintPreview" },
     // { title: "Menu 2", icon: <LayoutDashboard size={16} />, path: "/menu2" },
   ];
 
   const masterSubMenus = [
-    { title: "Customer Master", icon : <ClipboardType size={16}/>, path: "/application-form" },
-    { title: "Branch Master", icon : <ClipboardType size={16}/>, path: "/branch-master" },
+    { title: "Customer Master", icon : <User size={16}/>, path: "/application-form" },
+    { title: "Branch Master", icon : <MapPin size={16}/>, path: "/branch-master" },
     
     // { title: "Drop 3", path: "/drop3" },
   ];
@@ -23,11 +23,11 @@ const Sidebar = () => {
     <div className="flex h-screen w-60 overflow-hidden opacity-0 lg:opacity-100 bg-[#004f9e]  ">
       <aside className="flex flex-col h-full w-full ">
         <div className="flex  w-full items-center justify-start ps-4 gap-2 py-4 bg-[#004f9e] border-neutral-300">
-          
+          <Link to={"/"}>
             <div className="mx-auto text-center mb-4  me-3 flex flex-col justify-center items-center  ">
               <img src="/Logo3.jpeg" alt="" width={300}/>
             </div>
-          
+          </Link>
         </div>
         <div className="w-55 flex-1 mx-auto py-4 space-y-4">
           <div className="w-full flex flex-col items-start justify-start gap-1 py-2 space-y-3 ">
@@ -64,7 +64,7 @@ const Sidebar = () => {
                 className="flex font-medium text-sm items-center gap-3 w-full px-3 py-2 group text-white hover:bg-[#06c] hover:text-white transition-all duration-300"
               >
                 <span className="transition-transform duration-200 group-hover:scale-105">
-                  <Form size={16} />
+                  <GraduationCap size={16} />
                 </span>
                 Masters
                 <ChevronDown

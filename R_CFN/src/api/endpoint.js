@@ -17,7 +17,6 @@ export const userEntry = async (payload) => {
     });
     return response.data;
   } catch (error) {
-    console.error("API Error:", error.response?.data || error.message);
     throw error;
   }
 };

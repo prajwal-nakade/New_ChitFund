@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import Layout from '../components/layout'
-import { Loader2, Search, X } from 'lucide-react'
+import { BrushCleaning, Loader2, Search, X } from 'lucide-react'
 import { createChit, getUserEntries } from '../api/endpoint'
 import { UserContext } from '../context/UserContext'
 import { toast } from 'react-toastify'
@@ -149,10 +149,44 @@ const CustomerApplication = () => {
       BylawsDate: chit.BylawsDate || "",
       GroupCode: chit.GroupCode || "",
       TicketNmber: chit.TicketNmber || "",
-      ChitValue:chit.ChitValue || "",
+      ChitValue: chit.ChitValue || "",
       Duration: chit.Duration || "",
       DurationCategory: chit.DurationCategory || "",
       branch: chit.branch || ""
+    })
+  }
+
+  const resetInput = () => {
+    setChitData({
+      ByLawsNumber: "",
+      BylawsDate: "",
+      GroupCode: "",
+      TicketNmber: "",
+      ChitValue: "",
+      Duration: "",
+      DurationCategory: "",
+      branch: ""
+    })
+
+    setNomineeData({
+      nominee_firstname: "",
+      nominee_middlename: "",
+      nominee_lastname: "",
+      relationship: "",
+      nomineeDob: "",
+      nomineeMobile: "",
+    })
+    setFormData({
+      firstName: "",
+      middleName: "",
+      lastName: "",
+      mobile: "",
+      dob: "",
+      email: "",
+      address: "",
+      pincode: "",
+      pan: "",
+      aadhar: "",
     })
   }
 
@@ -203,10 +237,13 @@ const CustomerApplication = () => {
               <input
                 type="text"
                 disabled
-                value={`Application No. : ${selectedApplicatioID || "" }`}
+                value={`Application No. : ${selectedApplicatioID || ""}`}
                 className="border border-neutral-300 shadow-sm text-neutral-800 text-xs px-3 py-1 placeholder:text-xs rounded-md w-64 outline-none uppercase cursor-not-allowed bg-slate-50 text-center"
                 placeholder="Application ID"
               />
+            </div>
+            <div className='flex items-center justify-end w-full '>
+              <button type='button' onClick={() => resetInput()} className='border border-neutral-300 px-4 py-1 rounded-md shadow-sm text-sm flex items-center gap-2 hover:bg-gray-50 transition-colors duration-300 cursor-pointer'><BrushCleaning size={14} className='text-neutral-500' />Reset</button>
             </div>
           </div>
           {userApplications.length > 0 && (
@@ -219,12 +256,17 @@ const CustomerApplication = () => {
               </div>
 
               <div className="divide-y">
+                {!userApplications && (
+                  <div className='flex items-center justify-center w-full'>
+                    <h1>Customer has 0 Application</h1>
+                  </div>
+                )}
                 {userApplications.map(app => (
                   <div
                     key={app.id}
                     className="flex justify-between items-center px-4 py-2 text-sm hover:bg-gray-50"
                   >
-                    <div onClick={()=>autoFillChitDetails(app)}>
+                    <div onClick={() => autoFillChitDetails(app)} className='cursor-pointer'>
                       <p className="font-medium">
                         APP_ID - {app.application_id}
                       </p>
@@ -234,7 +276,7 @@ const CustomerApplication = () => {
                     </div>
 
                     <button
-                    type="button"
+                      type="button"
                       onClick={() => navigate(`/chit/print/${app.id}`)}
                       className="text-blue-600 text-xs hover:underline"
                     >
@@ -596,11 +638,11 @@ const CustomerApplication = () => {
             {loading ? (
               <button className="px-6 py-1 bg-[#06c] transition-all duration-300 cursor-pointer text-white rounded-md text-sm shadow-md flex items-center gap-2">
                 <Loader2 size={18} className="animate-spin" />
-                Registering User...
+                Registering Customer...
               </button>
             ) : (
               <button className="px-6 py-1 text-white bg-[#004f9e] hover:bg-[#06c] transition-all duration-300 cursor-pointer  rounded-md text-sm shadow-md">
-                Register User
+                Register Customer
               </button>
             )}
           </div>

@@ -22,7 +22,7 @@ class CustomTokenObtainPairView(TokenObtainPairView):
             
             res = Response()
             
-            res.data = {"success" : True}
+            res.data = {"success" : True, "message" : "Login Successfull"}
             res.set_cookie(
                 key = 'access_token',
                 value = access_token,
@@ -42,7 +42,7 @@ class CustomTokenObtainPairView(TokenObtainPairView):
             return res
         except Exception as e:
                 return Response(
-        {'success': False, 'error': str(e)},
+        {'success': False, 'message': "Invalid Credentials"},
         status=400
     )
 
@@ -60,7 +60,7 @@ def userEntry(request):
             status=201
         )
 
-    return Response(serializer.errors, status=400)
+    return Response({**serializer.errors}, status=400)
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])

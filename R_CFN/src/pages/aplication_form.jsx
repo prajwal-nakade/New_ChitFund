@@ -1,11 +1,14 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Layout from "../components/layout";
 import { getUserEntries, userEntry } from "../api/endpoint";
 import { Factory, Loader2, X } from "lucide-react";
 import { toast } from "react-toastify";
 import UserManagement from "../components/UserManagement";
+import { UserContext } from "../context/UserContext";
+
 
 const ApplicationForm = () => {
+  // const { fetchUserEntriesData } = useContext(UserContext)
   const [formData, setFormData] = useState({
     firstName: "",
     middleName: "",
@@ -21,9 +24,11 @@ const ApplicationForm = () => {
     aadhar_image: null,
   });
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false)
 
-  const [userEntriesData, setUserEntriesData] = useState([]);
+  const [userEntriesData, setUserEntriesData] = useState([])
+
+
 
   const [nomineeData, setNomineeData] = useState({
     nominee_firstname: "",
@@ -79,6 +84,18 @@ const ApplicationForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!formData.pan_image && !formData.aadhar_image) {
+      toast.error("PAN & Aadhar image is required")
+      return
+    }
+    if (!formData.aadhar_image) {
+      toast.error("Aadhar image is required")
+      return
+    }
+    if (!formData.pan_image) {
+      toast.error("PAN image is required")
+      return
+    }
 
     const data = new FormData();
     data.append("firstname", formData.firstName);
@@ -93,8 +110,7 @@ const ApplicationForm = () => {
     data.append("aadharcard_no", formData.aadhar);
 
     if (formData.pan_image) data.append("pan_image", formData.pan_image);
-    if (formData.aadhar_image)
-      data.append("aadhar_image", formData.aadhar_image);
+    if (formData.aadhar_image) data.append("aadhar_image", formData.aadhar_image);
 
     data.append("nominee_firstname", nomineeData.nominee_firstname);
     data.append("nominee_middlename", nomineeData.nominee_middlename);
@@ -104,10 +120,10 @@ const ApplicationForm = () => {
     data.append("relationship", nomineeData.relationship);
 
     try {
-      setLoading(true);
+      setLoading(true)
       const response = await userEntry(data);
       if (response.success) {
-        toast.success("User Application Submited!");
+        toast.success('User Application Submited!')
         setFormData({
           firstName: "",
           middleName: "",
@@ -121,7 +137,11 @@ const ApplicationForm = () => {
           aadhar: "",
           pan_image: null,
           aadhar_image: null,
-        });
+        })
+        setPreview({
+          pan_image: null,
+          aadhar_image: null,
+        })
         setNomineeData({
           nominee_firstname: "",
           nominee_middlename: "",
@@ -129,28 +149,42 @@ const ApplicationForm = () => {
           relationship: "",
           nomineeDob: "",
           nomineeMobile: "",
-        });
-        setUserEntriesData((prev) => [...prev, response]);
-      } else {
-        toast.error("Somthing went wrong");
+        })
+        await fetchUserEntriesData();
+
+      }
+      else {
+        toast.error('Somthing went wrong')
       }
       console.log(response);
     } catch (error) {
-      console.log(error.message);
-      setLoading(false);
+      const errors = error?.response?.data;
+
+      if (errors && typeof errors === "object") {
+        Object.values(errors).forEach((fieldErrors) => {
+          if (Array.isArray(fieldErrors)) {
+            fieldErrors.forEach((msg) => toast.error(msg));
+          } else {
+            toast.error(fieldErrors);
+          }
+        });
+      } else {
+        toast.error("Something went wrong. Please try again.");
+      }
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
+
   };
   const fetchUserEntriesData = async () => {
-    const data = await getUserEntries();
-    console.log(data);
-    setUserEntriesData(data);
-  };
+    const data = await getUserEntries()
+    console.log(data)
+    setUserEntriesData(data)
+  }
 
   useEffect(() => {
-    fetchUserEntriesData();
-  }, []);
+    fetchUserEntriesData()
+  }, [])
 
   return (
     <Layout>
@@ -306,7 +340,6 @@ const ApplicationForm = () => {
                         name="pan_image"
                         accept=".png,.jpg,.jpeg"
                         onChange={handleImageChange}
-                        required
                       />
                     </label>
                   </div>
@@ -345,7 +378,6 @@ const ApplicationForm = () => {
                         name="aadhar_image"
                         accept=".png,.jpg,.jpeg"
                         onChange={handleImageChange}
-                        required
                       />
                     </label>
                   </div>
@@ -370,88 +402,88 @@ const ApplicationForm = () => {
 
             <div className="px-5 py-3 flex flex-col gap-4">
               <div className="flex flex-col sm:flex-row gap-4 mt-4">
-              <div className="flex flex-col items-start w-full text-sm">
-                <label>
-                  First Name <span className="text-red-500">*</span>
-                </label>
-                <input
-                  className="w-full min-w-0 border px-3 py-1 rounded text-sm border-neutral-300"
-                  name="nominee_firstname"
-                  value={nomineeData.nominee_firstname}
-                  onChange={handleNomineeChange}
-                  placeholder="First Name"
-                  required
-                />
+                <div className="flex flex-col items-start w-full text-sm">
+                  <label>
+                    First Name <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    className="w-full min-w-0 border px-3 py-1 rounded text-sm border-neutral-300"
+                    name="nominee_firstname"
+                    value={nomineeData.nominee_firstname}
+                    onChange={handleNomineeChange}
+                    placeholder="First Name"
+                    required
+                  />
+                </div>
+                <div className="flex flex-col items-start w-full text-sm">
+                  <label>
+                    Middle Name <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    className="w-full min-w-0 border px-3 py-1 rounded text-sm border-neutral-300"
+                    name="nominee_middlename"
+                    value={nomineeData.nominee_middlename}
+                    onChange={handleNomineeChange}
+                    placeholder="Middle Name"
+                    required
+                  />
+                </div>
+                <div className="flex flex-col items-start w-full text-sm">
+                  <label>
+                    Last Name <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    className="w-full min-w-0 border px-3 py-1 rounded text-sm border-neutral-300"
+                    name="nominee_lastname"
+                    value={nomineeData.nominee_lastname}
+                    onChange={handleNomineeChange}
+                    placeholder="Last Name"
+                    required
+                  />
+                </div>
               </div>
-              <div className="flex flex-col items-start w-full text-sm">
-                <label>
-                  Middle Name <span className="text-red-500">*</span>
-                </label>
-                <input
-                  className="w-full min-w-0 border px-3 py-1 rounded text-sm border-neutral-300"
-                  name="nominee_middlename"
-                  value={nomineeData.nominee_middlename}
-                  onChange={handleNomineeChange}
-                  placeholder="Middle Name"
-                  required
-                />
-              </div>
-              <div className="flex flex-col items-start w-full text-sm">
-                <label>
-                  Last Name <span className="text-red-500">*</span>
-                </label>
-                <input
-                  className="w-full min-w-0 border px-3 py-1 rounded text-sm border-neutral-300"
-                  name="nominee_lastname"
-                  value={nomineeData.nominee_lastname}
-                  onChange={handleNomineeChange}
-                  placeholder="Last Name"
-                  required
-                />
-              </div>
-            </div>
 
-            <div className="flex flex-col sm:flex-row gap-4">
-              <div className="flex flex-col items-start w-full text-sm">
-                <label>
-                  Relationship <span className="text-red-500">*</span>
-                </label>
-                <input
-                  className="w-full min-w-0 border px-3 py-1 rounded text-sm border-neutral-300"
-                  name="relationship"
-                  value={nomineeData.relationship}
-                  onChange={handleNomineeChange}
-                  placeholder="Relationship"
-                  required
-                />
+              <div className="flex flex-col sm:flex-row gap-4">
+                <div className="flex flex-col items-start w-full text-sm">
+                  <label>
+                    Relationship <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    className="w-full min-w-0 border px-3 py-1 rounded text-sm border-neutral-300"
+                    name="relationship"
+                    value={nomineeData.relationship}
+                    onChange={handleNomineeChange}
+                    placeholder="Relationship"
+                    required
+                  />
+                </div>
+                <div className="flex flex-col items-start w-full text-sm">
+                  <label>
+                    Date of Birth <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="date"
+                    className="w-full min-w-0 border px-3 py-1 rounded text-sm border-neutral-300"
+                    name="nomineeDob"
+                    value={nomineeData.nomineeDob}
+                    onChange={handleNomineeChange}
+                    required
+                  />
+                </div>
+                <div className="flex flex-col items-start w-full text-sm">
+                  <label>
+                    Mobile Number <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    className="w-full min-w-0 border px-3 py-1 rounded text-sm border-neutral-300"
+                    name="nomineeMobile"
+                    value={nomineeData.nomineeMobile}
+                    onChange={handleNomineeChange}
+                    placeholder="Mobile"
+                    required
+                  />
+                </div>
               </div>
-              <div className="flex flex-col items-start w-full text-sm">
-                <label>
-                  Date of Birth <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="date"
-                  className="w-full min-w-0 border px-3 py-1 rounded text-sm border-neutral-300"
-                  name="nomineeDob"
-                  value={nomineeData.nomineeDob}
-                  onChange={handleNomineeChange}
-                  required
-                />
-              </div>
-              <div className="flex flex-col items-start w-full text-sm">
-                <label>
-                  Mobile Number <span className="text-red-500">*</span>
-                </label>
-                <input
-                  className="w-full min-w-0 border px-3 py-1 rounded text-sm border-neutral-300"
-                  name="nomineeMobile"
-                  value={nomineeData.nomineeMobile}
-                  onChange={handleNomineeChange}
-                  placeholder="Mobile"
-                  required
-                />
-              </div>
-            </div>
             </div>
           </div>
 
@@ -474,6 +506,8 @@ const ApplicationForm = () => {
         />
       </div>
     </Layout>
+
+
   );
 };
 
