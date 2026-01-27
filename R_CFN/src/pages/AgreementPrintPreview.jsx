@@ -12,7 +12,7 @@ const AgreementPrintPreview = () => {
     <Layout>
       <div className="max-w-7xl mx-auto border`">
         <div className="text-end text-xs text-gray-600 pt-3 px-3">
-          <p>Regd. No.: U64990MH2023PTC400938</p>
+          <p>Regd. No.: U64990MH2023PTC400938 </p>
         </div>
         <div className="mx-auto text-center mb-4 pt-2 flex flex-col justify-center items-center w-full">
           <img src="/Logo.png" alt="" width={400} />
@@ -103,7 +103,7 @@ const AgreementPrintPreview = () => {
                 </thead>
 
                 <tbody>
-                  <tr className="h-[120px]">
+                  <tr className="h-30">
                     <td className="border border-black p-2 align-top">
                       <textarea className="w-full h-full resize-none outline-none" />
                     </td>
@@ -419,7 +419,7 @@ const AgreementPrintPreview = () => {
           <p className="mt-2 font-bold">13. Chit Amount:</p>
           <p className="pl-4">
             The amount of the Chit is Rs.
-            <span className="inline-block border-b border-black px-4 py-1 ml-2 min-w-[120px] text-center">
+            <span className="inline-block border-b border-black px-4 py-1 ml-2 min-w-30 text-center">
               <input className="w-full outline-none bg-transparent text-center" />
             </span>
           </p>
@@ -800,6 +800,8 @@ const AgreementPrintPreview = () => {
             </p>
           </div>
         </div>
+
+        
       </div>
     </Layout>
   );
