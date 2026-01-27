@@ -133,3 +133,30 @@ class ChitDetails(models.Model):
     
     def __str__(self):
         return self.ByLawsNumber
+    
+    
+class ChitAgreementDetails(models.Model):
+    user = models.ForeignKey(Users, on_delete=models.CASCADE)
+    branch = models.ForeignKey(Branch, on_delete=models.CASCADE)
+    chit = models.ForeignKey(ChitDetails, on_delete=models.CASCADE)
+    conducts_of_chits = models.CharField(max_length=50)
+    number_of_tickets = models.CharField(max_length=10)
+    number_of_installments = models.IntegerField()
+    installment_amount = models.FloatField()
+    scheduled_auction_time = models.TimeField()
+    date_of_commencement = models.DateField()
+    date_of_termination = models.DateField()
+    first_auction_date = models.DateField()
+    auction_frequency = models.CharField(max_length=20)
+    auction_session_start = models.TimeField()
+    auction_session_end = models.TimeField()
+    register_bank_branch = models.CharField(max_length=200)
+    foreman_name = models.CharField(max_length=100)
+    company_reg_number = models.CharField(max_length=100)
+    deposit_bank_name = models.CharField(max_length=200)
+    deposit_receipt_no = models.CharField(max_length=200)
+    deposit_date = models.DateField()
+    term_month = models.CharField(max_length=10)
+    prize_collection_grace_days = models.CharField(max_length=60)
+    jurisdiction_place = models.CharField(max_length=50)
+    

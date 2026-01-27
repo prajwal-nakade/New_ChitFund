@@ -16,4 +16,6 @@ urlpatterns = [
     path('getAllChits/', get_All_ChitDetails, name='get_All_ChitDetails'),
     path('getChit/<int:chit_id>/', get_ChitDetails, name='get_ChitDetails'),
     path('logout/', logout, name='get_ChitDetails'),
+    path('createChitAgreement/' ,create_chitAgreement, name='create_chitAgreement'),
+    path('getChitAgreement/<int:agreement_id>/', get_ChitAgreementDetails, name='get_ChitAgreementDetails'),
 ]

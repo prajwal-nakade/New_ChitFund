@@ -252,7 +252,7 @@ const ApplicationForm = () => {
               </div>
               <div className="flex flex-col items-start w-full text-sm">
                 <label>
-                  Email <span className="text-red-500">*</span>
+                  Email
                 </label>
                 <input
                   className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
@@ -260,7 +260,6 @@ const ApplicationForm = () => {
                   value={formData.email}
                   onChange={handleChange}
                   placeholder="Email"
-                  required
                 />
               </div>
               <div className="flex flex-col items-start w-full text-sm">

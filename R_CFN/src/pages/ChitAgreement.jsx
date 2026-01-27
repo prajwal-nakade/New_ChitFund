@@ -420,7 +420,7 @@ const ChitAgreement = () => {
               Date of Registration <span className="text-red-500">*</span>
             </label>
             <input
-              type="text"
+              type="date"
               placeholder="Date of Registration"
               className="border border-neutral-300 w-full rounded-md px-3 py-1"
             />

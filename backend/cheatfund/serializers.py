@@ -169,3 +169,59 @@ class ChitDetailSerializer(serializers.ModelSerializer):
         
 
 
+class ChitAgreementCreateSerializer(serializers.ModelSerializer):
+    # user = UserSerializer(read_only = True)
+    # chit = ChitDetailSerializer(read_only = True)
+    branchName = serializers.CharField(source='branch.branchName', read_only=True)
+    
+    class Meta:
+        model = ChitAgreementDetails
+        fields = ['id', 'user', 'branch', 'chit', 'conducts_of_chits', 'branchName',
+        'number_of_tickets',
+        'number_of_installments',
+        'installment_amount',
+        'scheduled_auction_time',
+        'date_of_commencement',
+        'date_of_termination',
+        'first_auction_date',
+        'auction_frequency' ,
+        'auction_session_start',
+        'auction_session_end',
+        'register_bank_branch',
+        'foreman_name',
+        'company_reg_number',
+        'deposit_bank_name',
+        'deposit_receipt_no',
+        'deposit_date', 
+         'term_month',
+         'prize_collection_grace_days',
+         'jurisdiction_place']
+        
+        
+class ChitAgreementDetailsSerializer(serializers.ModelSerializer):
+    chit = ChitDetailSerializer(read_only = True)
+    branchName = serializers.CharField(source='branch.branchName', read_only=True)
+    
+    class Meta:
+        model = ChitAgreementDetails
+        fields = ['id', 'user', 'branch', 'chit', 'conducts_of_chits', 'branchName',
+        'number_of_tickets',
+        'number_of_installments',
+        'installment_amount',
+        'scheduled_auction_time',
+        'date_of_commencement',
+        'date_of_termination',
+        'first_auction_date',
+        'auction_frequency' ,
+        'auction_session_start',
+        'auction_session_end',
+        'register_bank_branch',
+        'foreman_name',
+        'company_reg_number',
+        'deposit_bank_name',
+        'deposit_receipt_no',
+        'deposit_date', 
+         'term_month',
+         'prize_collection_grace_days',
+         'jurisdiction_place']
+        

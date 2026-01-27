@@ -7,31 +7,49 @@ import dayjs from "dayjs";
 import { useReactToPrint } from "react-to-print";
 
 const ChitPrintPreview = () => {
+
+  const BASE_URL = import.meta.env.VITE_BASE_URL
+
   const { id } = useParams();
   const [chitDetails, setChitDetails] = useState(null);
 
+
+
   const ref = useRef();
   const handleDownload = useReactToPrint({
-    contentRef: ref,
-    pageStyle: `
-      @page {
-        size: A4;
-        margin: 8mm;
+  contentRef: ref,
+  pageStyle: `
+    @page {
+      size: A4;
+      margin: 8mm;
+    }
+
+    @media print {
+      body {
+        -webkit-print-color-adjust: exact;
+        color-adjust: exact;
+        font-family: Arial, sans-serif;
+        font-size: 12px;
       }
-      @media print {
-        body {
-          -webkit-print-color-adjust: exact;
-          color-adjust: exact;
-          font-family: Arial, sans-serif;
-          font-size: 12px;
-        }
-        .print-container {
-          padding: 0;
-          margin: 0;
-        }
+
+      .print-container {
+        padding: 0;
+        margin: 0;
       }
-    `,
-  });
+
+      /* ✅ FORCE NEW PAGE */
+      .print-page-break {
+        break-before: page;
+        page-break-before: always; /* fallback for older browsers */
+      }
+
+      img {
+        max-width: 100%;
+        height: auto;
+      }
+    }
+  `,
+});
 
   useEffect(() => {
     const fetchChitDetail = async () => {
@@ -43,7 +61,11 @@ const ChitPrintPreview = () => {
     fetchChitDetail();
   }, [id]);
 
-  if (!chitDetails) {
+
+
+
+
+  if (!chitDetails || !chitDetails.user) {
     return (
       <Layout>
         <div className="max-w-7xl mx-auto">
@@ -60,6 +82,26 @@ const ChitPrintPreview = () => {
 
   const user = chitDetails.user;
   const nominee = user.nominees?.[0];
+  const dob = chitDetails.user.dob; // "1999-12-12"
+
+  const birthDate = new Date(dob);
+  const today = new Date();
+
+  let age = today.getFullYear() - birthDate.getFullYear();
+
+  const hasBirthdayPassed =
+    today.getMonth() > birthDate.getMonth() ||
+    (today.getMonth() === birthDate.getMonth() &&
+      today.getDate() >= birthDate.getDate());
+
+  if (!hasBirthdayPassed) {
+    age--;
+  }
+
+  const chitAmt = chitDetails.ChitValue
+  const chitDuration = chitDetails.Duration
+  let installmentAmt = chitAmt / chitDuration
+  console.log(installmentAmt)
 
   return (
     <Layout>
@@ -163,18 +205,18 @@ const ChitPrintPreview = () => {
                 I/We (Name of the Co./Firm/Enterprises if applicant not
                 Individual)
                 <input
-                  value={`${user.firstname} ${user.middlename} ${user.lastname}`}
+                  value={`${user.firstname} ${user.lastname}`}
                   className="inline-block min-w-40 border-b border-gray-800 mx-1 text-center font-medium align-bottom outline-none"
                 />
                 Age
-                <input className="inline-block min-w-4 border-b border-gray-800 mx-1 text-center align-bottom outline-none" />
+                <input className="inline-block min-w-4 border-b border-gray-800 mx-1 text-center align-bottom outline-none font-medium" value={age} />
                 Son/Wife/daughter/Proprietor/proprietress/duly authorized
                 attorney/ Mrs
-                <input className="inline-block min-w-16 border-b border-gray-800 mx-1 text-center align-bottom outline-none" />
+                <input className="inline-block min-w-16 border-b border-gray-800 mx-1 text-center align-bottom outline-none font-medium" value={`${nominee.middlename} ${nominee.lastname}`} />
                 Request you to reserve a membership/ Ticket in the above
                 chit/kuri being floated by you/ I have remitted this day a sum
                 of (Rupees
-                <input className="inline-block min-w-16 border-b border-gray-800 mx-1 text-center align-bottom outline-none" />
+                <input className="inline-block min-w-16 border-b border-gray-800 mx-1 text-center align-bottom outline-none font-medium" value={installmentAmt.toFixed(2)} />
                 only) being the first installment of the chit/kuri membership
                 applied for. I/We have received and gone through a copy of the
                 chit agreement cum bye-laws of the proposed chit/kuri being
@@ -341,6 +383,13 @@ const ChitPrintPreview = () => {
               </div>
               <p className="text-base font-medium mt-4">Yours Faithfully,</p>
             </div>
+          </div>
+          <div className="print-page-break flex items-center justify-center">
+            <img src={`${BASE_URL}${user.aadhar_image}`} />
+          </div>
+
+          <div className="print-page-break flex items-center justify-center">
+            <img src={`${BASE_URL}${user.pan_image}`} />
           </div>
         </div>
       </div>
