@@ -6,7 +6,6 @@ import { toast } from "react-toastify";
 import UserManagement from "../components/UserManagement";
 import { UserContext } from "../context/UserContext";
 
-
 const ApplicationForm = () => {
   // const { fetchUserEntriesData } = useContext(UserContext)
   const [formData, setFormData] = useState({
@@ -24,11 +23,9 @@ const ApplicationForm = () => {
     aadhar_image: null,
   });
 
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
-  const [userEntriesData, setUserEntriesData] = useState([])
-
-
+  const [userEntriesData, setUserEntriesData] = useState([]);
 
   const [nomineeData, setNomineeData] = useState({
     nominee_firstname: "",
@@ -85,16 +82,16 @@ const ApplicationForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.pan_image && !formData.aadhar_image) {
-      toast.error("PAN & Aadhar image is required")
-      return
+      toast.error("PAN & Aadhar image is required");
+      return;
     }
     if (!formData.aadhar_image) {
-      toast.error("Aadhar image is required")
-      return
+      toast.error("Aadhar image is required");
+      return;
     }
     if (!formData.pan_image) {
-      toast.error("PAN image is required")
-      return
+      toast.error("PAN image is required");
+      return;
     }
 
     const data = new FormData();
@@ -110,7 +107,8 @@ const ApplicationForm = () => {
     data.append("aadharcard_no", formData.aadhar);
 
     if (formData.pan_image) data.append("pan_image", formData.pan_image);
-    if (formData.aadhar_image) data.append("aadhar_image", formData.aadhar_image);
+    if (formData.aadhar_image)
+      data.append("aadhar_image", formData.aadhar_image);
 
     data.append("nominee_firstname", nomineeData.nominee_firstname);
     data.append("nominee_middlename", nomineeData.nominee_middlename);
@@ -120,10 +118,10 @@ const ApplicationForm = () => {
     data.append("relationship", nomineeData.relationship);
 
     try {
-      setLoading(true)
+      setLoading(true);
       const response = await userEntry(data);
       if (response.success) {
-        toast.success('User Application Submited!')
+        toast.success("User Application Submited!");
         setFormData({
           firstName: "",
           middleName: "",
@@ -137,11 +135,11 @@ const ApplicationForm = () => {
           aadhar: "",
           pan_image: null,
           aadhar_image: null,
-        })
+        });
         setPreview({
           pan_image: null,
           aadhar_image: null,
-        })
+        });
         setNomineeData({
           nominee_firstname: "",
           nominee_middlename: "",
@@ -149,12 +147,10 @@ const ApplicationForm = () => {
           relationship: "",
           nomineeDob: "",
           nomineeMobile: "",
-        })
+        });
         await fetchUserEntriesData();
-
-      }
-      else {
-        toast.error('Somthing went wrong')
+      } else {
+        toast.error("Somthing went wrong");
       }
       console.log(response);
     } catch (error) {
@@ -172,19 +168,18 @@ const ApplicationForm = () => {
         toast.error("Something went wrong. Please try again.");
       }
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-
   };
   const fetchUserEntriesData = async () => {
-    const data = await getUserEntries()
-    console.log(data)
-    setUserEntriesData(data)
-  }
+    const data = await getUserEntries();
+    console.log(data);
+    setUserEntriesData(data);
+  };
 
   useEffect(() => {
-    fetchUserEntriesData()
-  }, [])
+    fetchUserEntriesData();
+  }, []);
 
   return (
     <Layout>
@@ -391,6 +386,20 @@ const ApplicationForm = () => {
                   )}
                 </div>
               </div>
+              <div className="flex flex-col items-start w-86 py-1 text-sm">
+                <label>
+                  Gender <span className="text-red-500">*</span>
+                </label>
+                <select
+                  className="w-full min-w-0 mt-1 px-3 py-1.5 border border-neutral-300 rounded-md text-sm"
+                  required
+                >
+                  <option value="">Select Gender</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
             </div>
           </div>
 
@@ -483,6 +492,21 @@ const ApplicationForm = () => {
                   />
                 </div>
               </div>
+
+              <div className="flex flex-col items-start w-86  text-sm">
+                <label>
+                  Gender <span className="text-red-500">*</span>
+                </label>
+                <select
+                  className="w-full min-w-0 mt-1 px-3 py-1.5 border border-neutral-300 rounded-md text-sm"
+                  required
+                >
+                  <option value="">Select Gender</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
             </div>
           </div>
 
@@ -505,8 +529,6 @@ const ApplicationForm = () => {
         />
       </div>
     </Layout>
-
-
   );
 };
 
