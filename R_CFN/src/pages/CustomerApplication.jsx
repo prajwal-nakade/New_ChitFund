@@ -255,7 +255,7 @@ const CustomerApplication = () => {
                 </button>
               </div>
 
-              <div className="divide-y">
+              <div className="flex overflow-auto ">
                 {!userApplications && (
                   <div className='flex items-center justify-center w-full'>
                     <h1>Customer has 0 Application</h1>
@@ -264,14 +264,11 @@ const CustomerApplication = () => {
                 {userApplications.map(app => (
                   <div
                     key={app.id}
-                    className="flex justify-between items-center px-4 py-2 text-sm hover:bg-gray-50"
+                    className="flex  items-center px-4 py-2 text-sm hover:bg-gray-50 border border-neutral-300 "
                   >
-                    <div onClick={() => autoFillChitDetails(app)} className='cursor-pointer'>
+                    <div onClick={() => autoFillChitDetails(app)} className='cursor-pointer '>
                       <p className="font-medium">
                         APP_ID - {app.application_id}
-                      </p>
-                      <p className="text-neutral-500">
-                        {app.GroupCode} • ₹{app.ChitValue}
                       </p>
                     </div>
 
