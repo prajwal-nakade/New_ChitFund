@@ -194,3 +194,24 @@ def logout(request):
         return res
     except:
         return Response({'success':False})
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def create_chitAgreement(request):
+    serializer = ChitAgreementCreateSerializer(data = request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response({'success' : True, **serializer.data}, status=status.HTTP_201_CREATED)
+    return Response({'success' : False, 'error' : serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_ChitAgreementDetails(request, agreement_id):
+    try:
+        chits = ChitAgreementDetails.objects.get(id=agreement_id)
+        serializer = ChitAgreementDetailsSerializer(chits, many=False)
+        return Response(serializer.data, status=200)
+    except ChitAgreementDetails.DoesNotExist:
+        return Response({"detail": "Agreement not found"}, status=status.HTTP_404_NOT_FOUND)

@@ -22,10 +22,10 @@ const Sidebar = () => {
   return (
     <div className="flex h-screen w-60 overflow-hidden opacity-0 lg:opacity-100 bg-[#004f9e]  ">
       <aside className="flex flex-col h-full w-full ">
-        <div className="flex  w-full items-center justify-start ps-4 gap-2 py-4 bg-[#004f9e] border-neutral-300">
-          <Link to={"/"}>
-            <div className="mx-auto text-center mb-4  me-3 flex flex-col justify-center items-center  ">
-              <img src="/Logo3.jpeg" alt="" width={300}/>
+        <div className="flex  w-full items-center justify-start py-2 bg-[#004f9e] border-neutral-300">
+          <Link to={"/"} className="w-full">
+            <div className="mx-auto flex justify-center items-center w-full  ">
+              <img src="/Logo2.png" alt="" width={100} className="object-cover "/>
             </div>
           </Link>
         </div>

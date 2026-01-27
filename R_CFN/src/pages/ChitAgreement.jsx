@@ -69,7 +69,7 @@ const ChitAgreement = () => {
 
                 <div className="flex items-center gap-2 text-sm relative">
                     <label>
-                        Sr. No. <span className="text-red-500">*</span>
+                        Application No. <span className="text-red-500">*</span>
                     </label>
                     <input
                         type="text"
@@ -200,7 +200,8 @@ const ChitAgreement = () => {
                         <label>
                             No. of Tickets <span className="text-red-500">*</span>
                         </label>
-                        <input
+                        <input 
+                        value={'01'}
                             type="text"
                             placeholder="No. of Tickets"
                             className="w-full mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
@@ -213,7 +214,7 @@ const ChitAgreement = () => {
                         </label>
                         <input
                             type="text"
-                            placeholder="No. of Tickets"
+                            placeholder="No. of Installments"
                             className="w-full mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
                         />
                     </div>
@@ -225,7 +226,7 @@ const ChitAgreement = () => {
                         </label>
                         <input
                             type="text"
-                            placeholder="No. of Tickets"
+                            placeholder="Amount per Ticket per Installments"
                             className="w-full mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
                         />
                     </div>
@@ -237,7 +238,7 @@ const ChitAgreement = () => {
                         </label>
                         <input
                             type="text"
-                            placeholder="No. of Tickets"
+                            placeholder="Group Code"
                             className="w-full mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
                         />
                     </div>
@@ -247,7 +248,7 @@ const ChitAgreement = () => {
                         </label>
                         <input
                             type="text"
-                            placeholder="No. of Tickets"
+                            placeholder="Total Chit Amount"
                             className="w-full mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
                         />
                     </div>
@@ -392,14 +393,14 @@ const ChitAgreement = () => {
           </h1>
           <input
             type="text"
-            placeholder="Branch"
+            placeholder="Register Branch"
             className="border border-neutral-300 w-full rounded-md px-3 py-1"
           />
         </div>
 
         <div className="w-full items-start px-3 py-1 border-t border-neutral-400">
           <h2 className="text-base  font-medium">
-            Registration Number and Date od Registration of Bye Laws
+            Registration Number and Date of Registration of Bye Laws
           </h2>
         </div>
         <div className="flex w-full px-5 pb-2 border-neutral-200 gap-4">
@@ -419,7 +420,7 @@ const ChitAgreement = () => {
               Date of Registration <span className="text-red-500">*</span>
             </label>
             <input
-              type="text"
+              type="date"
               placeholder="Date of Registration"
               className="border border-neutral-300 w-full rounded-md px-3 py-1"
             />
@@ -440,12 +441,12 @@ const ChitAgreement = () => {
 
         <div className="flex-col w-full px-5 border-neutral-200 border-t pt-3 gap-4">
           <h1 className="text-base font-medium py-1">
-            Chit Amount
+            Total Chit Amount
             <span className="text-red-500">*</span>{" "}
           </h1>
           <input
             type="text"
-            placeholder="Name Of Foreman"
+            placeholder="Total Chit Amount"
             className="border border-neutral-300 w-full rounded-md px-3 py-1"
           />
         </div>
@@ -462,7 +463,7 @@ const ChitAgreement = () => {
               </label>
               <input
                 type="text"
-                placeholder="Amount"
+                placeholder="Chit Amount"
                 className="border border-neutral-300 w-full rounded-md px-3 py-1"
               />
             </div>
@@ -510,7 +511,7 @@ const ChitAgreement = () => {
               </label>
               <input
                 type="text"
-                placeholder="Date of Registration"
+                placeholder="No. of Months"
                 className="border border-neutral-300 w-full rounded-md px-3 py-1"
               />
             </div>
@@ -524,7 +525,7 @@ const ChitAgreement = () => {
           </h1>
           <input
             type="text"
-            placeholder=" "
+            placeholder="Recovery of Loss"
             className="border border-neutral-300 w-full rounded-md px-3 py-1"
           />
         </div>
