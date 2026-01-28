@@ -181,6 +181,8 @@ class ChitAgreementCreateSerializer(serializers.ModelSerializer):
         'number_of_installments',
         'installment_amount',
         'scheduled_auction_time',
+        'scheduled_auction_day',
+        'scheduled_last_date_of_payment',
         'date_of_commencement',
         'date_of_termination',
         'first_auction_date',
@@ -194,8 +196,9 @@ class ChitAgreementCreateSerializer(serializers.ModelSerializer):
         'deposit_receipt_no',
         'deposit_date', 
          'term_month',
-         'prize_collection_grace_days',
-         'jurisdiction_place']
+         'prize_collection',
+         'jurisdiction_place','created_at', 'updated_at',]
+        read_only_fields = ('created_at', 'updated_at')
         
         
 class ChitAgreementDetailsSerializer(serializers.ModelSerializer):
@@ -209,6 +212,8 @@ class ChitAgreementDetailsSerializer(serializers.ModelSerializer):
         'number_of_installments',
         'installment_amount',
         'scheduled_auction_time',
+        'scheduled_auction_day',
+        'scheduled_last_date_of_payment',
         'date_of_commencement',
         'date_of_termination',
         'first_auction_date',
@@ -222,6 +227,6 @@ class ChitAgreementDetailsSerializer(serializers.ModelSerializer):
         'deposit_receipt_no',
         'deposit_date', 
          'term_month',
-         'prize_collection_grace_days',
-         'jurisdiction_place']
+         'prize_collection',
+         'jurisdiction_place','created_at', 'updated_at',]
         

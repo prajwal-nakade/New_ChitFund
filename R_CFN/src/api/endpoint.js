@@ -86,3 +86,18 @@ export const logout = async()=>{
   const response = await api.post(`api/logout/`)
   return response.data
 }
+
+export const createChitAgreement = async(payload)=>{
+  const response = await api.post(`api/createChitAgreement/`, payload)
+  return response.data
+}
+
+export const getAllChitAgreement = async()=>{
+  const response = await api.get(`api/getAllChitsAgreement/`)
+  return response.data
+}
+
+export const getChitAgreementbyID = async(id)=>{
+  const response = await api.get(`api/getChitAgreement/${id}/`)
+  return response.data
+}

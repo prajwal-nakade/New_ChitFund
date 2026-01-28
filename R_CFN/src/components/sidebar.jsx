@@ -10,6 +10,7 @@ const Sidebar = () => {
     { title: "View Applications", icon : <Table2 size={16}/>, path: "/viewapplications" },
     { title: "Chit Agreement", icon : <Handshake size={16}/>, path: "/ChitAgreement" },
     { title: "Agreement Print Preview", icon : <ClipboardList size={16}/>, path: "/AgreementPrintPreview" },
+    { title: "View Chit Agreement", icon : <ClipboardList size={16}/>, path: "/ViewChitAgreement" },
     // { title: "Menu 2", icon: <LayoutDashboard size={16} />, path: "/menu2" },
   ];
 
