@@ -1,5 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../components/layout";
+import { useParams } from "react-router";
+import { getChitAgreementbyID } from "../api/endpoint";
+import { ShipWheel } from "lucide-react";
 
 const Blank = ({ width = "w-24" }) => (
   <span
@@ -8,6 +11,39 @@ const Blank = ({ width = "w-24" }) => (
 );
 
 const AgreementPrintPreview = () => {
+
+  const { id } = useParams()
+
+  const [chitAgreementData, setChitAgreementData] = useState(null)
+
+  const fetchChitAgreementData = async()=>{
+    const data = await getChitAgreementbyID(id)
+    setChitAgreementData(data)
+    console.log(data)
+  }
+
+  useEffect(()=>{
+    fetchChitAgreementData()
+  }, [])
+
+    if (!chitAgreementData) {
+    return (
+      <Layout>
+        <div className="max-w-7xl mx-auto">
+          <div className="min-h-screen flex items-center justify-center">
+            <div className="flex items-center gap-2 text-neutral-500">
+              <ShipWheel size={18} className="animate-spin" />{" "}
+              <span>Loading chit details...</span>
+            </div>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
+
+  const chit = chitAgreementData?.chit
+  const user = chitAgreementData.chit.user
+
   return (
     <Layout>
       <div className="max-w-7xl mx-auto border`">
@@ -28,7 +64,7 @@ const AgreementPrintPreview = () => {
                 justify-end "
           >
             <label>Sr No.</label>
-            <input type="text" className="border-b outline-none mx-5" />
+            <input value={chit.application_id} type="text" className="border-b outline-none mx-5" />
           </div>
         </div>
 
@@ -41,18 +77,18 @@ const AgreementPrintPreview = () => {
               Chatrapati Sambhajinagar.
             </strong>{" "}
             And branch at{" "}
-            <input type="text" className="border-b outline-none mx-5" />
+            <input type="text" className="border-b outline-none mx-5 text-center" value={chitAgreementData.branchName}/>
             (here in after called the Foreman, Which expression shall inclued
             its assigners, and successors in interest) have received
             Registration of Bye Law No.
-            <input type="text" className="border-b outline-none mx-5" />
+            <input type="text" className="border-b outline-none mx-5 text-center" value={chit.ByLawsNumber}/>
             dated
-            <input type="text" className="border-b outline-none mx-5" />
+            <input type="text" className="border-b outline-none mx-5 text-center" value={chit.BylawsDate}/>
             for the conduts of chit
-            <input type="text" className="border-b outline-none mx-5" /> And
+            <input type="text" className="border-b outline-none mx-5 text-center" value={chitAgreementData.conducts_of_chits}/> And
             whereas the foreman has received and accepted the proposal for
             membership from Shri/Smt{" "}
-            <input type="text" className="border-b outline-none mx-5" />
+            <input type="text" className="border-b outline-none mx-5 text-center" value={`${user.firstname} ${user.middlename} ${user.lastname}`}/>
             (Here in after called the Subscriber, which expression shall include
             his/her nominees, assignees and successors in Interest) the Foreman
             and hereby allots chit membership. Now this indenture witnesses the
@@ -105,27 +141,27 @@ const AgreementPrintPreview = () => {
                 <tbody>
                   <tr className="h-30">
                     <td className="border border-black p-2 align-top">
-                      <textarea className="w-full h-full resize-none outline-none" />
+                      <textarea className="w-full h-full resize-none outline-none text-center" value={`${user.firstname} ${user.middlename} ${user.lastname} \n ${chitAgreementData.branchName}`} />
                     </td>
 
                     <td className="border border-black p-2 align-top">
-                      <input className="w-full outline-none" />
+                      <input className="w-full outline-none text-center" value={chitAgreementData.number_of_tickets}/>
                     </td>
 
                     <td className="border border-black p-2 align-top">
-                      <input className="w-full outline-none" />
+                      <input className="w-full outline-none text-center" value={chitAgreementData.number_of_installments} />
                     </td>
 
                     <td className="border border-black p-2 align-top">
-                      <input className="w-full outline-none" />
+                      <input className="w-full outline-none text-center" value={chitAgreementData.installment_amount}/>
                     </td>
 
                     <td className="border border-black p-2 align-top">
-                      <input className="w-full outline-none" />
+                      <input className="w-full outline-none text-center" value={chit.GroupCode}/>
                     </td>
 
                     <td className="border border-black p-2 align-top">
-                      <input className="w-full outline-none" />
+                      <input className="w-full outline-none text-center" value={chit.ChitValue}/>
                     </td>
                   </tr>
                 </tbody>
@@ -137,9 +173,10 @@ const AgreementPrintPreview = () => {
                   Time of Auction <span className="text-red-500">*</span>
                 </label>
                 <input
-                  type="time"
+                value={chitAgreementData.scheduled_auction_time}
+                  type="text"
                   placeholder="Time of Auction"
-                  className="border-b w-110 px-3 py-1"
+                  className="border-b w-110 px-3 py-1 text-center"
                 />
               </div>
 
@@ -148,9 +185,10 @@ const AgreementPrintPreview = () => {
                   Day of Auction <span className="text-red-500">*</span>
                 </label>
                 <input
-                  type="date"
+                value={chitAgreementData.scheduled_auction_day}
+                  type="text"
                   placeholder="Day of Auction"
-                  className="border-b w-91  px-3 py-1"
+                  className="border-b w-91  px-3 py-1 text-center"
                 />
               </div>
             </div>
@@ -160,9 +198,10 @@ const AgreementPrintPreview = () => {
                 <span className="text-red-500">*</span>
               </label>
               <input
-                type="date"
+              value={chitAgreementData.scheduled_last_date_of_payment}
+                type="text"
                 placeholder="Day of Auction"
-                className="border-b w-190 px-3 py-1"
+                className="border-b w-190 px-3 py-1 text-center"
               />
             </div>
             <p className="mx-4 text-justify py-2 text-sm leading-tight">
@@ -187,14 +226,14 @@ const AgreementPrintPreview = () => {
               <label>
                 Date of Commencement <span className="text-red-500">*</span>
               </label>
-              <input type="text" placeholder="" className="border-b px-3 " />
+              <input type="text" placeholder="" className="border-b px-3 text-center" value={chitAgreementData.date_of_commencement}/>
             </div>
 
             <div className="flex ms-10">
               <label>
                 Date of Termination<span className="text-red-500">*</span>
               </label>
-              <input type="text" placeholder="" className="border-b px-3" />
+              <input type="text" placeholder="" className="border-b px-3 text-center" value={chitAgreementData.date_of_termination}/>
             </div>
           </div>
           <p className="ms-4">
@@ -801,7 +840,7 @@ const AgreementPrintPreview = () => {
           </div>
         </div>
 
-        
+
       </div>
     </Layout>
   );

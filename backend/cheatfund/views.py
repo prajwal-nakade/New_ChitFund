@@ -215,3 +215,13 @@ def get_ChitAgreementDetails(request, agreement_id):
         return Response(serializer.data, status=200)
     except ChitAgreementDetails.DoesNotExist:
         return Response({"detail": "Agreement not found"}, status=status.HTTP_404_NOT_FOUND)
+    
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_All_ChitAgreementDetails(request):
+    try:
+        chits = ChitAgreementDetails.objects.all()
+        serializer = ChitAgreementDetailsSerializer(chits, many=True)
+        return Response(serializer.data, status=200)
+    except ChitAgreementDetails.DoesNotExist:
+        return Response({"detail": "Agreement not found"}, status=status.HTTP_404_NOT_FOUND)
