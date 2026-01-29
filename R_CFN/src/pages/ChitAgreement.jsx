@@ -4,8 +4,10 @@ import { UserContext } from "../context/UserContext";
 import { createChitAgreement } from "../api/endpoint";
 import { Loader2 } from "lucide-react";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router";
 
 const ChitAgreement = () => {
+  const navigate = useNavigate()
   const { fetchChitsData, allchitData, branchData } = useContext(UserContext);
   const [search, setSearch] = useState("");
   const [selectedChit, setSelectedChit] = useState(null);
@@ -115,6 +117,9 @@ const ChitAgreement = () => {
       const response = await createChitAgreement(payload);
       if(response.success){
         toast.success(`Chit Agreement is Created for Customer ${displayData.fullName} having Agreement ID : ${response.id}`)
+        setTimeout(() => {
+          navigate(`/AgreementPrintPreview/${response.id}`)
+        }, 2000)
       }
       console.log(response);
     } catch (error) {
