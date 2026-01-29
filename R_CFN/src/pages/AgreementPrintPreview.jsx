@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Layout from "../components/layout";
 import { useParams } from "react-router";
 import { getChitAgreementbyID } from "../api/endpoint";
 import { ShipWheel } from "lucide-react";
-
+import { useReactToPrint } from "react-to-print";
+import dayjs from "dayjs";
 const Blank = ({ width = "w-24" }) => (
   <span
     className={`inline-block ${width} border-b border-black mx-1 align-baseline`}
@@ -11,25 +12,67 @@ const Blank = ({ width = "w-24" }) => (
 );
 
 const AgreementPrintPreview = () => {
+  const { id } = useParams();
+  const ref = useRef();
+  const handleDownload = useReactToPrint({
+    contentRef: ref,
+    pageStyle: `
+      @page {
+        size: A4;
+        margin: 10mm;
+        
+      }
 
-  const { id } = useParams()
+      @media print {
+        body {
+          font-family: Arial, sans-serif;
+          font-size: 12px;
+          -webkit-print-color-adjust: exact;
+          color-adjust: exact;
+          line-height: 1.4;
+          margin: 0;
+padding: 0;
+        }
 
-  const [chitAgreementData, setChitAgreementData] = useState(null)
+        .print-container {
+          width: 100%;
+          margin: 0 auto;
+        }
 
-  const fetchChitAgreementData = async()=>{
-    const data = await getChitAgreementbyID(id)
-    setChitAgreementData(data)
-    console.log(data)
-  }
+        table {
+          width: 100%;
+          border-collapse: collapse;
+          table-layout: fixed;
+        }
 
-  useEffect(()=>{
-    fetchChitAgreementData()
-  }, [])
+        th, td {
+          word-break: break-word;
+          padding: 4px;
+        }
+        
+        .schedule-section {
+          page-break-inside: avoid;
+        }
+      }
+    `,
+  });
 
-    if (!chitAgreementData) {
+  const [chitAgreementData, setChitAgreementData] = useState(null);
+
+  const fetchChitAgreementData = async () => {
+    const data = await getChitAgreementbyID(id);
+    setChitAgreementData(data);
+    console.log(data);
+  };
+
+  useEffect(() => {
+    fetchChitAgreementData();
+  }, []);
+
+  if (!chitAgreementData) {
     return (
       <Layout>
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-7xl mx-auto print-container">
           <div className="min-h-screen flex items-center justify-center">
             <div className="flex items-center gap-2 text-neutral-500">
               <ShipWheel size={18} className="animate-spin" />{" "}
@@ -41,12 +84,21 @@ const AgreementPrintPreview = () => {
     );
   }
 
-  const chit = chitAgreementData?.chit
-  const user = chitAgreementData.chit.user
+  const chit = chitAgreementData?.chit;
+  const user = chitAgreementData.chit.user;
+  const getOrdinal = (day) => {
+    if (day > 3 && day < 21) return `${day}th`; // 11th–19th
+    switch (day % 10) {
+      case 1: return `${day}st`;
+      case 2: return `${day}nd`;
+      case 3: return `${day}rd`;
+      default: return `${day}th`;
+    }
+  };
 
   return (
     <Layout>
-      <div className="max-w-7xl mx-auto border`">
+      <div className="max-w-7xl mx-auto border leading-loose" ref={ref}>
         <div className="text-end text-xs text-gray-600 pt-3 px-3">
           <p>Regd. No.: U64990MH2023PTC400938 </p>
         </div>
@@ -64,7 +116,11 @@ const AgreementPrintPreview = () => {
                 justify-end "
           >
             <label>Sr No.</label>
-            <input value={chit.application_id} type="text" className="border-b outline-none mx-5" />
+            <input
+              value={chit.application_id}
+              type="text"
+              className="border-b outline-none mx-5 font-medium"
+            />
           </div>
         </div>
 
@@ -77,18 +133,38 @@ const AgreementPrintPreview = () => {
               Chatrapati Sambhajinagar.
             </strong>{" "}
             And branch at{" "}
-            <input type="text" className="border-b outline-none mx-5 text-center" value={chitAgreementData.branchName}/>
+            <input
+              type="text"
+              className="border-b outline-none mx-5 text-center font-medium"
+              value={chitAgreementData.branchName}
+            />
             (here in after called the Foreman, Which expression shall inclued
             its assigners, and successors in interest) have received
             Registration of Bye Law No.
-            <input type="text" className="border-b outline-none mx-5 text-center" value={chit.ByLawsNumber}/>
+            <input
+              type="text"
+              className="border-b outline-none mx-5 text-center font-medium"
+              value={chit.ByLawsNumber}
+            />
             dated
-            <input type="text" className="border-b outline-none mx-5 text-center" value={chit.BylawsDate}/>
+            <input
+              type="text"
+              className="border-b outline-none mx-5 text-center font-medium"
+              value={dayjs(chit.BylawsDate).format('DD MMM YYYY')}
+            />
             for the conduts of chit
-            <input type="text" className="border-b outline-none mx-5 text-center" value={chitAgreementData.conducts_of_chits}/> And
-            whereas the foreman has received and accepted the proposal for
+            <input
+              type="text"
+              className="border-b outline-none mx-5 text-center font-medium"
+              value={chitAgreementData.conducts_of_chits}
+            />{" "}
+            And whereas the foreman has received and accepted the proposal for
             membership from Shri/Smt{" "}
-            <input type="text" className="border-b outline-none mx-5 text-center" value={`${user.firstname} ${user.middlename} ${user.lastname}`}/>
+            <input
+              type="text"
+              className="border-b outline-none mx-5 text-center font-medium"
+              value={`${user.firstname} ${user.middlename} ${user.lastname}`}
+            />
             (Here in after called the Subscriber, which expression shall include
             his/her nominees, assignees and successors in Interest) the Foreman
             and hereby allots chit membership. Now this indenture witnesses the
@@ -98,20 +174,20 @@ const AgreementPrintPreview = () => {
           </p>
         </div>
 
-        <div className="flex flex-col items-center w-full">
+        <div className="print-container mx-auto w-full flex flex-col items-center justify-center schedule-section">
           <h2 className="font-semibold mb-2">SCHEDULE</h2>
 
-          <div className="border mx-3 my-3">
-            <div className="w-full  overflow-x-auto border-b ">
-              <table className="w-full border border-black table-fixed text-sm">
-                {/* COLUMN WIDTHS MATCHING THE FORM */}
+          <div className="border w-full ">
+            <div className="w-full overflow-x-auto border-b">
+              <table className="w-full border border-black text-sm ">
+                {/* COLUMN WIDTHS MATCHING THE FORM - Fixed to add up to 100% */}
                 <colgroup>
-                  <col className="w-[32%]" /> {/* Address */}
+                  <col className="w-[35%]" /> {/* Address */}
                   <col className="w-[10%]" /> {/* Tickets */}
-                  <col className="w-[12%]" /> {/* Installments */}
-                  <col className="w-[18%]" /> {/* Amount per installment */}
-                  <col className="w-[14%]" /> {/* Series */}
-                  <col className="w-[14%]" /> {/* Chit amount */}
+                  <col className="w-[10%]" /> {/* Installments */}
+                  <col className="w-[15%]" /> {/* Amount per installment */}
+                  <col className="w-[15%]" /> {/* Series */}
+                  <col className="w-[15%]" /> {/* Chit amount */}
                 </colgroup>
 
                 <thead>
@@ -141,67 +217,86 @@ const AgreementPrintPreview = () => {
                 <tbody>
                   <tr className="h-30">
                     <td className="border border-black p-2 align-top">
-                      <textarea className="w-full h-full resize-none outline-none text-center" value={`${user.firstname} ${user.middlename} ${user.lastname} \n ${chitAgreementData.branchName}`} />
+                      <textarea
+                        className="w-full h-20 resize-none outline-none text-start font-medium ps-3"
+                        value={`${user.firstname} ${user.middlename} ${user.lastname} \n \n${chitAgreementData.branchName}`}
+                      />
                     </td>
 
                     <td className="border border-black p-2 align-top">
-                      <input className="w-full outline-none text-center" value={chitAgreementData.number_of_tickets}/>
+                      <input
+                        className="w-full outline-none text-center font-medium"
+                        value={chitAgreementData.number_of_tickets}
+                      />
                     </td>
 
                     <td className="border border-black p-2 align-top">
-                      <input className="w-full outline-none text-center" value={chitAgreementData.number_of_installments} />
+                      <input
+                        className="w-full outline-none text-center font-medium"
+                        value={chitAgreementData.number_of_installments}
+                      />
                     </td>
 
                     <td className="border border-black p-2 align-top">
-                      <input className="w-full outline-none text-center" value={chitAgreementData.installment_amount}/>
+                      <input
+                        className="w-full outline-none text-center font-medium"
+                        value={chitAgreementData.installment_amount}
+                      />
                     </td>
 
                     <td className="border border-black p-2 align-top">
-                      <input className="w-full outline-none text-center" value={chit.GroupCode}/>
+                      <input
+                        className="w-full outline-none text-center font-medium"
+                        value={chit.GroupCode}
+                      />
                     </td>
 
                     <td className="border border-black p-2 align-top">
-                      <input className="w-full outline-none text-center" value={chit.ChitValue}/>
+                      <input
+                        className="w-full outline-none font-medium "
+                        value={chit.ChitValue}
+                      />
                     </td>
                   </tr>
                 </tbody>
               </table>
             </div>
-            <div className="flex w-full  px-4 py-2">
+            <div className="flex w-full px-4 py-2">
               <div className="flex items-start w-full text-sm">
-                <label className=" text-center ">
+                <label className="text-center">
                   Time of Auction <span className="text-red-500">*</span>
                 </label>
                 <input
-                value={chitAgreementData.scheduled_auction_time}
-                  type="text"
+                  value={chitAgreementData.scheduled_auction_time}
+                  type="time"
+                  readOnly
                   placeholder="Time of Auction"
-                  className="border-b w-110 px-3 py-1 text-center"
+                  className="border-b w-110 px-3 py-1 text-center outline-none font-medium"
                 />
               </div>
 
-              <div className="flex  items-start w-full text-sm">
-                <label className=" text-center ">
+              <div className="flex items-start w-full text-sm">
+                <label className="text-center">
                   Day of Auction <span className="text-red-500">*</span>
                 </label>
                 <input
-                value={chitAgreementData.scheduled_auction_day}
+                  value={dayjs(chitAgreementData.scheduled_auction_day).format('DD MMM YYYY')}
                   type="text"
                   placeholder="Day of Auction"
-                  className="border-b w-91  px-3 py-1 text-center"
+                  className="border-b w-91 px-3 py-1 text-center outline-none font-medium"
                 />
               </div>
             </div>
-            <div className="w-full text-sm ">
-              <label className="text-center w-50 px-4 py-1 ">
+            <div className="w-full text-sm">
+              <label className="text-center w-50 px-4 py-1">
                 Last date for payment of Installment is{" "}
                 <span className="text-red-500">*</span>
               </label>
               <input
-              value={chitAgreementData.scheduled_last_date_of_payment}
+                value={dayjs(chitAgreementData.scheduled_last_date_of_payment).format('DD MMM YYYY')}
                 type="text"
                 placeholder="Day of Auction"
-                className="border-b w-190 px-3 py-1 text-center"
+                className="border-b w-190 px-3 py-1 text-center outline-none font-medium"
               />
             </div>
             <p className="mx-4 text-justify py-2 text-sm leading-tight">
@@ -221,19 +316,29 @@ const AgreementPrintPreview = () => {
           <h2 className="font-semibold">
             1) Date of Commencement and Termination of Chit :
           </h2>
-          <div className="flex ms-4 py-2 ">
+          <div className="flex ms-4 py-2">
             <div className="flex">
               <label>
                 Date of Commencement <span className="text-red-500">*</span>
               </label>
-              <input type="text" placeholder="" className="border-b px-3 text-center" value={chitAgreementData.date_of_commencement}/>
+              <input
+                type="text"
+                placeholder=""
+                className="border-b px-3 text-center outline-none font-medium"
+                value={dayjs(chitAgreementData.date_of_commencement).format('DD MMM YYYY')}
+              />
             </div>
 
             <div className="flex ms-10">
               <label>
                 Date of Termination<span className="text-red-500">*</span>
               </label>
-              <input type="text" placeholder="" className="border-b px-3 text-center" value={chitAgreementData.date_of_termination}/>
+              <input
+                type="text"
+                placeholder=""
+                className="border-b px-3 text-cente outline-none font-medium text-center"
+                value={dayjs(chitAgreementData.date_of_termination).format('DD MMM YYYY')}
+              />
             </div>
           </div>
           <p className="ms-4">
@@ -286,10 +391,10 @@ const AgreementPrintPreview = () => {
         </div>
 
         {/* A4 Page */}
-        <div className=" mx-5 text-justify text-sm">
+        <div className="mx-5 text-justify text-sm">
           <div className="ms-2">
             <h1>
-              <strong>D) Alternate month’s auctions:</strong>
+              <strong>D) Alternate month's auctions:</strong>
             </h1>
             <p>
               i) In alternate months, auction will be by oral bidding or by
@@ -312,7 +417,7 @@ const AgreementPrintPreview = () => {
             </li>
 
             <li>
-              Local cheques should reach the Company’s Office at least 7 days
+              Local cheques should reach the Company's Office at least 7 days
               before ten clear working days prior to the date of auction in
               order to enable the party to become eligible to participate in the
               auction after realization of the cheque. In case of outstation
@@ -320,7 +425,7 @@ const AgreementPrintPreview = () => {
               (Rupees one only) on presentation and messenger charges must be
               included in the remittance. Cheques and Drafts should be duly
               crossed. For all cheques, if returned the Bank Charges shall be
-              debited to the subscriber’s account in addition to Rs. 500/- for
+              debited to the subscriber's account in addition to Rs. 500/- for
               service charges. In respect of cases where the cheque given is
               dishonoured future subscriptions will be accepted only in cash,
               D.D., UPI or any mode of online payment.
@@ -398,15 +503,44 @@ const AgreementPrintPreview = () => {
             </strong>
           </p>
           <p className="pl-4">
-            The FIRST Auction shall be held on <Blank /> and subsequent auction
-            on every <Blank /> day of every month/day/week between <Blank /> and{" "}
-            <Blank /> at the Foreman’s offices situated at{" "}
-            <Blank width="w-40" />.
+            The FIRST Auction shall be held on{" "}
+            <input
+              type="text"
+              className="border-b text-center outline-none font-medium"
+              value={dayjs(chitAgreementData.first_auction_date).format('DD MMM YYYY')}
+            />{" "}
+            and subsequent auction on every
+            <input
+              type="text"
+              className="border-b text-center outline-none font-medium"
+              value={getOrdinal(dayjs(chitAgreementData.auction_frequency).date())}
+            />
+            day of every month/day/week between{" "}
+            <input
+              type="time"
+              readOnly
+              className="border-b text-center outline-none font-medium"
+              value={chitAgreementData.auction_session_start}
+            />{" "}
+            and{" "}
+            <input
+              type="time"
+              readOnly
+              className="border-b text-center outline-none font-medium"
+              value={chitAgreementData.auction_session_end}
+            />{" "}
+            at the Foreman's offices situated at{" "}
+            <input
+              type="text"
+              className="border-b text-center outline-none font-medium"
+              value={chitAgreementData.branchName}
+            />
+            .
           </p>
 
           {/* ===== CLAUSE 8 ===== */}
           <p className="mt-2 font-bold">
-            8. Foreman’s entitled to the chit amount without auction, the
+            8. Foreman's entitled to the chit amount without auction, the
             Installment at which the Foreman is to get the chit amount:
           </p>
           <p className="pl-4">
@@ -430,7 +564,13 @@ const AgreementPrintPreview = () => {
           </p>
           <p className="pl-4">
             The Bye-Laws of the Foreman have been registered with the registrar
-            of chits at <Blank width="w-32" />.
+            of chits at{" "}
+            <input
+              type="text"
+              className="border-b text-center outline-none font-medium"
+              value={chitAgreementData.register_bank_branch}
+            />
+            .
           </p>
 
           {/* ===== CLAUSE 11 ===== */}
@@ -438,7 +578,18 @@ const AgreementPrintPreview = () => {
             11. Registration Number and date of Registration of Bye Laws:
           </p>
           <p className="pl-4">
-            Registration Number <Blank /> Date of Registration <Blank />
+            Registration Number{" "}
+            <input
+              type="text"
+              className="border-b text-center outline-none font-medium "
+              value={chitAgreementData.company_reg_number}
+            />{" "}
+            Date of Registration{" "}
+            <input
+              type="text"
+              className="border-b text-center outline-none font-medium"
+              value={dayjs(chit.BylawsDate).format('DD MMM YYYY')}
+            />
           </p>
 
           {/* ===== CLAUSE 12 ===== */}
@@ -459,7 +610,10 @@ const AgreementPrintPreview = () => {
           <p className="pl-4">
             The amount of the Chit is Rs.
             <span className="inline-block border-b border-black px-4 py-1 ml-2 min-w-30 text-center">
-              <input className="w-full outline-none bg-transparent text-center" />
+              <input
+                className="w-full outline-none bg-transparent text-center font-medium"
+                value={chit.ChitValue}
+              />
             </span>
           </p>
 
@@ -471,11 +625,15 @@ const AgreementPrintPreview = () => {
           </p>
           <p className="pl-4">
             All the subscribers both prized and non-prized shall pay their
-            monthly/Weekly/Daily subscription at the Foreman’s office at{" "}
-            <Blank width="w-32" /> on all the working days on or before the
-            specified date between 10.00 am to 1.30 pm and 2.00 pm to 6.00 pm
-            unless otherwise agreed to by the Foreman in writing to any other
-            agreement.
+            monthly/Weekly/Daily subscription at the Foreman's office at{" "}
+            <input
+              type="text"
+              className="border-b text-center outline-none font-medium"
+              value={chitAgreementData.branchName}
+            />{" "}
+            on all the working days on or before the specified date between
+            10.00 am to 1.30 pm and 2.00 pm to 6.00 pm unless otherwise agreed
+            to by the Foreman in writing to any other agreement.
           </p>
           <div className="mb-4">
             <h3 className="font-semibold">
@@ -486,7 +644,7 @@ const AgreementPrintPreview = () => {
               When there are no bids or tenders at the auction a lot will be
               drawn from amongst the non-prized subscribers who have paid their
               subscription up-to-date, at the fixed minimum discount of 7%
-              (Foreman’s Commission).
+              (Foreman's Commission).
             </p>
           </div>
 
@@ -531,15 +689,31 @@ const AgreementPrintPreview = () => {
 
             <p className="">
               A sum of Rs.
-              <input className=" border-b mx-2 px-2 py-1" />
+              <input
+                className=" border-b mx-2 px-2 py-1 text-center outline-none font-medium"
+                value={chit.ChitValue}
+              />
               Deposited by the Forman with
-              <input className=" border-b px-2 py-1" />
+              <input
+                className=" border-b px-2 py-1 text-center outline-none font-medium"
+                value={chitAgreementData.deposit_bank_name}
+              />
               under fixed Deposit receipt No.
-              <input className=" border-b px-2 py-1" />
+              <input
+                className=" border-b px-2 py-1 text-center outline-none font-medium"
+                value={chitAgreementData.deposit_receipt_no}
+              />
               Dated
-              <input type="date" className=" border-b mx-3 py-1" />
+              <input
+                type="text"
+                className=" border-b mx-3 py-1 outline-none text-center font-medium"
+                value={dayjs(chitAgreementData.deposit_date).format('DD MMM YYYY')}
+              />
               for a term of
-              <input className="border-b px-2 py-1" />
+              <input
+                className="border-b px-2 py-1 text-center outline-none font-medium"
+                value={chitAgreementData.term_month}
+              />
               months invested under section 20 of Chit Funds Act. With the right
               reserved to change or substitute the security subject to the
               permission of the Registrar under Section 20 of Chit Funds Act.
@@ -802,7 +976,10 @@ const AgreementPrintPreview = () => {
             <p>
               If the prized subscriber fails to collect the Prize Money on
               production of surety/security
-              <input className="mx-2 w-40 border-b outline-none" />
+              <input
+                className="mx-2 w-40 border-b outline-none text-center font-medium"
+                value={chitAgreementData.prize_collection}
+              />
               within 60 days from the date of the auction, it is open to Foreman
               to appropriate prize money towards future installment and collect
               the balance if any from the prized subscriber or cancel the
@@ -833,14 +1010,37 @@ const AgreementPrintPreview = () => {
               <br />
               Any disputes arising out of this Agreement shall be subject to the
               Jurisdiction of Court at
-              <input className="mx-2 w-40 border-b outline-none" />. In witness
-              whereof the Foreman and the subscriber have set their hands on
-              <input className="mx-2 w-40 border-b outline-none" />.
+              <input
+                className="mx-2 w-40 border-b outline-none text-center font-medium"
+                value={chitAgreementData.jurisdiction_place}
+              />
+              . In witness whereof the Foreman and the subscriber have set their
+              hands on
+              <input className="mx-2 w-40 border-b outline-none font-medium" />.
             </p>
           </div>
+          <div className="flex w-full px-4 py-3 justify-between items-center mt-15">
+            <div className="flex flex-col gap-2">
+              <input type="text" placeholder="" className="border-b" />
+              <span className="text-center font-medium">{user.firstname} {user.lastname}</span>
+              <label className="text-center">Subscriber's Signature</label>
+            </div>
+            <div className="flex flex-col gap-2">
+              <input type="text" placeholder="" className="border-b" />
+              <label className="text-center">Foreman
+              </label>
+              <p className="font-medium">Karde Krishna Chits Private Limited</p>
+            </div>
+          </div>
         </div>
-
-
+      </div>
+      <div className="w-full flex items-center justify-center mt-8">
+        <button
+          onClick={handleDownload}
+          className="px-6 py-2 bg-[#004f9e] text-sm rounded-md text-white hover:bg-[#06c] cursor-pointer transition-colors duration-200"
+        >
+          Print Application
+        </button>
       </div>
     </Layout>
   );
