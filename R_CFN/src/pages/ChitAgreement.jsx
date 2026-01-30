@@ -7,11 +7,11 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router";
 
 const ChitAgreement = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { fetchChitsData, allchitData, branchData } = useContext(UserContext);
   const [search, setSearch] = useState("");
   const [selectedChit, setSelectedChit] = useState(null);
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
   const [displayData, setDisplayData] = useState({
     branch: "",
@@ -19,30 +19,31 @@ const ChitAgreement = () => {
     BylawsDate: "",
     fullName: "",
     permanent_address: "",
+    installment_amount: "",
   });
   const [formData, setFormData] = useState({
-    conducts_of_chits: '',
-    number_of_tickets: '01',
-    number_of_installments: '',
-    installment_amount: '',
-    scheduled_auction_time: '',
-    scheduled_auction_day: '',
-    scheduled_last_date_of_payment: '',
-    date_of_commencement: '',
-    date_of_termination: '',
-    first_auction_date: '',
-    auction_frequency: '',
-    auction_session_start: '',
-    auction_session_end: '',
-    register_bank_branch: '',
-    foreman_name: '',
-    company_reg_number: '',
-    deposit_bank_name: '',
-    deposit_receipt_no: '',
-    deposit_date: '',
-    term_month: '',
-    prize_collection: '',
-    jurisdiction_place: '',
+    conducts_of_chits: "",
+    number_of_tickets: "01",
+    number_of_installments: "",
+    installment_amount: "",
+    scheduled_auction_time: "",
+    scheduled_auction_day: "",
+    scheduled_last_date_of_payment: "",
+    date_of_commencement: "",
+    date_of_termination: "",
+    first_auction_date: "",
+    auction_frequency: "",
+    auction_session_start: "",
+    auction_session_end: "",
+    register_bank_branch: "",
+    foreman_name: "",
+    company_reg_number: "",
+    deposit_bank_name: "",
+    deposit_receipt_no: "",
+    deposit_date: "",
+    term_month: "",
+    prize_collection: "",
+    jurisdiction_place: "",
   });
 
   // Handle input changes
@@ -80,11 +81,8 @@ const ChitAgreement = () => {
       alert("Please select an application number first");
       return;
     }
-    setLoading(true)
+    setLoading(true);
     try {
-
-
-
       const payload = {
         user: selectedChit.user.id,
         branch: selectedChit.branch,
@@ -96,7 +94,8 @@ const ChitAgreement = () => {
         installment_amount: Number(formData.installment_amount),
         scheduled_auction_time: formData.scheduled_auction_time,
         scheduled_auction_day: formData.scheduled_auction_day || null,
-        scheduled_last_date_of_payment: formData.scheduled_last_date_of_payment || null,
+        scheduled_last_date_of_payment:
+          formData.scheduled_last_date_of_payment || null,
         date_of_commencement: formData.date_of_commencement,
         date_of_termination: formData.date_of_termination,
         first_auction_date: formData.first_auction_date,
@@ -115,32 +114,44 @@ const ChitAgreement = () => {
       };
 
       const response = await createChitAgreement(payload);
-      if(response.success){
-        toast.success(`Chit Agreement is Created for Customer ${displayData.fullName} having Agreement ID : ${response.id}`)
+      if (response.success) {
+        toast.success(
+          `Chit Agreement is Created for Customer ${displayData.fullName} having Agreement ID : ${response.id}`,
+        );
         setTimeout(() => {
-          navigate(`/AgreementPrintPreview/${response.id}`)
-        }, 2000)
+          navigate(`/AgreementPrintPreview/${response.id}`);
+        }, 2000);
       }
       console.log(response);
     } catch (error) {
-      console.log(error.message)
-      setLoading(false)
+      console.log(error.message);
+      setLoading(false);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   };
 
   const autoFill = (chit) => {
+    const chitAmt = Number(chit.ChitValue);
+    const chitDuration = Number(chit.Duration);
+
+    const installmentAmt = chitDuration > 0 ? Math.round((chitAmt / chitDuration) * 100) / 100
+    : "";
+
     setDisplayData({
       branch: chit.branch || "",
       ByLawsNumber: chit.ByLawsNumber || "",
       BylawsDate: chit.BylawsDate || "",
-      conductsOfChit: "",
-      fullName:
-        `${chit.user.firstname} ${chit.user.middlename} ${chit.user.lastname}` ||
-        "",
+      installment_amount: installmentAmt.toFixed(2),
+      fullName: `${chit.user.firstname} ${chit.user.middlename} ${chit.user.lastname}`,
       permanent_address: chit.user.permanent_address || "",
     });
+
+    setFormData((prev) => ({
+      ...prev,
+      number_of_installments: chitDuration,
+      installment_amount: installmentAmt,
+    }));
   };
 
   return (
@@ -172,7 +183,7 @@ const ChitAgreement = () => {
                     setData([]);
                     setSearch(item.application_id);
                     autoFill(item);
-                    setSelectedChit(item)
+                    setSelectedChit(item);
                   }}
                 >
                   <span className="font-semibold">
@@ -287,7 +298,6 @@ const ChitAgreement = () => {
               No. of Tickets <span className="text-red-500">*</span>
             </label>
             <input
-           
               value={"01"}
               name="number_of_tickets"
               type="text"
@@ -301,12 +311,13 @@ const ChitAgreement = () => {
               No. of Installments <span className="text-red-500">*</span>
             </label>
             <input
-            required
+              required
               name="number_of_installments"
               type="number"
+              value={formData.number_of_installments}
               onChange={handleChange}
               placeholder="No. of Installments"
-              className="w-full mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
+              className="border border-neutral-300 w-full rounded-md px-3 py-1"
             />
           </div>
 
@@ -316,12 +327,13 @@ const ChitAgreement = () => {
               <span className="text-red-500">*</span>
             </label>
             <input
-            required
-              onChange={handleChange}
+              required
               name="installment_amount"
-              type="text"
+              type="number"
+              value={formData.installment_amount}
+              onChange={handleChange}
               placeholder="Amount per Ticket per Installments"
-              className="w-full mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
+              className="border border-neutral-300 w-full rounded-md px-3 py-1"
             />
           </div>
         </div>
@@ -332,7 +344,7 @@ const ChitAgreement = () => {
               Time of Auction <span className="text-red-500">*</span>
             </label>
             <input
-            required
+              required
               onChange={handleChange}
               name="scheduled_auction_time"
               type="time"
@@ -346,7 +358,7 @@ const ChitAgreement = () => {
               Day of Auction <span className="text-red-500">*</span>
             </label>
             <input
-            required
+              required
               onChange={handleChange}
               name="scheduled_auction_day"
               type="date"
@@ -361,7 +373,7 @@ const ChitAgreement = () => {
               <span className="text-red-500">*</span>
             </label>
             <input
-            required
+              required
               onChange={handleChange}
               name="scheduled_last_date_of_payment"
               type="date"
@@ -381,7 +393,7 @@ const ChitAgreement = () => {
               Date of Commencement <span className="text-red-500">*</span>
             </label>
             <input
-            required
+              required
               onChange={handleChange}
               name="date_of_commencement"
               type="date"
@@ -395,7 +407,7 @@ const ChitAgreement = () => {
               Date of Termination <span className="text-red-500">*</span>
             </label>
             <input
-            required
+              required
               onChange={handleChange}
               name="date_of_termination"
               type="date"
@@ -418,7 +430,7 @@ const ChitAgreement = () => {
               <span className="text-red-500">*</span>
             </label>
             <input
-            required
+              required
               onChange={handleChange}
               name="first_auction_date"
               type="date"
@@ -433,7 +445,7 @@ const ChitAgreement = () => {
               <span className="text-red-500">*</span>
             </label>
             <input
-            required
+              required
               onChange={handleChange}
               name="auction_frequency"
               type="date"
@@ -450,7 +462,7 @@ const ChitAgreement = () => {
               Time 1 <span className="text-red-500">*</span>
             </label>
             <input
-            required
+              required
               onChange={handleChange}
               name="auction_session_start"
               type="time"
@@ -464,7 +476,7 @@ const ChitAgreement = () => {
               Time 2 <span className="text-red-500">*</span>
             </label>
             <input
-            required
+              required
               onChange={handleChange}
               name="auction_session_end"
               type="time"
@@ -480,7 +492,7 @@ const ChitAgreement = () => {
             <span className="text-red-500">*</span>{" "}
           </h1>
           <input
-          required
+            required
             onChange={handleChange}
             name="register_bank_branch"
             type="text"
@@ -496,7 +508,7 @@ const ChitAgreement = () => {
               <span className="text-red-500">*</span>{" "}
             </h1>
             <input
-            required
+              required
               onChange={handleChange}
               name="foreman_name"
               type="text"
@@ -510,7 +522,7 @@ const ChitAgreement = () => {
               <span className="text-red-500">*</span>{" "}
             </h1>
             <input
-            required
+              required
               onChange={handleChange}
               name="company_reg_number"
               type="text"
@@ -532,7 +544,7 @@ const ChitAgreement = () => {
                 <span className="text-red-500">*</span>
               </label>
               <input
-              required
+                required
                 onChange={handleChange}
                 name="deposit_bank_name"
                 type="text"
@@ -547,7 +559,7 @@ const ChitAgreement = () => {
                 <span className="text-red-500">*</span>
               </label>
               <input
-              required
+                required
                 onChange={handleChange}
                 name="deposit_receipt_no"
                 type="text"
@@ -563,7 +575,7 @@ const ChitAgreement = () => {
                 Dated <span className="text-red-500">*</span>
               </label>
               <input
-              required
+                required
                 onChange={handleChange}
                 name="deposit_date"
                 type="date"
@@ -577,7 +589,7 @@ const ChitAgreement = () => {
                 For term of Months <span className="text-red-500">*</span>
               </label>
               <input
-              required
+                required
                 onChange={handleChange}
                 name="term_month"
                 type="text"
@@ -594,7 +606,7 @@ const ChitAgreement = () => {
             <span className="text-red-500">*</span>{" "}
           </h1>
           <input
-          required
+            required
             onChange={handleChange}
             name="prize_collection"
             type="text"
@@ -615,7 +627,7 @@ const ChitAgreement = () => {
               Jurisdiction Place <span className="text-red-500">*</span>
             </label>
             <input
-            required
+              required
               onChange={handleChange}
               name="jurisdiction_place"
               type="text"
@@ -643,7 +655,8 @@ const ChitAgreement = () => {
               type="submit"
               className="px-6 py-1 bg-[#06c] flex items-center gap-2 text-white rounded-md text-sm shadow-md"
             >
-              <Loader2 size={18} className="animate-spin" />Saveing Agreement...
+              <Loader2 size={18} className="animate-spin" />
+              Saveing Agreement...
             </button>
           ) : (
             <button
