@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://192.168.1.9:8080/",
+  baseURL: " https://rosamaria-compony-sharply.ngrok-free.dev",
   withCredentials : true,
   headers: {
     "ngrok-skip-browser-warning": "true",
