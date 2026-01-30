@@ -18,8 +18,12 @@ const AgreementPrintPreview = () => {
     contentRef: ref,
     pageStyle: `
       @page {
-        size: A4;
-        margin: 10mm;
+        size: A3;
+        margin-top: 8mm;
+        margin-bottom: 8mm;
+        padding-bottom: 10mm;
+        padding-top: 3mm;
+        border: 1px solid
         
       }
 
@@ -30,8 +34,6 @@ const AgreementPrintPreview = () => {
           -webkit-print-color-adjust: exact;
           color-adjust: exact;
           line-height: 1.4;
-          margin: 0;
-padding: 0;
         }
 
         .print-container {
@@ -53,6 +55,26 @@ padding: 0;
         .schedule-section {
           page-break-inside: avoid;
         }
+
+        .container {
+        padding: 0;
+        margin: 0;
+      }
+        .hero{
+          margin-right: 12rem
+        }
+        .srnumber{
+          display: flex
+        }
+          .srnumberlable{
+          width: 3rem
+          }
+          .schedule{
+          padding-left : 0.8rem 
+          }
+          .schedule-border{
+          border-left: 0 solid
+          }
       }
     `,
   });
@@ -98,7 +120,8 @@ padding: 0;
 
   return (
     <Layout>
-      <div className="max-w-7xl mx-auto border leading-loose" ref={ref}>
+      <div className="container">
+        <div className="max-w-7xl mx-auto leading-5" ref={ref}>
         <div className="text-end text-xs text-gray-600 pt-3 px-3">
           <p>Regd. No.: U64990MH2023PTC400938 </p>
         </div>
@@ -106,16 +129,16 @@ padding: 0;
           <img src="/Logo.png" alt="" width={400} />
         </div>
         <div className="flex w-full items-center justify-center">
-          <div className="w-125 mx-auto flex justify-center items-center text-center ">
+          <div className="w-125 mx-auto flex justify-center items-center text-center hero">
             <h1 className="px-5 font-semibold border border-neutral-500 rounded-full text-center ms-auto">
               AGREEMENT OF CHIT
             </h1>
           </div>
           <div
             className="items-center
-                justify-end "
+                justify-end srnumber"
           >
-            <label>Sr No.</label>
+            <label className="srnumberlable">Sr No.</label>
             <input
               value={chit.application_id}
               type="text"
@@ -177,9 +200,9 @@ padding: 0;
         <div className="print-container mx-auto w-full flex flex-col items-center justify-center schedule-section">
           <h2 className="font-semibold mb-2">SCHEDULE</h2>
 
-          <div className="border w-full ">
+          <div className="border-r border-l border-b w-full schedule-border">
             <div className="w-full overflow-x-auto border-b">
-              <table className="w-full border border-black text-sm ">
+              <table className="w-full border-black text-sm ">
                 {/* COLUMN WIDTHS MATCHING THE FORM - Fixed to add up to 100% */}
                 <colgroup>
                   <col className="w-[35%]" /> {/* Address */}
@@ -192,7 +215,7 @@ padding: 0;
 
                 <thead>
                   <tr>
-                    <th className="border border-black px-2 py-2 text-left">
+                    <th className="border-t border-b border-black px-2 py-2 text-left">
                       Full Name and Permanent Residential Address of the
                       Subscriber
                     </th>
@@ -208,7 +231,7 @@ padding: 0;
                     <th className="border border-black px-2 py-2">
                       Series and Chits No.
                     </th>
-                    <th className="border border-black px-2 py-2">
+                    <th className="border-t border-b border-black px-2 py-2">
                       Chits Amount
                     </th>
                   </tr>
@@ -216,44 +239,44 @@ padding: 0;
 
                 <tbody>
                   <tr className="h-30">
-                    <td className="border border-black p-2 align-top">
+                    <td className="border-t  border-black p-2 align-top">
                       <textarea
                         className="w-full h-20 resize-none outline-none text-start font-medium ps-3"
                         value={`${user.firstname} ${user.middlename} ${user.lastname} \n \n${chitAgreementData.branchName}`}
                       />
                     </td>
 
-                    <td className="border border-black p-2 align-top">
+                    <td className="border-r border-l border-black p-2 align-top">
                       <input
                         className="w-full outline-none text-center font-medium"
                         value={chitAgreementData.number_of_tickets}
                       />
                     </td>
 
-                    <td className="border border-black p-2 align-top">
+                    <td className="border-r border-l border-black p-2 align-top">
                       <input
                         className="w-full outline-none text-center font-medium"
                         value={chitAgreementData.number_of_installments}
                       />
                     </td>
 
-                    <td className="border border-black p-2 align-top">
+                    <td className="border-r border-l border-black p-2 align-top">
                       <input
                         className="w-full outline-none text-center font-medium"
                         value={chitAgreementData.installment_amount}
                       />
                     </td>
 
-                    <td className="border border-black p-2 align-top">
+                    <td className="border-r border-l border-black p-2 align-top">
                       <input
                         className="w-full outline-none text-center font-medium"
                         value={chit.GroupCode}
                       />
                     </td>
 
-                    <td className="border border-black p-2 align-top">
+                    <td className="border-t  border-black p-2 align-top">
                       <input
-                        className="w-full outline-none font-medium "
+                        className="w-full outline-none font-medium text-center"
                         value={chit.ChitValue}
                       />
                     </td>
@@ -261,9 +284,9 @@ padding: 0;
                 </tbody>
               </table>
             </div>
-            <div className="flex w-full px-4 py-2">
+            <div className="flex w-full px-4 py-2 schedule">
               <div className="flex items-start w-full text-sm">
-                <label className="text-center">
+                <label className="text-center w-32">
                   Time of Auction <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -271,24 +294,24 @@ padding: 0;
                   type="time"
                   readOnly
                   placeholder="Time of Auction"
-                  className="border-b w-110 px-3 py-1 text-center outline-none font-medium"
+                  className="border-b w-50 px-3 py-1 text-center outline-none font-medium"
                 />
               </div>
 
               <div className="flex items-start w-full text-sm">
-                <label className="text-center">
+                <label className="text-center w-32">
                   Day of Auction <span className="text-red-500">*</span>
                 </label>
                 <input
                   value={dayjs(chitAgreementData.scheduled_auction_day).format('DD MMM YYYY')}
                   type="text"
                   placeholder="Day of Auction"
-                  className="border-b w-91 px-3 py-1 text-center outline-none font-medium"
+                  className="border-b w-50 px-3 py-1 text-start me-10 outline-none font-medium"
                 />
               </div>
             </div>
-            <div className="w-full text-sm">
-              <label className="text-center w-50 px-4 py-1">
+            <div className="w-full text-sm flex">
+              <label className="text-center px-4 py-1">
                 Last date for payment of Installment is{" "}
                 <span className="text-red-500">*</span>
               </label>
@@ -296,7 +319,7 @@ padding: 0;
                 value={dayjs(chitAgreementData.scheduled_last_date_of_payment).format('DD MMM YYYY')}
                 type="text"
                 placeholder="Day of Auction"
-                className="border-b w-190 px-3 py-1 text-center outline-none font-medium"
+                className="border-b w-90 px-3 py-1 text-center outline-none font-medium"
               />
             </div>
             <p className="mx-4 text-justify py-2 text-sm leading-tight">
@@ -312,31 +335,31 @@ padding: 0;
           </div>
         </div>
 
-        <div className="mx-4 text-sm">
+        <div className="mx-4 text-sm mt-3">
           <h2 className="font-semibold">
             1) Date of Commencement and Termination of Chit :
           </h2>
           <div className="flex ms-4 py-2">
             <div className="flex">
-              <label>
+              <label className="w-48">
                 Date of Commencement <span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
                 placeholder=""
-                className="border-b px-3 text-center outline-none font-medium"
+                className="border-b px-3 text-center w-30 outline-none font-medium"
                 value={dayjs(chitAgreementData.date_of_commencement).format('DD MMM YYYY')}
               />
             </div>
 
-            <div className="flex ms-10">
-              <label>
+            <div className="flex">
+              <label className="w-38">
                 Date of Termination<span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
                 placeholder=""
-                className="border-b px-3 text-cente outline-none font-medium text-center"
+                className="border-b px-3 text-cente outline-none w-30 font-medium text-center"
                 value={dayjs(chitAgreementData.date_of_termination).format('DD MMM YYYY')}
               />
             </div>
@@ -687,7 +710,7 @@ padding: 0;
               17. Particulars of security given or deposited by the Foreman:
             </h3>
 
-            <p className="">
+            <p className="tracking-tighter">
               A sum of Rs.
               <input
                 className=" border-b mx-2 px-2 py-1 text-center outline-none font-medium"
@@ -1033,6 +1056,7 @@ padding: 0;
             </div>
           </div>
         </div>
+      </div>
       </div>
       <div className="w-full flex items-center justify-center mt-8">
         <button

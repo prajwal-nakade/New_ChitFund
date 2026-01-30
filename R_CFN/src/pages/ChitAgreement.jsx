@@ -287,6 +287,7 @@ const ChitAgreement = () => {
               No. of Tickets <span className="text-red-500">*</span>
             </label>
             <input
+           
               value={"01"}
               name="number_of_tickets"
               type="text"
@@ -300,6 +301,7 @@ const ChitAgreement = () => {
               No. of Installments <span className="text-red-500">*</span>
             </label>
             <input
+            required
               name="number_of_installments"
               type="number"
               onChange={handleChange}
@@ -314,6 +316,7 @@ const ChitAgreement = () => {
               <span className="text-red-500">*</span>
             </label>
             <input
+            required
               onChange={handleChange}
               name="installment_amount"
               type="text"
@@ -329,6 +332,7 @@ const ChitAgreement = () => {
               Time of Auction <span className="text-red-500">*</span>
             </label>
             <input
+            required
               onChange={handleChange}
               name="scheduled_auction_time"
               type="time"
@@ -342,6 +346,7 @@ const ChitAgreement = () => {
               Day of Auction <span className="text-red-500">*</span>
             </label>
             <input
+            required
               onChange={handleChange}
               name="scheduled_auction_day"
               type="date"
@@ -356,6 +361,7 @@ const ChitAgreement = () => {
               <span className="text-red-500">*</span>
             </label>
             <input
+            required
               onChange={handleChange}
               name="scheduled_last_date_of_payment"
               type="date"
@@ -375,6 +381,7 @@ const ChitAgreement = () => {
               Date of Commencement <span className="text-red-500">*</span>
             </label>
             <input
+            required
               onChange={handleChange}
               name="date_of_commencement"
               type="date"
@@ -388,6 +395,7 @@ const ChitAgreement = () => {
               Date of Termination <span className="text-red-500">*</span>
             </label>
             <input
+            required
               onChange={handleChange}
               name="date_of_termination"
               type="date"
@@ -410,6 +418,7 @@ const ChitAgreement = () => {
               <span className="text-red-500">*</span>
             </label>
             <input
+            required
               onChange={handleChange}
               name="first_auction_date"
               type="date"
@@ -424,6 +433,7 @@ const ChitAgreement = () => {
               <span className="text-red-500">*</span>
             </label>
             <input
+            required
               onChange={handleChange}
               name="auction_frequency"
               type="date"
@@ -440,6 +450,7 @@ const ChitAgreement = () => {
               Time 1 <span className="text-red-500">*</span>
             </label>
             <input
+            required
               onChange={handleChange}
               name="auction_session_start"
               type="time"
@@ -453,6 +464,7 @@ const ChitAgreement = () => {
               Time 2 <span className="text-red-500">*</span>
             </label>
             <input
+            required
               onChange={handleChange}
               name="auction_session_end"
               type="time"
@@ -468,6 +480,7 @@ const ChitAgreement = () => {
             <span className="text-red-500">*</span>{" "}
           </h1>
           <input
+          required
             onChange={handleChange}
             name="register_bank_branch"
             type="text"
@@ -483,6 +496,7 @@ const ChitAgreement = () => {
               <span className="text-red-500">*</span>{" "}
             </h1>
             <input
+            required
               onChange={handleChange}
               name="foreman_name"
               type="text"
@@ -496,6 +510,7 @@ const ChitAgreement = () => {
               <span className="text-red-500">*</span>{" "}
             </h1>
             <input
+            required
               onChange={handleChange}
               name="company_reg_number"
               type="text"
@@ -517,6 +532,7 @@ const ChitAgreement = () => {
                 <span className="text-red-500">*</span>
               </label>
               <input
+              required
                 onChange={handleChange}
                 name="deposit_bank_name"
                 type="text"
@@ -531,6 +547,7 @@ const ChitAgreement = () => {
                 <span className="text-red-500">*</span>
               </label>
               <input
+              required
                 onChange={handleChange}
                 name="deposit_receipt_no"
                 type="text"
@@ -546,6 +563,7 @@ const ChitAgreement = () => {
                 Dated <span className="text-red-500">*</span>
               </label>
               <input
+              required
                 onChange={handleChange}
                 name="deposit_date"
                 type="date"
@@ -559,6 +577,7 @@ const ChitAgreement = () => {
                 For term of Months <span className="text-red-500">*</span>
               </label>
               <input
+              required
                 onChange={handleChange}
                 name="term_month"
                 type="text"
@@ -575,6 +594,7 @@ const ChitAgreement = () => {
             <span className="text-red-500">*</span>{" "}
           </h1>
           <input
+          required
             onChange={handleChange}
             name="prize_collection"
             type="text"
@@ -595,6 +615,7 @@ const ChitAgreement = () => {
               Jurisdiction Place <span className="text-red-500">*</span>
             </label>
             <input
+            required
               onChange={handleChange}
               name="jurisdiction_place"
               type="text"

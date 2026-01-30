@@ -9,7 +9,7 @@ class Users(models.Model):
         null=True,      # TEMP
         blank=True,
     )
-    CustomerID = models.CharField(max_length=20, unique=True, null=True, blank=True, editable=False)
+    CustomerID = models.CharField(max_length=20, unique=True,  editable=False)
     def save(self, *args, **kwargs):
         if not self.CustomerID:
             with transaction.atomic():
@@ -31,8 +31,8 @@ class Users(models.Model):
         super().save(*args, **kwargs)
 
     firstname = models.CharField(max_length=50)
-    middlename = models.CharField(max_length=50, blank=True, null=True)
-    lastname = models.CharField(max_length=50, blank=True, null=True)
+    middlename = models.CharField(max_length=50)
+    lastname = models.CharField(max_length=50)
     mobile_no = models.CharField(max_length=15)
     dob = models.DateField()
     email = models.EmailField(max_length=50, unique=True)
@@ -69,9 +69,9 @@ class Users(models.Model):
 
 class Nominee(models.Model):
     user = models.ForeignKey(Users, on_delete=models.CASCADE, related_name="nominees")
-    firstname = models.CharField(max_length=50, blank=True, null=True)
-    middlename = models.CharField(max_length=50, blank=True, null=True)
-    lastname = models.CharField(max_length=50, blank=True, null=True)
+    firstname = models.CharField(max_length=50)
+    middlename = models.CharField(max_length=50)
+    lastname = models.CharField(max_length=50)
     mobile_no = models.CharField(max_length=15)
     dob = models.DateField()
     relationship = models.CharField(max_length=30)
@@ -144,8 +144,8 @@ class ChitAgreementDetails(models.Model):
     number_of_installments = models.IntegerField()
     installment_amount = models.FloatField()
     scheduled_auction_time = models.TimeField()
-    scheduled_auction_day = models.DateField(null=True)
-    scheduled_last_date_of_payment = models.DateField(null=True)
+    scheduled_auction_day = models.DateField()
+    scheduled_last_date_of_payment = models.DateField()
     date_of_commencement = models.DateField()
     date_of_termination = models.DateField()
     first_auction_date = models.DateField()
@@ -161,6 +161,6 @@ class ChitAgreementDetails(models.Model):
     term_month = models.CharField(max_length=10)
     prize_collection = models.CharField(max_length=60)
     jurisdiction_place = models.CharField(max_length=50)
-    created_at = models.DateTimeField(auto_now_add=True, null=True)
-    updated_at = models.DateTimeField(auto_now=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     
