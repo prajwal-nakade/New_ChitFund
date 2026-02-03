@@ -119,6 +119,7 @@ def is_admin(request):
     user = request.user
     
     return Response({
+        'success' : True,
         'is_superuser': user.is_superuser,
         'is_staff': user.is_staff,
         'username': user.username,

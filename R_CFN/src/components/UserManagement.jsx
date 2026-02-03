@@ -90,31 +90,35 @@ const UserManagement = ({ data, setUserEntriesData }) => {
   };
 
   return (
+    <>
     <div className="bg-white border rounded p-4 mt-10 border-neutral-300 shadow-lg">
-      <div className="flex items-center justify-between w-full">
-        <h2 className="text-lg font-medium mb-4 tracking-tight text-neutral-800">
+      <div className="flex items-center  lg:justify-between w-full">
+        <h2 className="text-base lg:text-lg  font-medium mb-4 tracking-tight text-neutral-800 ">
           User Management
         </h2>
-        <div className="flex items-center relative">
+        <div className="flex items-center relative  ms-auto">
           <div className="absolute bg-gray-200 h-full rounded-l-md  border border-neutral-300 px-2">
             <Search size={14} className="text-neutral-500 mt-2" />
           </div>
           <input
             onChange={(e) => handleSearch(e.target.value)}
             type="text"
-            className="border border-neutral-300 shadow-sm text-neutral-800 text-sm px-10 py-1 placeholder:text-xs rounded-md w-68 outline-none"
+            className="border border-neutral-300 shadow-sm text-neutral-800 text-sm px-10 py-1 placeholder:text-xs rounded-md w-44 lg:w-84 outline-none"
             placeholder="Search by name and Mobile no."
           />
           {/* <button>Search</button> */}
         </div>
       </div>
 
-      <div className="overflow-x-auto mt-3">
+      <div className="hidden md:block mt-3">
         <table className="w-full border border-neutral-300 text-sm rounded-md overflow-hidden">
           <thead className="bg-[#004f9e] ">
             <tr>
               <th className="border border-neutral-300 text-white font-medium p-2">
                 Sr.No.
+              </th>
+              <th className="border border-neutral-300 text-white font-medium p-2">
+                CustomerID
               </th>
               <th className="border border-neutral-300 text-white font-medium p-2">
                 Name
@@ -161,6 +165,9 @@ const UserManagement = ({ data, setUserEntriesData }) => {
                   <td className="border border-neutral-300 p-2 text-center">
                     {index + 1}
                   </td>
+                  <td className="border border-neutral-300 p-2 text-center">
+                    {item.CustomerID}
+                  </td>
                   <td className="border border-neutral-300 p-2">
                     <div className="flex items-center gap-1 justify-center">
                       <span>{item.firstname}</span>
@@ -175,7 +182,7 @@ const UserManagement = ({ data, setUserEntriesData }) => {
                     {item.email}
                   </td>
                   <td className="border border-neutral-300 text-center p-2">
-                    {item.dob}
+                    {dayjs(item.dob).format('DD MMM YYYY')}
                   </td>
                   <td className="border border-neutral-300 text-center p-2">
                     {item.permanent_address}
@@ -261,7 +268,87 @@ const UserManagement = ({ data, setUserEntriesData }) => {
           onClose={() => setSelectedUser(null)}
         />
       )}
+      <div className="block md:hidden mt-4 space-y-4">
+  {userData.length === 0 ? (
+    <p className="text-center text-neutral-500 font-medium">No user found</p>
+  ) : (
+    userData.map((item, index) => (
+      <div
+        key={item.id || index}
+        className="border border-neutral-300 rounded-md p-4 shadow-sm bg-white"
+      >
+        <div className="flex justify-between items-center">
+          <h3 className="font-semibold text-neutral-800">
+            {item.firstname} {item.lastname}
+          </h3>
+          <span className="text-xs text-neutral-500">
+            #{item.CustomerID}
+          </span>
+        </div>
+
+        <div className="mt-2 space-y-1 text-sm text-neutral-700">
+          <p><strong>Mobile:</strong> {item.mobile_no}</p>
+          <p><strong>Email:</strong> {item.email}</p>
+          <p><strong>DOB:</strong> {dayjs(item.dob).format("DD MMM YYYY")}</p>
+          <p><strong>Address:</strong> {item.permanent_address}</p>
+          <p><strong>Created:</strong> {dayjs(item.created_at).format("DD MMM YYYY")}</p>
+        </div>
+
+        <div className="mt-3 flex justify-between items-center">
+          {isSuperuser && (
+            <button
+              onClick={() => handleStatus(item.id, item.status)}
+              className="flex items-center gap-1"
+            >
+              {item.status === "active" ? (
+                <ToggleRight size={20} className="text-green-500" />
+              ) : (
+                <ToggleLeft size={20} className="text-red-500" />
+              )}
+              <span className="text-xs capitalize">{item.status}</span>
+            </button>
+          )}
+
+          <div className="flex gap-2">
+            {isSuperuser && (
+              <>
+                <button
+                  onClick={() => {
+                    setSelectedUser(item);
+                    setActiveModal("edit");
+                  }}
+                  className="p-2 bg-yellow-500 rounded text-white"
+                >
+                  <SquarePen size={14} />
+                </button>
+
+                <button
+                  onClick={() => handleDelete(item.id, item.firstname)}
+                  className="p-2 bg-red-500 rounded text-white"
+                >
+                  <Trash size={14} />
+                </button>
+              </>
+            )}
+
+            <button
+              onClick={() => {
+                setSelectedUser(item);
+                setActiveModal("view");
+              }}
+              className="p-2 bg-slate-400 rounded text-white"
+            >
+              <BookUser size={14} />
+            </button>
+          </div>
+        </div>
+      </div>
+    ))
+  )}
+</div>
     </div>
+    
+</>
   );
 };
 

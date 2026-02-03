@@ -107,26 +107,26 @@ SIMPLE_JWT = {
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-}
-
 # DATABASES = {
 #     "default": {
-#         "ENGINE": "django.db.backends.postgresql",
-#         "NAME": "postgres",
-#         "USER": "postgres",
-#         "PASSWORD": "Amrut2004.",
-#         "HOST": "localhost",
-#         "PORT": "5432",
-#         "OPTIONS": {
-#             "sslmode": "prefer"
-#         }
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3",
 #     }
 # }
+
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "Chit Fund Management",
+        "USER": "postgres",
+        "PASSWORD": "Amrut2004.",
+        "HOST": "localhost",
+        "PORT": "5432",
+        "OPTIONS": {
+            "sslmode": "prefer"
+        }
+    }
+}
 
 AUTH_USER_MODEL = 'cheatfund.UserCredentials'
 

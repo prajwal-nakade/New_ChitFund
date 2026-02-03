@@ -28,7 +28,7 @@ function LoginPage() {
             console.log(data)
             if (data.success) {
                 toast.success(data.message || 'Login Success!')
-                localStorage.setItem('is_superuser', data.is_superuser)
+                localStorage.setItem('is_superuser', JSON.stringify(data.is_superuser))
                 setTimeout(() => {
                     navigate('/application-form')
                 }, 2000)
