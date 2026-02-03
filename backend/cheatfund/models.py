@@ -28,7 +28,7 @@ class Users(models.Model):
     lastname = models.CharField(max_length=50)
     mobile_no = models.CharField(max_length=15)
     dob = models.DateField()
-    email = models.EmailField(max_length=50, unique=True)
+    email = models.EmailField(max_length=50, unique=True, null=True)
     permanent_address = models.CharField(max_length=300)
     pincode = models.CharField(max_length=10)
     pancard_no = models.CharField(max_length=50, unique=True)
