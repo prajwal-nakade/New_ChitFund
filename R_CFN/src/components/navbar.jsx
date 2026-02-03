@@ -127,7 +127,7 @@ const Navbar = () => {
       )}
 
       {/* 🔹 TOP NAVBAR */}
-      <header className="flex items-center justify-end h-14 px-6 border-b border-neutral-300 bg-white">
+      <header className="flex items-center justify-start h-14 px-6 border-b border-neutral-300 bg-white">
         <button
           onClick={() => setOpen(!open)}
           className="md:hidden text-neutral-700"
@@ -135,10 +135,10 @@ const Navbar = () => {
           {open ? <X size={22} /> : <Menu size={22} />}
         </button>
 
-        <div className="hidden md:block">
+        <div className="hidden md:block w-full">
           <button
             onClick={handleLogout}
-            className="px-3 py-1.5 border border-red-500 text-red-600 rounded hover:bg-red-50 text-sm"
+            className="px-3 py-1.5 border border-red-500 text-red-600 rounded hover:bg-red-50 text-sm flex justify-end ms-auto"
           >
             Logout
           </button>

@@ -142,8 +142,8 @@ const EditUserDetails = ({ user, onClose, getUserEntries }) => {
 
 
     return (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-            <div className="bg-white w-full max-w-7xl rounded-lg p-6">
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 overflow-y-auto">
+            <div className="bg-white w-full max-w-7xl rounded-lg p-4 sm:p-6 max-h-[95vh] overflow-y-auto">
                 <h2 className="text-md font-semibold mb-2 w-full  px-5 py-2 bg-[#004f9e] text-white rounded-md">Update User Details</h2>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
