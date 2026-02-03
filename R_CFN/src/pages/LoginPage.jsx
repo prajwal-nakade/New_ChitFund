@@ -54,11 +54,11 @@ function LoginPage() {
                         <label>
                             Username:
                         </label>
-                        <input onChange={handleChange} value={formData.username} className='w-full border border-neutral-300 px-3 py-2 rounded-md' type="text" name="username" placeholder='Enter Username Here...' />
+                        <input onChange={handleChange} value={formData.username} className='w-full border border-neutral-300 px-3 py-2 rounded-md' type="text" name="username" placeholder='Enter Username Here...' required/>
                     </div>
                     <div className='flex flex-col items-start justify-start gap-2 w-full relative'>
                         <label>Password :</label>
-                        <input onChange={handleChange} value={formData.password} className='w-full border border-neutral-300 px-3 py-2 rounded-md' type={`${seePassword ? 'text' : 'password'}`} name="password" placeholder='Enter Password Here...' />
+                        <input onChange={handleChange} value={formData.password} className='w-full border border-neutral-300 px-3 py-2 rounded-md' type={`${seePassword ? 'text' : 'password'}`} name="password" placeholder='Enter Password Here...' required/>
                         <button type='button' className='absolute right-3 text-neutral-500 top-11' onClick={() => setSeepassword(!seePassword)}>
                             {seePassword ? (
 
