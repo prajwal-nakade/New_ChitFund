@@ -39,7 +39,7 @@ const ChitManagement = ({ data = [], fetchChitsData }) => {
   }
 
   return (
-    <div className="bg-white border rounded p-4 mt-10 border-neutral-300 shadow-lg">
+    <div className="bg-white border rounded p-4 mt-10 border-neutral-300 shadow-lg max-w-xl mx-auto lg:max-w-7xl">
       {/* Header */}
       <div className="flex items-center justify-between w-full">
         <h2 className="text-lg font-medium mb-4 tracking-tight text-neutral-800">
@@ -60,11 +60,12 @@ const ChitManagement = ({ data = [], fetchChitsData }) => {
       </div>
 
       {/* Table */}
-      <div className="overflow-x-auto mt-3">
-        <table className="w-full border border-neutral-300 text-sm rounded-md overflow-hidden">
+      <div className="mt-3 max-w-full overflow-x-auto">
+        <table className="w-full border border-neutral-300 text-sm rounded-md">
           <thead className=" bg-[#004f9e]">
             <tr>
               <th className="border p-2 text-white font-medium border-black">Sr.No.</th>
+              <th className="border p-2 text-white font-medium border-black">Application ID</th>
               <th className="border p-2 text-white font-medium border-black">Bylaws No</th>
               <th className="border p-2 text-white font-medium border-black">Group Code</th>
               <th className="border p-2 text-white font-medium border-black">Ticket No</th>
@@ -91,6 +92,9 @@ const ChitManagement = ({ data = [], fetchChitsData }) => {
                 <tr key={item.id} className="hover:bg-gray-50">
                   <td className="border p-2 text-center">
                     {index + 1}
+                  </td>
+                  <td className="border p-2 text-center">
+                    {item.application_id}
                   </td>
 
                   <td className="border p-2 text-center">

@@ -1,98 +1,124 @@
 import React, { useState } from "react";
-import { Bell, Search, User, Menu, X, LayoutDashboard, Form, ChevronDown } from "lucide-react";
+import {
+  Bell,
+  Search,
+  User,
+  Menu,
+  X,
+  LayoutDashboard,
+  Form,
+  ChevronDown,
+  ClipboardList,
+  Table2,
+  Handshake,
+  MapPin,
+  GraduationCap,
+} from "lucide-react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { logout } from "../api/endpoint";
 import { toast } from "react-toastify";
 
 const Navbar = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [isMasterOpen, setIsMasterOpen] = useState(false);
 
   const handleLogout = async () => {
     try {
-      const data = await logout()
-      toast.success('Logout successful')
-      navigate('/')
-    } catch (err) {
-      toast.error('Logout failed')
+      await logout();
+      toast.success("Logout successful");
+      navigate("/");
+    } catch {
+      toast.error("Logout failed");
     }
-  }
+  };
 
+  // 🔹 SAME MENUS AS SIDEBAR
+  const Menus = [
+    { title: "Application Form", icon: <ClipboardList size={16} />, path: "/customerapplication" },
+    { title: "View Applications", icon: <Table2 size={16} />, path: "/viewapplications" },
+    { title: "Chit Agreement", icon: <Handshake size={16} />, path: "/ChitAgreement" },
+    { title: "View Chit Agreement", icon: <ClipboardList size={16} />, path: "/ViewChitAgreement" },
+  ];
+
+  const masterSubMenus = [
+    { title: "Customer Master", icon: <User size={16} />, path: "/application-form" },
+    { title: "Branch Master", icon: <MapPin size={16} />, path: "/branch-master" },
+  ];
 
   return (
     <>
-      {/* Mobile dropdown */}
+      {/* 🔹 MOBILE SIDEBAR */}
       {open && (
-        <div className="md:hidden bg-white border-r border-neutral-300 px-6 py-4 fixed inset-0 z-50 w-64">
-          <nav className="flex flex-col gap-3 text-sm">
-            <button onClick={() => setOpen(false)} className="self-end mb-2">
-              <X size={18} />
+        <div className="md:hidden fixed inset-0 z-50 w-64 bg-[#ffffff] text-black px-4 py-4">
+          <div className="flex justify-end mb-3">
+            <button onClick={() => setOpen(false)}>
+              <X size={20} />
             </button>
+          </div>
 
-            {/* SAME LINKS AS SIDEBAR */}
-            <NavLink
-              to="/customerapplication"
-              onClick={() => setOpen(false)}
-              className="flex items-center gap-3 px-3 py-2 hover:bg-red-100"
-            >
-              <LayoutDashboard size={16} />
-              Customer Application
-            </NavLink>
+          <nav className="flex flex-col gap-1 text-sm">
+            {Menus.map((item, idx) => (
+              <NavLink
+                key={idx}
+                to={item.path}
+                onClick={() => setOpen(false)}
+                className={({ isActive }) =>
+                  `flex items-center gap-3 px-3 py-2 rounded
+                  ${
+                    isActive
+                      ? "bg-[#06c] text-white"
+                      : "hover:bg-[#06c] hover:text-white"
 
-            {/* <NavLink
-              to="/menu2"
-              onClick={() => setOpen(false)}
-              className="flex items-center gap-3 px-3 py-2 hover:bg-red-100"
-            >
-              <LayoutDashboard size={16} />
-              Menu 2
-            </NavLink> */}
+                  }`
+                }
+              >
+                {item.icon}
+                {item.title}
+              </NavLink>
+            ))}
 
-            {/* MASTER */}
+            {/* 🔹 MASTERS */}
             <button
               onClick={() => setIsMasterOpen(!isMasterOpen)}
-              className="flex items-center gap-3 px-3 py-2 hover:bg-red-100"
+              className="flex items-center gap-3 px-3 py-2 hover:bg-[#06c] hover:text-white rounded"
             >
-              <Form size={16} />
+              <GraduationCap size={16} />
               Masters
               <ChevronDown
                 size={16}
-                className={`ml-auto transition-transform ${isMasterOpen ? "rotate-180" : ""
-                  }`}
+                className={`ml-auto transition-transform ${
+                  isMasterOpen ? "rotate-180" : ""
+                }`}
               />
             </button>
 
             {isMasterOpen && (
-              <div className="ml-6 flex flex-col gap-1">
-                <NavLink
-                  to="/application-form"
-                  onClick={() => setOpen(false)}
-                  className="px-3 py-2 hover:bg-red-100"
-                >
-                  Customer Master Form
-                </NavLink>
-
-                {/* <NavLink
-                  to="/drop2"
-                  onClick={() => setOpen(false)}
-                  className="px-3 py-2 hover:bg-red-100"
-                >
-                  Drop 2
-                </NavLink>
-
-                <NavLink
-                  to="/drop3"
-                  onClick={() => setOpen(false)}
-                  className="px-3 py-2 hover:bg-red-100"
-                >
-                  Drop 3
-                </NavLink> */}
+              <div className="ml-6 space-y-1">
+                {masterSubMenus.map((sub, i) => (
+                  <NavLink
+                    key={i}
+                    to={sub.path}
+                    onClick={() => setOpen(false)}
+                    className={({ isActive }) =>
+                      `flex items-center gap-2 px-3 py-2 rounded text-xs
+                      ${
+                        isActive
+                          ? "bg-[#06c] text-white"
+                          : "hover:bg-[#06c] hover:text-white"
+                      }`
+                    }
+                  >
+                    {sub.icon}
+                    {sub.title}
+                  </NavLink>
+                ))}
               </div>
             )}
+
             <button
               onClick={handleLogout}
-              className="mt-4 px-3 py-2 border border-red-500 text-red-600 rounded hover:bg-red-50"
+              className="mt-4 px-3 py-2 border border-red-500 text-red-600 rounded hover:bg-red-50 text-sm"
             >
               Logout
             </button>
@@ -100,28 +126,23 @@ const Navbar = () => {
         </div>
       )}
 
-      {/* Navbar */}
-      <header className="flex items-center justify-between h-14 px-6 border-b border-neutral-300 bg-white">
+      {/* 🔹 TOP NAVBAR */}
+      <header className="flex items-center justify-start h-14 px-6 border-b border-neutral-300 bg-white">
+        <button
+          onClick={() => setOpen(!open)}
+          className="md:hidden text-neutral-700"
+        >
+          {open ? <X size={22} /> : <Menu size={22} />}
+        </button>
 
-        <div className="flex items-center gap-4">
-          {/* Mobile toggle */}
-          <button
-            onClick={() => setOpen(!open)}
-            className="md:hidden text-neutral-600"
-          >
-            {open ? <X size={22} /> : <Menu size={22} />}
-          </button>
-        </div>
-        {/* Desktop logout only */}
-        <div className="hidden md:block">
+        <div className="hidden md:block w-full">
           <button
             onClick={handleLogout}
-            className="px-3 py-1.5 border border-red-500 text-red-600 rounded hover:bg-red-50 text-sm"
+            className="px-3 py-1.5 border border-red-500 text-red-600 rounded hover:bg-red-50 text-sm flex justify-end ms-auto"
           >
             Logout
           </button>
         </div>
-
       </header>
     </>
   );
