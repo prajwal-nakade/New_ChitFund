@@ -23,6 +23,8 @@ const ApplicationForm = () => {
     aadhar_image: null,
   });
 
+  const [errors, setErrors] = useState({})
+
   const [loading, setLoading] = useState(false);
 
   const [userEntriesData, setUserEntriesData] = useState([]);
@@ -44,6 +46,11 @@ const ApplicationForm = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+
+    setErrors(prev => ({
+  ...prev,
+  [name]: ""
+}));
   };
 
   const handleNomineeChange = (e) => {
@@ -79,6 +86,34 @@ const ApplicationForm = () => {
     };
   }, [preview]);
 
+const validatePan = (panNo) => {
+  const panRegex = /^[A-Z]{5}[0-9]{4}[A-Z]$/i;
+  return panRegex.test(panNo);
+};
+
+const validateAadhar = (aadharNo) => {
+  const aadharRegex = /^[2-9]{1}[0-9]{3}\s?[0-9]{4}\s?[0-9]{4}$/;
+  return aadharRegex.test(aadharNo);
+};
+
+  const validateAadharAndPan = () => {
+  let newError = {};
+
+  if (!validatePan(formData.pan)) {
+    newError.pan =
+      "Invalid PAN number. Please enter a valid PAN in the format ABCDE1234F.";
+  }
+
+  if (!validateAadhar(formData.aadhar)) {
+    newError.aadhar =
+      "Invalid Aadhaar number. Please enter a 12-digit Aadhaar number starting with 2–9.";
+  }
+
+  setErrors(newError);
+  return Object.keys(newError).length === 0;
+};
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.pan_image && !formData.aadhar_image) {
@@ -94,82 +129,87 @@ const ApplicationForm = () => {
       return;
     }
 
-    const data = new FormData();
-    data.append("firstname", formData.firstName);
-    data.append("middlename", formData.middleName);
-    data.append("lastname", formData.lastName);
-    data.append("mobile_no", formData.mobile);
-    data.append("dob", formData.dob);
-    data.append("email", formData.email);
-    data.append("permanent_address", formData.address);
-    data.append("pincode", formData.pincode);
-    data.append("pancard_no", formData.pan);
-    data.append("aadharcard_no", formData.aadhar);
+    const isValid = validateAadharAndPan()
 
-    if (formData.pan_image) data.append("pan_image", formData.pan_image);
-    if (formData.aadhar_image)
-      data.append("aadhar_image", formData.aadhar_image);
+    if(!isValid) return
 
-    data.append("nominee_firstname", nomineeData.nominee_firstname);
-    data.append("nominee_middlename", nomineeData.nominee_middlename);
-    data.append("nominee_lastname", nomineeData.nominee_lastname);
-    data.append("nominee_mobile", nomineeData.nomineeMobile);
-    data.append("nominee_dob", nomineeData.nomineeDob);
-    data.append("relationship", nomineeData.relationship);
+      const data = new FormData();
+      data.append("firstname", formData.firstName);
+      data.append("middlename", formData.middleName);
+      data.append("lastname", formData.lastName);
+      data.append("mobile_no", formData.mobile);
+      data.append("dob", formData.dob);
+      data.append("email", formData.email);
+      data.append("permanent_address", formData.address);
+      data.append("pincode", formData.pincode);
+      data.append("pancard_no", formData.pan.toUpperCase());
+      data.append("aadharcard_no", formData.aadhar);
 
-    try {
-      setLoading(true);
-      const response = await userEntry(data);
-      if (response.success) {
-        toast.success("User Application Submited!");
-        setFormData({
-          firstName: "",
-          middleName: "",
-          lastName: "",
-          mobile: "",
-          dob: "",
-          email: "",
-          address: "",
-          pincode: "",
-          pan: "",
-          aadhar: "",
-          pan_image: null,
-          aadhar_image: null,
-        });
-        setPreview({
-          pan_image: null,
-          aadhar_image: null,
-        });
-        setNomineeData({
-          nominee_firstname: "",
-          nominee_middlename: "",
-          nominee_lastname: "",
-          relationship: "",
-          nomineeDob: "",
-          nomineeMobile: "",
-        });
-        await fetchUserEntriesData();
-      } else {
-        toast.error("Somthing went wrong");
+      if (formData.pan_image) data.append("pan_image", formData.pan_image);
+      if (formData.aadhar_image)
+        data.append("aadhar_image", formData.aadhar_image);
+
+      data.append("nominee_firstname", nomineeData.nominee_firstname);
+      data.append("nominee_middlename", nomineeData.nominee_middlename);
+      data.append("nominee_lastname", nomineeData.nominee_lastname);
+      data.append("nominee_mobile", nomineeData.nomineeMobile);
+      data.append("nominee_dob", nomineeData.nomineeDob);
+      data.append("relationship", nomineeData.relationship);
+
+      try {
+        setLoading(true);
+        const response = await userEntry(data);
+        if (response.success) {
+          toast.success("User Application Submited!");
+          setFormData({
+            firstName: "",
+            middleName: "",
+            lastName: "",
+            mobile: "",
+            dob: "",
+            email: "",
+            address: "",
+            pincode: "",
+            pan: "",
+            aadhar: "",
+            pan_image: null,
+            aadhar_image: null,
+          });
+          setPreview({
+            pan_image: null,
+            aadhar_image: null,
+          });
+          setNomineeData({
+            nominee_firstname: "",
+            nominee_middlename: "",
+            nominee_lastname: "",
+            relationship: "",
+            nomineeDob: "",
+            nomineeMobile: "",
+          });
+          await fetchUserEntriesData();
+        } else {
+          toast.error("Somthing went wrong");
+        }
+        console.log(response);
+      } catch (error) {
+        const errors = error?.response?.data;
+
+        if (errors && typeof errors === "object") {
+          Object.values(errors).forEach((fieldErrors) => {
+            if (Array.isArray(fieldErrors)) {
+              fieldErrors.forEach((msg) => toast.error(msg));
+            } else {
+              toast.error(fieldErrors);
+            }
+          });
+        } else {
+          toast.error("Something went wrong. Please try again.");
+        }
+      } finally {
+        setLoading(false);
       }
-      console.log(response);
-    } catch (error) {
-      const errors = error?.response?.data;
-
-      if (errors && typeof errors === "object") {
-        Object.values(errors).forEach((fieldErrors) => {
-          if (Array.isArray(fieldErrors)) {
-            fieldErrors.forEach((msg) => toast.error(msg));
-          } else {
-            toast.error(fieldErrors);
-          }
-        });
-      } else {
-        toast.error("Something went wrong. Please try again.");
-      }
-    } finally {
-      setLoading(false);
-    }
+    
   };
   const fetchUserEntriesData = async () => {
     const data = await getUserEntries();
@@ -337,7 +377,9 @@ const ApplicationForm = () => {
                       />
                     </label>
                   </div>
-
+                  {errors.pan && (
+                    <div className="mt-1 text-xs text-red-600">{errors.pan}</div>
+                  )}
                   {preview.pan_image && (
                     <div className="flex items-center gap-2 text-green-600 text-xs -bottom-5 lg:-bottom-5 absolute">
                       <span className="truncate">{preview.pan_image}</span>
@@ -356,11 +398,11 @@ const ApplicationForm = () => {
 
                   <div className="flex items-center gap-2">
                     <input
-                      className="w-full px-3 py-1 border border-neutral-300 rounded-md"
+                      className="w-full px-3 py-1 border border-neutral-300 rounded-md placeholder:text-xs"
                       name="aadhar"
                       value={formData.aadhar}
                       onChange={handleChange}
-                      placeholder="Aadhar"
+                      placeholder="Enter your 12 digit Aadhar number"
                       required
                     />
 
@@ -375,7 +417,9 @@ const ApplicationForm = () => {
                       />
                     </label>
                   </div>
-
+                  {errors.aadhar && (
+                    <div className="mt-1 text-xs text-red-600">{errors.aadhar}</div>
+                  )}
                   {preview.aadhar_image && (
                     <div className="flex items-center gap-2 text-green-600 text-xs -bottom-5 absolute">
                       <span className="truncate">{preview.aadhar_image}</span>
