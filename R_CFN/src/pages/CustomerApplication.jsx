@@ -189,6 +189,8 @@ const CustomerApplication = () => {
       aadhar: "",
     })
     setSelectedApplicationID(null)
+
+    setSearch("")
   }
 
   return (
