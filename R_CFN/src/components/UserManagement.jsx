@@ -92,18 +92,18 @@ const UserManagement = ({ data, setUserEntriesData }) => {
   return (
     <>
     <div className="bg-white border rounded p-4 mt-10 border-neutral-300 shadow-lg">
-      <div className="flex items-center  lg:justify-between w-full">
+      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between w-full">
         <h2 className="text-base lg:text-lg  font-medium mb-4 tracking-tight text-neutral-800 ">
           User Management
         </h2>
-        <div className="flex items-center relative  ms-auto">
+        <div className="flex items-center relative  me-auto lg:ms-auto w-full">
           <div className="absolute bg-gray-200 h-full rounded-l-md  border border-neutral-300 px-2">
             <Search size={14} className="text-neutral-500 mt-2" />
           </div>
           <input
             onChange={(e) => handleSearch(e.target.value)}
             type="text"
-            className="border border-neutral-300 shadow-sm text-neutral-800 text-sm px-10 py-1 placeholder:text-xs rounded-md w-44 lg:w-84 outline-none"
+            className="border border-neutral-300 shadow-sm text-neutral-800 text-sm px-10 py-1 placeholder:text-xs rounded-md w-full lg:w-84 outline-none"
             placeholder="Search by name and Mobile no."
           />
           {/* <button>Search</button> */}

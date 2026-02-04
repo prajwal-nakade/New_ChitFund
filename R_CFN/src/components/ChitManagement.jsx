@@ -39,10 +39,10 @@ const ChitManagement = ({ data = [], fetchChitsData }) => {
   }
 
   return (
-    <div className="bg-white border rounded p-4 mt-10 border-neutral-300 shadow-lg max-w-xl mx-auto lg:max-w-7xl">
+    <div className="bg-white border rounded p-4 mt-10 border-neutral-300 shadow-lg max-w-sm mx-auto lg:max-w-7xl">
       {/* Header */}
-      <div className="flex items-center justify-between w-full">
-        <h2 className="text-lg font-medium mb-4 tracking-tight text-neutral-800">
+      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between w-full">
+        <h2 className="text-base font-medium mb-4 tracking-tight text-neutral-800">
           Chit Management
         </h2>
 
@@ -53,7 +53,7 @@ const ChitManagement = ({ data = [], fetchChitsData }) => {
           <input
             onChange={(e) => handleSearch(e.target.value)}
             type="text"
-            className="border border-neutral-300 shadow-sm text-neutral-800 text-sm px-10 py-1 placeholder:text-xs rounded-md w-64 outline-none"
+            className="border border-neutral-300 shadow-sm text-neutral-800 text-sm px-10 py-1 placeholder:text-xs rounded-md w-full lg:w-64 outline-none"
             placeholder="Search chit / branch / ticket"
           />
         </div>
