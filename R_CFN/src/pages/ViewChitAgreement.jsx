@@ -21,7 +21,7 @@ const ViewChitAgreement = () => {
   return (
     <>
       <Layout>
-        <div className="bg-white border rounded p-4 mt-10 border-neutral-300 shadow-lg max-w-lg mx-auto lg:max-w-7xl">
+        <div className="bg-white border rounded p-4 mt-10 border-neutral-300 shadow-lg max-w-sm mx-auto lg:max-w-7xl">
           {/* Header */}
           <div className="flex items-center justify-between w-full">
             <h2 className="text-lg font-medium mb-4 tracking-tight text-neutral-800">

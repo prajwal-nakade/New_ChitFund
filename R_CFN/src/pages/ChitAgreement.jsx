@@ -157,11 +157,12 @@ const ChitAgreement = () => {
   return (
     <Layout>
       {/* Header */}
-      <div className="bg-[#004c9e] text-white px-4 py-1 rounded-t flex items-center justify-between w-full">
+      <div className="max-w-6xl lg:mx-auto mx-0.5  rounded-md shadow-sm lg:my-3">
+        <div className="bg-[#004c9e] text-white px-4 py-1 rounded-t flex flex-col items-start justify-start lg:flex-row lg:items-center lg:justify-between gap-2">
         <h2 className="text-lg font-semibold">Agreement of Chit</h2>
 
-        <div className="flex items-center gap-2 text-sm relative">
-          <label>
+        <div className="flex items-center gap-2 text-xs lg:text-sm relative">
+          <label className="w-26 lg:w-full">
             Application No. <span className="text-red-500">*</span>
           </label>
           <input
@@ -174,7 +175,7 @@ const ChitAgreement = () => {
             required
           />
           {search && data.length > 0 && (
-            <div className="absolute top-full -left-10 w-78 bg-white border border-neutral-300 rounded shadow z-10">
+            <div className="absolute top-full left-0 lg:-left-10 w-78 bg-white border border-neutral-300 rounded shadow z-10">
               {data.map((item) => (
                 <div
                   key={item.id}
@@ -292,7 +293,7 @@ const ChitAgreement = () => {
           <h2 className="text-lg font-semibold">Schedule</h2>
         </div>
 
-        <div className="flex w-full px-5  border-neutral-200 gap-4">
+        <div className="flex flex-col lg:flex-row w-full px-5  border-neutral-200 gap-4">
           <div className="flex flex-col items-start w-full text-sm">
             <label>
               No. of Tickets <span className="text-red-500">*</span>
@@ -338,7 +339,7 @@ const ChitAgreement = () => {
           </div>
         </div>
 
-        <div className="flex w-full px-5 pb-2 border-neutral-200 gap-4">
+        <div className="flex flex-col lg:flex-row  w-full px-5 pb-2 border-neutral-200 gap-4">
           <div className="flex flex-col items-start w-full text-sm">
             <label>
               Time of Auction <span className="text-red-500">*</span>
@@ -387,7 +388,7 @@ const ChitAgreement = () => {
             Date of Commencement and termination of Chit{" "}
           </h2>
         </div>
-        <div className="flex w-full px-5 pb-2 border-neutral-200 gap-4">
+        <div className="flex flex-col lg:flex-row w-full px-5 pb-2 border-neutral-200 gap-4">
           <div className="flex flex-col items-start w-full text-sm  ">
             <label>
               Date of Commencement <span className="text-red-500">*</span>
@@ -423,7 +424,7 @@ const ChitAgreement = () => {
             The Date , time and Place at which the chit is to be Drawn
           </h2>
         </div>
-        <div className="flex w-full px-5 border-neutral-200 gap-4">
+        <div className="flex flex-col lg:flex-row w-full px-5 border-neutral-200 gap-4">
           <div className="flex flex-col items-start w-full text-sm  ">
             <label>
               First Auction shall be held on{" "}
@@ -501,7 +502,7 @@ const ChitAgreement = () => {
           />
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex flex-col lg:flex-row items-center gap-3">
           <div className="flex-col w-full px-5 border-neutral-200 border-t pt-3 gap-4">
             <h1 className="text-base font-medium py-1">
               Name of Foreman
@@ -537,7 +538,7 @@ const ChitAgreement = () => {
             Particulars of security given or deposited by the Forman
             <span className="text-red-500">*</span>{" "}
           </h1>
-          <div className="flex w-full px-5 border-neutral-200 gap-4">
+          <div className="flex flex-col lg:flex-row w-full px-5 border-neutral-200 gap-4">
             <div className="flex flex-col items-start w-full text-sm">
               <label>
                 Deposited By the Forman With{" "}
@@ -569,7 +570,7 @@ const ChitAgreement = () => {
             </div>
           </div>
 
-          <div className="flex w-full px-5 pb-2 border-neutral-200 gap-4">
+          <div className="flex flex-col lg:flex-row w-full px-5 pb-2 border-neutral-200 gap-4">
             <div className="flex flex-col items-start py-2 w-full text-sm  ">
               <label>
                 Dated <span className="text-red-500">*</span>
@@ -621,7 +622,7 @@ const ChitAgreement = () => {
             Chit
           </h2>
         </div>
-        <div className="flex w-full px-5 pb-2 border-neutral-200 gap-4">
+        <div className="flex flex-col lg:flex-row w-full px-5 pb-2 border-neutral-200 gap-4">
           <div className="flex flex-col items-start w-full text-sm  ">
             <label>
               Jurisdiction Place <span className="text-red-500">*</span>
@@ -668,6 +669,7 @@ const ChitAgreement = () => {
           )}
         </div>
       </form>
+      </div>
     </Layout>
   );
 };
