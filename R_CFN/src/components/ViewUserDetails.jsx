@@ -1,5 +1,6 @@
 import { X } from 'lucide-react'
 import React, { useState } from 'react'
+import dayjs from 'dayjs';
 
 const ViewUserDetails = ({ onClose, user }) => {
     if (!user) return null;
@@ -88,7 +89,7 @@ const ViewUserDetails = ({ onClose, user }) => {
                                     </th>
                                     <td className="border-b border-l border-neutral-300 px-5 py-3">
                                         <span className="block w-full border border-neutral-300 px-3 py-1 rounded-md bg-gray-50 shadow-inner">
-                                            {user.mobile_no}
+                                            {dayjs(user.mobile_no).format('DD MMM YYYY')}
                                         </span>
                                     </td>
                                 </tr>
@@ -167,7 +168,7 @@ const ViewUserDetails = ({ onClose, user }) => {
                                     </th>
                                     <td className="border-b border-l border-neutral-300 px-5 py-3">
                                         <span className="block w-full border border-neutral-300 px-3 py-1 rounded-md bg-gray-50 shadow-inner">
-                                            {user.created_at}
+                                            {dayjs(user.created_at).format('DD MMM YYYY')}
                                         </span>
                                     </td>
                                 </tr>
@@ -220,7 +221,7 @@ const ViewUserDetails = ({ onClose, user }) => {
                                             </th>
                                             <td className="border-b border-l border-neutral-300 px-5 py-3">
                                                 <span className="block w-full border border-neutral-300 px-3 py-1 rounded-md bg-gray-50 shadow-inner">
-                                                    {user.nominees[0].dob}
+                                                    {dayjs(user.nominees[0].dob).format('DD MMM YYYY')}
                                                 </span>
                                             </td>
                                         </tr>
