@@ -188,6 +188,7 @@ const CustomerApplication = () => {
       pan: "",
       aadhar: "",
     })
+    setSelectedApplicationID(null)
   }
 
   return (
@@ -200,7 +201,7 @@ const CustomerApplication = () => {
           onSubmit={handleSubmit}
           className="flex flex-col gap-4 w-full bg-white px-5 py-3 shadow-lg rounded-b-md border border-neutral-300"
         >
-          <div className='flex items-center gap-3'>
+          <div className='flex flex-col lg:flex-row items-start lg:items-center gap-3'>
             <div className="flex items-center relative">
               <div className="absolute bg-gray-200 h-full rounded-l-md  border border-neutral-300 px-2">
                 <Search size={14} className="text-neutral-500 mt-2" />
@@ -242,7 +243,7 @@ const CustomerApplication = () => {
                 placeholder="Application ID"
               />
             </div>
-            <div className='flex items-center justify-end w-full '>
+            <div className='flex items-center justify-start lg:w-full lg:justify-end'>
               <button type='button' onClick={() => resetInput()} className='border border-neutral-300 px-4 py-1 rounded-md shadow-sm text-sm flex items-center gap-2 hover:bg-gray-50 transition-colors duration-300 cursor-pointer'><BrushCleaning size={14} className='text-neutral-500' />Reset</button>
             </div>
           </div>
