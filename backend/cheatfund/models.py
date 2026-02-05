@@ -47,7 +47,17 @@ class Users(models.Model):
         blank=True,
         null=True
     )
+    pan_image_back = models.ImageField(
+        upload_to="user_documents/pan/",
+        blank=True,
+        null=True
+    )
     aadhar_image = models.ImageField(
+        upload_to="user_documents/aadhar/",
+        blank=True,
+        null=True
+    )
+    aadhar_image_back = models.ImageField(
         upload_to="user_documents/aadhar/",
         blank=True,
         null=True

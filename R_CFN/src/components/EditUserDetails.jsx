@@ -16,7 +16,9 @@ const EditUserDetails = ({ user, onClose, getUserEntries }) => {
         pan: "",
         aadhar: "",
         pan_image: null,
+        pan_image_back: null, // Add back image for PAN
         aadhar_image: null,
+        aadhar_image_back: null, // Add back image for Aadhar
     });
 
     const [loading, setLoading] = useState(false)
@@ -35,6 +37,12 @@ const EditUserDetails = ({ user, onClose, getUserEntries }) => {
         aadhar_image: null,
     });
 
+    // Add state for back image previews
+    const [backPreview, setBackPreview] = useState({
+        pan_image_back: null,
+        aadhar_image_back: null,
+    });
+
     useEffect(() => {
         if (!user) return;
         const nominee = user.nominees?.[0] || {};
@@ -50,7 +58,9 @@ const EditUserDetails = ({ user, onClose, getUserEntries }) => {
             pan: user.pancard_no || "",
             aadhar: user.aadharcard_no || "",
             pan_image: null,
+            pan_image_back: null,
             aadhar_image: null,
+            aadhar_image_back: null,
         });
 
         setNomineeData({
@@ -73,12 +83,48 @@ const EditUserDetails = ({ user, onClose, getUserEntries }) => {
         setNomineeData((p) => ({ ...p, [name]: value }));
     };
 
+    // Update handleImageChange to handle multiple files (front and back)
     const handleImageChange = (e) => {
         const { name, files } = e.target;
-        if (!files?.[0]) return;
+        if (!files || files.length === 0) return;
 
-        setFormData((p) => ({ ...p, [name]: files[0] }));
-        setPreview((p) => ({ ...p, [name]: files[0].name }));
+        const fileArray = Array.from(files);
+
+        if (name === "pan_image") {
+            setFormData((prev) => ({
+                ...prev,
+                pan_image: fileArray[0] || null,
+                pan_image_back: fileArray[1] || null,
+            }));
+
+            setPreview((p) => ({
+                ...p,
+                pan_image: fileArray[0]?.name || null,
+            }));
+
+            setBackPreview((p) => ({
+                ...p,
+                pan_image_back: fileArray[1]?.name || null,
+            }));
+        }
+
+        if (name === "aadhar_image") {
+            setFormData((prev) => ({
+                ...prev,
+                aadhar_image: fileArray[0] || null,
+                aadhar_image_back: fileArray[1] || null,
+            }));
+
+            setPreview((p) => ({
+                ...p,
+                aadhar_image: fileArray[0]?.name || null,
+            }));
+
+            setBackPreview((p) => ({
+                ...p,
+                aadhar_image_back: fileArray[1]?.name || null,
+            }));
+        }
     };
 
     const removePanImage = (e) => {
@@ -91,6 +137,19 @@ const EditUserDetails = ({ user, onClose, getUserEntries }) => {
         e.preventDefault();
         setFormData((p) => ({ ...p, aadhar_image: null }));
         setPreview((p) => ({ ...p, aadhar_image: null }));
+    };
+
+    // Add functions to remove back images
+    const removePanBackImage = (e) => {
+        e.preventDefault();
+        setFormData((p) => ({ ...p, pan_image_back: null }));
+        setBackPreview((p) => ({ ...p, pan_image_back: null }));
+    };
+
+    const removeAadharBackImage = (e) => {
+        e.preventDefault();
+        setFormData((p) => ({ ...p, aadhar_image_back: null }));
+        setBackPreview((p) => ({ ...p, aadhar_image_back: null }));
     };
 
     const handleSubmit = async (e) => {
@@ -113,6 +172,9 @@ const EditUserDetails = ({ user, onClose, getUserEntries }) => {
 
             if (formData.pan_image) data.append("pan_image", formData.pan_image);
             if (formData.aadhar_image) data.append("aadhar_image", formData.aadhar_image);
+            // Add back images to FormData
+            if (formData.pan_image_back) data.append("pan_image_back", formData.pan_image_back);
+            if (formData.aadhar_image_back) data.append("aadhar_image_back", formData.aadhar_image_back);
 
             data.append("nominee_firstname", nomineeData.nominee_firstname);
             data.append("nominee_middlename", nomineeData.nominee_middlename);
@@ -139,7 +201,6 @@ const EditUserDetails = ({ user, onClose, getUserEntries }) => {
             setLoading(false);
         }
     };
-
 
     return (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 overflow-y-auto">
@@ -287,24 +348,47 @@ const EditUserDetails = ({ user, onClose, getUserEntries }) => {
                                             type="file"
                                             hidden
                                             name="pan_image"
+                                            multiple // Allow multiple files
                                             accept="image/*"
                                             onChange={handleImageChange}
-
                                         />
                                     </label>
                                 </div>
-                                {!preview.pan_image && (
-                                    <div className="flex items-center gap-2 text-green-600 text-xs -bottom-5 absolute">
-                                        <span className="truncate">{user.pan_image.split('/media/user_documents/pan/')}</span>
+                                
+                                {/* Show both front and back images */}
+                                {(preview.pan_image || backPreview.pan_image_back) && (
+                                    <div className="flex flex-col gap-1 mt-1">
+                                        {preview.pan_image && (
+                                            <div className="flex items-center gap-2 text-green-600 text-xs">
+                                                <span className="truncate">Front: {preview.pan_image}</span>
+                                                <button type="button" onClick={removePanImage}>
+                                                    <X size={14} />
+                                                </button>
+                                            </div>
+                                        )}
+                                        
+                                        {backPreview.pan_image_back && (
+                                            <div className="flex items-center gap-2 text-green-600 text-xs">
+                                                <span className="truncate">Back: {backPreview.pan_image_back}</span>
+                                                <button type="button" onClick={removePanBackImage}>
+                                                    <X size={14} />
+                                                </button>
+                                            </div>
+                                        )}
                                     </div>
                                 )}
-
-                                {preview.pan_image && (
-                                    <div className="flex items-center gap-2 text-green-600 text-xs -bottom-5 lg:-bottom-5 absolute">
-                                        <span className="truncate">{preview.pan_image}</span>
-                                        <button type="button" onClick={removePanImage}>
-                                            <X size={14} />
-                                        </button>
+                                
+                                {/* Show existing images if no new ones are uploaded */}
+                                {!preview.pan_image && !backPreview.pan_image_back && user.pan_image && (
+                                    <div className="flex flex-col gap-1 mt-1">
+                                        <div className="text-green-600 text-xs truncate">
+                                            Front: {user.pan_image.split('/').pop()}
+                                        </div>
+                                        {user.pan_image_back && (
+                                            <div className="text-green-600 text-xs truncate">
+                                                Back: {user.pan_image_back.split('/').pop()}
+                                            </div>
+                                        )}
                                     </div>
                                 )}
                             </div>
@@ -331,29 +415,53 @@ const EditUserDetails = ({ user, onClose, getUserEntries }) => {
                                             type="file"
                                             hidden
                                             name="aadhar_image"
+                                            multiple // Allow multiple files
                                             accept="image/*"
                                             onChange={handleImageChange}
-
                                         />
                                     </label>
                                 </div>
-
-                                {!preview.aadhar_image && (
-                                    <div className="flex items-center gap-2 text-green-600 text-xs -bottom-5 absolute">
-                                        <span className="truncate">{user.aadhar_image.split('/media/user_documents/aadhar/')}</span>
+                                
+                                {/* Show both front and back images */}
+                                {(preview.aadhar_image || backPreview.aadhar_image_back) && (
+                                    <div className="flex flex-col gap-1 mt-1">
+                                        {preview.aadhar_image && (
+                                            <div className="flex items-center gap-2 text-green-600 text-xs">
+                                                <span className="truncate">Front: {preview.aadhar_image}</span>
+                                                <button type="button" onClick={removeAadharImage}>
+                                                    <X size={14} />
+                                                </button>
+                                            </div>
+                                        )}
+                                        
+                                        {backPreview.aadhar_image_back && (
+                                            <div className="flex items-center gap-2 text-green-600 text-xs">
+                                                <span className="truncate">Back: {backPreview.aadhar_image_back}</span>
+                                                <button type="button" onClick={removeAadharBackImage}>
+                                                    <X size={14} />
+                                                </button>
+                                            </div>
+                                        )}
                                     </div>
                                 )}
-                                {preview.aadhar_image && (
-                                    <div className="flex items-center gap-2 text-green-600 text-xs -bottom-5 absolute">
-                                        <span className="truncate">{preview.aadhar_image}</span>
-                                        <button type="button" onClick={removeAadharImage}>
-                                            <X size={14} />
-                                        </button>
+                                
+                                {/* Show existing images if no new ones are uploaded */}
+                                {!preview.aadhar_image && !backPreview.aadhar_image_back && user.aadhar_image && (
+                                    <div className="flex flex-col gap-1 mt-1">
+                                        <div className="text-green-600 text-xs truncate">
+                                            Front: {user.aadhar_image.split('/').pop()}
+                                        </div>
+                                        {user.aadhar_image_back && (
+                                            <div className="text-green-600 text-xs truncate">
+                                                Back: {user.aadhar_image_back.split('/').pop()}
+                                            </div>
+                                        )}
                                     </div>
                                 )}
                             </div>
                         </div>
                     </div>
+                    
                     <div className=" flex flex-col gap-4 mt-4">
                         <h2 className="text-md font-medium mt-4 w-full text-start px-5 py-2 bg-[#004f9e]   rounded-md text-white tracking-tight">
                             Nominee Details
@@ -458,7 +566,7 @@ const EditUserDetails = ({ user, onClose, getUserEntries }) => {
                                 type="submit"
                                 className="px-4 py-1 bg-[#004f9e] hover:bg-[#06c] transition-all duration-300 cursor-pointer text-white rounded-md text-sm shadow-md flex items-center gap-2"
                             ><Loader2 size={14} className="animate-spin" />
-                                Updateing
+                                Updating
                             </button>
                         ) : (
                             <button
