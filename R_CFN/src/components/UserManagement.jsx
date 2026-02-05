@@ -93,10 +93,10 @@ const UserManagement = ({ data, setUserEntriesData }) => {
     <>
     <div className="bg-white border rounded p-4 mt-10 border-neutral-300 shadow-lg">
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between w-full">
-        <h2 className="text-base lg:text-lg  font-medium mb-4 tracking-tight text-neutral-800 ">
+        <h2 className="text-base lg:text-lg  font-medium mb-4 tracking-tight text-neutral-800 lg:w-full ">
           User Management
         </h2>
-        <div className="flex items-center relative  me-auto lg:ms-auto w-full">
+        <div className="flex items-center relative  me-auto lg:ms-auto">
           <div className="absolute bg-gray-200 h-full rounded-l-md  border border-neutral-300 px-2">
             <Search size={14} className="text-neutral-500 mt-2" />
           </div>
@@ -179,7 +179,7 @@ const UserManagement = ({ data, setUserEntriesData }) => {
                     {item.mobile_no}
                   </td>
                   <td className="border border-neutral-300 text-center p-2">
-                    {item.email}
+                    {item.email===null ? 'N/A' : item.email}
                   </td>
                   <td className="border border-neutral-300 text-center p-2">
                     {dayjs(item.dob).format('DD MMM YYYY')}

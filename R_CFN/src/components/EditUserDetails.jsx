@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { Loader2, X } from "lucide-react";
 import { updateUser } from "../api/endpoint";
 import { toast } from "react-toastify";
@@ -44,7 +44,7 @@ const EditUserDetails = ({ user, onClose, getUserEntries }) => {
             lastName: user.lastname || "",
             mobile: user.mobile_no || "",
             dob: user.dob || "",
-            email: user.email || "",
+            email: user.email===null ? 'N/A' : user.email || "",
             address: user.permanent_address || "",
             pincode: user.pincode || "",
             pan: user.pancard_no || "",
@@ -207,7 +207,7 @@ const EditUserDetails = ({ user, onClose, getUserEntries }) => {
                         </div>
                         <div className="flex flex-col items-start w-full text-sm">
                             <label>
-                                Email <span className="text-red-500">*</span>
+                                Email
                             </label>
                             <input
                                 className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
@@ -215,7 +215,6 @@ const EditUserDetails = ({ user, onClose, getUserEntries }) => {
                                 value={formData.email}
                                 onChange={handleChange}
                                 placeholder="Email"
-                                required
                             />
                         </div>
                         <div className="flex flex-col items-start w-full text-sm">

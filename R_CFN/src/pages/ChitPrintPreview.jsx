@@ -262,7 +262,7 @@ const ChitPrintPreview = () => {
                 <label className="w-10 text-sm font-medium">DOB:</label>
                 <div className="border-b border-gray-800 flex-1 text-center">
                   <span className="font-medium text-sm">
-                    {dayjs(user.dob).format("DD-MM-YYYY")}
+                    {dayjs(user.dob).format("DD MMM YYYY")}
                   </span>
                 </div>
               </div>
@@ -270,7 +270,7 @@ const ChitPrintPreview = () => {
               <div className="flex items-center w-1/3">
                 <label className="w-14 text-sm font-medium">Email:</label>
                 <div className="border-b border-gray-800 flex-1 text-center">
-                  <span className="font-medium text-sm">{user.email}</span>
+                  <span className="font-medium text-sm">{user.email===null ? 'N/A' : user.email}</span>
                 </div>
               </div>
             </div>
@@ -297,7 +297,7 @@ const ChitPrintPreview = () => {
               </div>
 
               <div className="flex items-center w-1/3">
-                <label className="w-24 text-sm font-medium">PAN No.:</label>
+                <label className="w-20 text-sm font-medium">PAN No.:</label>
                 <div className="border-b border-gray-800 flex-1 text-center">
                   <span className="font-medium text-sm">{user.pancard_no}</span>
                 </div>
@@ -346,7 +346,7 @@ const ChitPrintPreview = () => {
                   <label className="w-10 text-sm font-medium">DOB:</label>
                   <div className="border-b border-gray-800 flex-1 text-center">
                     <span className="font-medium text-sm">
-                      {dayjs(nominee.dob).format("DD-MM-YYYY")}
+                      {dayjs(nominee.dob).format("DD MMM YYYY")}
                     </span>
                   </div>
                 </div>
