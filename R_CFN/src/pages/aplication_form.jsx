@@ -23,7 +23,7 @@ const ApplicationForm = () => {
     aadhar_image: null,
   });
 
-  const [errors, setErrors] = useState({})
+  const [errors, setErrors] = useState({});
 
   const [loading, setLoading] = useState(false);
 
@@ -47,10 +47,10 @@ const ApplicationForm = () => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
 
-    setErrors(prev => ({
-  ...prev,
-  [name]: ""
-}));
+    setErrors((prev) => ({
+      ...prev,
+      [name]: "",
+    }));
   };
 
   const handleNomineeChange = (e) => {
@@ -86,33 +86,32 @@ const ApplicationForm = () => {
     };
   }, [preview]);
 
-const validatePan = (panNo) => {
-  const panRegex = /^[A-Z]{5}[0-9]{4}[A-Z]$/i;
-  return panRegex.test(panNo);
-};
+  const validatePan = (panNo) => {
+    const panRegex = /^[A-Z]{5}[0-9]{4}[A-Z]$/i;
+    return panRegex.test(panNo);
+  };
 
-const validateAadhar = (aadharNo) => {
-  const aadharRegex = /^[2-9]{1}[0-9]{3}\s?[0-9]{4}\s?[0-9]{4}$/;
-  return aadharRegex.test(aadharNo);
-};
+  const validateAadhar = (aadharNo) => {
+    const aadharRegex = /^[2-9]{1}[0-9]{3}\s?[0-9]{4}\s?[0-9]{4}$/;
+    return aadharRegex.test(aadharNo);
+  };
 
   const validateAadharAndPan = () => {
-  let newError = {};
+    let newError = {};
 
-  if (!validatePan(formData.pan)) {
-    newError.pan =
-      "Invalid PAN number. Please enter a valid PAN in the format ABCDE1234F.";
-  }
+    if (!validatePan(formData.pan)) {
+      newError.pan =
+        "Invalid PAN number. Please enter a valid PAN in the format ABCDE1234F.";
+    }
 
-  if (!validateAadhar(formData.aadhar)) {
-    newError.aadhar =
-      "Invalid Aadhaar number. Please enter a 12-digit Aadhaar number starting with 2–9.";
-  }
+    if (!validateAadhar(formData.aadhar)) {
+      newError.aadhar =
+        "Invalid Aadhaar number. Please enter a 12-digit Aadhaar number starting with 2–9.";
+    }
 
-  setErrors(newError);
-  return Object.keys(newError).length === 0;
-};
-
+    setErrors(newError);
+    return Object.keys(newError).length === 0;
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -129,87 +128,86 @@ const validateAadhar = (aadharNo) => {
       return;
     }
 
-    const isValid = validateAadharAndPan()
+    const isValid = validateAadharAndPan();
 
-    if(!isValid) return
+    if (!isValid) return;
 
-      const data = new FormData();
-      data.append("firstname", formData.firstName);
-      data.append("middlename", formData.middleName);
-      data.append("lastname", formData.lastName);
-      data.append("mobile_no", formData.mobile);
-      data.append("dob", formData.dob);
-      data.append("email", formData.email);
-      data.append("permanent_address", formData.address);
-      data.append("pincode", formData.pincode);
-      data.append("pancard_no", formData.pan.toUpperCase());
-      data.append("aadharcard_no", formData.aadhar);
+    const data = new FormData();
+    data.append("firstname", formData.firstName);
+    data.append("middlename", formData.middleName);
+    data.append("lastname", formData.lastName);
+    data.append("mobile_no", formData.mobile);
+    data.append("dob", formData.dob);
+    data.append("email", formData.email);
+    data.append("permanent_address", formData.address);
+    data.append("pincode", formData.pincode);
+    data.append("pancard_no", formData.pan.toUpperCase());
+    data.append("aadharcard_no", formData.aadhar);
 
-      if (formData.pan_image) data.append("pan_image", formData.pan_image);
-      if (formData.aadhar_image)
-        data.append("aadhar_image", formData.aadhar_image);
+    if (formData.pan_image) data.append("pan_image", formData.pan_image);
+    if (formData.aadhar_image)
+      data.append("aadhar_image", formData.aadhar_image);
 
-      data.append("nominee_firstname", nomineeData.nominee_firstname);
-      data.append("nominee_middlename", nomineeData.nominee_middlename);
-      data.append("nominee_lastname", nomineeData.nominee_lastname);
-      data.append("nominee_mobile", nomineeData.nomineeMobile);
-      data.append("nominee_dob", nomineeData.nomineeDob);
-      data.append("relationship", nomineeData.relationship);
+    data.append("nominee_firstname", nomineeData.nominee_firstname);
+    data.append("nominee_middlename", nomineeData.nominee_middlename);
+    data.append("nominee_lastname", nomineeData.nominee_lastname);
+    data.append("nominee_mobile", nomineeData.nomineeMobile);
+    data.append("nominee_dob", nomineeData.nomineeDob);
+    data.append("relationship", nomineeData.relationship);
 
-      try {
-        setLoading(true);
-        const response = await userEntry(data);
-        if (response.success) {
-          toast.success("User Application Submited!");
-          setFormData({
-            firstName: "",
-            middleName: "",
-            lastName: "",
-            mobile: "",
-            dob: "",
-            email: "",
-            address: "",
-            pincode: "",
-            pan: "",
-            aadhar: "",
-            pan_image: null,
-            aadhar_image: null,
-          });
-          setPreview({
-            pan_image: null,
-            aadhar_image: null,
-          });
-          setNomineeData({
-            nominee_firstname: "",
-            nominee_middlename: "",
-            nominee_lastname: "",
-            relationship: "",
-            nomineeDob: "",
-            nomineeMobile: "",
-          });
-          await fetchUserEntriesData();
-        } else {
-          toast.error("Somthing went wrong");
-        }
-        console.log(response);
-      } catch (error) {
-        const errors = error?.response?.data;
-
-        if (errors && typeof errors === "object") {
-          Object.values(errors).forEach((fieldErrors) => {
-            if (Array.isArray(fieldErrors)) {
-              fieldErrors.forEach((msg) => toast.error(msg));
-            } else {
-              toast.error(fieldErrors);
-            }
-          });
-        } else {
-          toast.error("Something went wrong. Please try again.");
-        }
-      } finally {
-        setLoading(false);
+    try {
+      setLoading(true);
+      const response = await userEntry(data);
+      if (response.success) {
+        toast.success("User Application Submited!");
+        setFormData({
+          firstName: "",
+          middleName: "",
+          lastName: "",
+          mobile: "",
+          dob: "",
+          email: "",
+          address: "",
+          pincode: "",
+          pan: "",
+          aadhar: "",
+          pan_image: null,
+          aadhar_image: null,
+        });
+        setPreview({
+          pan_image: null,
+          aadhar_image: null,
+        });
+        setNomineeData({
+          nominee_firstname: "",
+          nominee_middlename: "",
+          nominee_lastname: "",
+          relationship: "",
+          nomineeDob: "",
+          nomineeMobile: "",
+        });
+        await fetchUserEntriesData();
+      } else {
+        toast.error("Somthing went wrong");
       }
-    
+      console.log(response);
+    } catch (error) {
+      const errors = error?.response?.data;
+
+      if (errors && typeof errors === "object") {
+        Object.values(errors).forEach((fieldErrors) => {
+          if (Array.isArray(fieldErrors)) {
+            fieldErrors.forEach((msg) => toast.error(msg));
+          } else {
+            toast.error(fieldErrors);
+          }
+        });
+      } else {
+        toast.error("Something went wrong. Please try again.");
+      }
+    } finally {
+      setLoading(false);
+    }
   };
   const fetchUserEntriesData = async () => {
     const data = await getUserEntries();
@@ -291,9 +289,7 @@ const validateAadhar = (aadharNo) => {
                 />
               </div>
               <div className="flex flex-col items-start w-full text-sm">
-                <label>
-                  Email
-                </label>
+                <label>Email</label>
                 <input
                   className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
                   name="email"
@@ -378,7 +374,9 @@ const validateAadhar = (aadharNo) => {
                     </label>
                   </div>
                   {errors.pan && (
-                    <div className="mt-1 text-xs text-red-600">{errors.pan}</div>
+                    <div className="mt-1 text-xs text-red-600">
+                      {errors.pan}
+                    </div>
                   )}
                   {preview.pan_image && (
                     <div className="flex items-center gap-2 text-green-600 text-xs -bottom-5 lg:-bottom-5 absolute">
@@ -418,7 +416,9 @@ const validateAadhar = (aadharNo) => {
                     </label>
                   </div>
                   {errors.aadhar && (
-                    <div className="mt-1 text-xs text-red-600">{errors.aadhar}</div>
+                    <div className="mt-1 text-xs text-red-600">
+                      {errors.aadhar}
+                    </div>
                   )}
                   {preview.aadhar_image && (
                     <div className="flex items-center gap-2 text-green-600 text-xs -bottom-5 absolute">
@@ -500,14 +500,24 @@ const validateAadhar = (aadharNo) => {
                   <label>
                     Relationship <span className="text-red-500">*</span>
                   </label>
-                  <input
-                    className="w-full min-w-0 border px-3 py-1 rounded text-sm border-neutral-300"
+                  <select
+                    className="w-full min-w-0 border px-3 py-1 rounded text-sm border-neutral-300 bg-white relative z-50"
+                    style={{ position: "relative" }}
                     name="relationship"
                     value={nomineeData.relationship}
                     onChange={handleNomineeChange}
-                    placeholder="Relationship"
                     required
-                  />
+                  >
+                    <option value="" disabled>
+                      Select Relationship
+                    </option>
+                    <option value="Father">Father</option>
+                    <option value="Mother">Mother</option>
+                    <option value="Brother">Brother</option>
+                    <option value="Sister">Sister</option>
+                    <option value="Son">Son</option>
+                    <option value="Daughter">Daughter</option>
+                  </select>
                 </div>
                 <div className="flex flex-col items-start w-full text-sm">
                   <label>
