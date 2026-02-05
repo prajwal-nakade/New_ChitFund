@@ -70,7 +70,7 @@ class UpdateUserSerializer(serializers.Serializer):
     lastname = serializers.CharField(required=False)
     mobile_no = serializers.CharField(required=False)
     dob = serializers.DateField(required=False)
-    email = serializers.EmailField(required=False)
+    email = serializers.CharField(required=False)
     permanent_address = serializers.CharField(required=False)
     pincode = serializers.CharField(required=False)
     pancard_no = serializers.CharField(required=False)

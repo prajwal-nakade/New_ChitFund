@@ -1,46 +1,45 @@
-import React, { useContext, useEffect, useState } from "react";
-import Layout from "../components/layout";
-import { BrushCleaning, Loader2, Search, X } from "lucide-react";
-import { createChit, getUserEntries } from "../api/endpoint";
-import { UserContext } from "../context/UserContext";
-import { toast } from "react-toastify";
-import ChitManagement from "../components/ChitManagement";
-import { useNavigate } from "react-router";
+import React, { useContext, useEffect, useState } from 'react'
+import Layout from '../components/layout'
+import { BrushCleaning, Loader2, Search, X } from 'lucide-react'
+import { createChit, getUserEntries } from '../api/endpoint'
+import { UserContext } from '../context/UserContext'
+import { toast } from 'react-toastify'
+import ChitManagement from '../components/ChitManagement'
+import { useNavigate } from 'react-router'
 
 const CustomerApplication = () => {
-  const [loading, setLoading] = useState(false);
-  const { userData, branchData, fetchBranchData, allchitData, fetchChitsData } =
-    useContext(UserContext);
-  const [search, setSearch] = useState("");
-  const [data, setData] = useState([]);
-  const [selectedUserID, setSelectedUserID] = useState(null);
-  const [selectedApplicatioID, setSelectedApplicationID] = useState(null);
-  const [userApplications, setUserApplication] = useState([]);
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false)
+  const { userData, branchData, fetchBranchData, allchitData, fetchChitsData } = useContext(UserContext)
+  const [search, setSearch] = useState("")
+  const [data, setData] = useState([])
+  const [selectedUserID, setSelectedUserID] = useState(null)
+  const [selectedApplicatioID, setSelectedApplicationID] = useState(null)
+  const [userApplications, setUserApplication] = useState([])
+  const navigate = useNavigate()
 
   useEffect(() => {
-    fetchBranchData();
-    fetchChitsData();
-  }, []);
+    fetchBranchData()
+    fetchChitsData()
+  }, [])
   const handleSearch = (value) => {
-    setSearch(value);
+    setSearch(value)
 
     if (!value.trim()) {
-      setData([]);
-      return;
+      setData([])
+      return
     }
 
-    const keyword = value.trim().toLowerCase();
-    const filtered = userData.filter(
-      (f) =>
-        String(f?.CustomerID || "")
-          .toLowerCase()
-          .includes(keyword) || f?.mobile_no.toLowerCase().includes(keyword),
-    );
+    const keyword = value.trim().toLowerCase()
+    const filtered = userData.filter((f) =>
+      String(f?.CustomerID || "")
+        .toLowerCase()
+        .includes(keyword)
+      || f?.mobile_no.toLowerCase().includes(keyword) || f?.firstname.toLowerCase().includes(keyword) || f?.lastname.toLowerCase().includes(keyword))
 
-    setData(filtered);
-  };
+    setData(filtered)
+  }
 
+  const today = new Date().toISOString().split("T")[0];
   const [formData, setFormData] = useState({
     firstName: "",
     middleName: "",
@@ -71,18 +70,19 @@ const CustomerApplication = () => {
     ChitValue: "",
     Duration: "",
     DurationCategory: "",
-    branch: "",
-  });
+    branch: ""
+  })
 
   const handleChitChange = (e) => {
-    const { name, value } = e.target;
-    setChitData((prev) => ({ ...prev, [name]: value }));
-  };
+    const { name, value } = e.target
+    setChitData(prev => ({ ...prev, [name]: value }))
+  }
+
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+    const { name, value } = e.target
+    setFormData(prev => ({ ...prev, [name]: value }))
+  }
 
   const handleNomineeChange = (e) => {
     const { name, value } = e.target;
@@ -90,19 +90,19 @@ const CustomerApplication = () => {
   };
 
   const autofillUser = (user) => {
-    setSelectedUserID(user.id);
+    setSelectedUserID(user.id)
     setFormData({
       firstName: user.firstname || "",
       middleName: user.middlename || "",
       lastName: user.lastname || "",
       mobile: user.mobile_no || "",
-      email: user.email || "",
+      email: user.email===null ? 'N/A' : user.email || "",
       dob: user.dob || "",
       address: user.permanent_address || "",
       pincode: user.pincode || "",
       pan: user.pancard_no || "",
-      aadhar: user.aadharcard_no || "",
-    });
+      aadhar: user.aadharcard_no || ""
+    })
     setNomineeData({
       nominee_firstname: user.nominees[0].firstname || "",
       nominee_middlename: user.nominees[0].middlename || "",
@@ -110,44 +110,41 @@ const CustomerApplication = () => {
       relationship: user.nominees[0].relationship || "",
       nomineeDob: user.nominees[0].dob || "",
       nomineeMobile: user.nominees[0].mobile_no || "",
-    });
+    })
 
-    const application = allchitData.filter(
-      (chit) => chit.user === user.id || chit.user?.id === user.id,
-    );
-    setUserApplication(application);
-  };
+    const application = allchitData.filter(chit => chit.user === user.id || chit.user?.id === user.id)
+    setUserApplication(application)
+  }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
     try {
-      setLoading(true);
+      setLoading(true)
       if (!selectedUserID) {
-        toast.error("Please Select User");
+        toast.error('Please Select User')
       } else {
         const payload = {
           ...chitData,
-          user: selectedUserID,
-        };
-        const data = await createChit(payload);
-        console.log(data);
-        toast.success(
-          `Chit created successfully with Application ID: ${data.application_id}`,
-        );
+          user: selectedUserID
+        }
+        const data = await createChit(payload)
+        console.log(data)
+        toast.success(`Chit created successfully with Application ID: ${data.application_id}`)
         setTimeout(() => {
-          navigate(`/chit/print/${data.id}`);
-        }, 2000);
+          navigate(`/chit/print/${data.id}`)
+        }, 2000)
+
       }
     } catch (error) {
-      console.log(error.message);
-      setLoading(false);
+      console.log(error.message)
+      setLoading(false)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   const autoFillChitDetails = (chit) => {
-    setSelectedApplicationID(chit.application_id);
+    setSelectedApplicationID(chit.application_id)
     setChitData({
       ByLawsNumber: chit.ByLawsNumber || "",
       BylawsDate: chit.BylawsDate || "",
@@ -156,9 +153,9 @@ const CustomerApplication = () => {
       ChitValue: chit.ChitValue || "",
       Duration: chit.Duration || "",
       DurationCategory: chit.DurationCategory || "",
-      branch: chit.branch || "",
-    });
-  };
+      branch: chit.branch || ""
+    })
+  }
 
   const resetInput = () => {
     setChitData({
@@ -169,8 +166,8 @@ const CustomerApplication = () => {
       ChitValue: "",
       Duration: "",
       DurationCategory: "",
-      branch: "",
-    });
+      branch: ""
+    })
 
     setNomineeData({
       nominee_firstname: "",
@@ -179,7 +176,7 @@ const CustomerApplication = () => {
       relationship: "",
       nomineeDob: "",
       nomineeMobile: "",
-    });
+    })
     setFormData({
       firstName: "",
       middleName: "",
@@ -191,26 +188,24 @@ const CustomerApplication = () => {
       pincode: "",
       pan: "",
       aadhar: "",
-    });
-    setSelectedApplicationID(null);
+    })
+    setSelectedApplicationID(null)
 
-    setSearch("");
-  };
+    setSearch("")
+  }
 
   return (
     <Layout>
       <div className="max-w-6xl mx-auto  rounded-md p-6">
-        <div className="w-full text-start">
-          <h1 className="text-xl font-medium tracking-tight leading-tight text-white bg-[#004f9e] py-2 rounded-t-md px-5">
-            Application Form
-          </h1>
+        <div className='w-full text-start'>
+          <h1 className='text-xl font-medium tracking-tight leading-tight text-white bg-[#004f9e] py-2 rounded-t-md px-5'>Application Form</h1>
         </div>
         <form
           onSubmit={handleSubmit}
           className="flex flex-col gap-4 w-full bg-white px-5 py-3 shadow-lg rounded-b-md border border-neutral-300"
         >
-          <div className="flex flex-col lg:flex-row items-start lg:items-center gap-3">
-            <div className="flex items-center relative">
+          <div className='flex flex-col lg:flex-row items-start lg:items-center gap-3'>
+            <div className="flex items-center relative group">
               <div className="absolute bg-gray-200 h-full rounded-l-md  border border-neutral-300 px-2">
                 <Search size={14} className="text-neutral-500 mt-2" />
               </div>
@@ -218,27 +213,32 @@ const CustomerApplication = () => {
                 onChange={(e) => handleSearch(e.target.value)}
                 value={search}
                 type="text"
-                className="border border-neutral-300 shadow-sm text-neutral-800 text-sm px-10 py-1 placeholder:text-xs rounded-md w-78 outline-none uppercase"
+                className="border border-neutral-300 shadow-sm text-neutral-800 text-sm px-10 py-1 placeholder:text-xs rounded-md w-78 outline-none uppercase "
                 placeholder="Enter CustomerID or mobile no."
               />
               {search && data.length > 0 && (
                 <div className="absolute top-full left-0 w-78 bg-white border border-neutral-300 rounded shadow z-10">
-                  {data.map((item) => (
+                  {data.map(item => (
                     <div
                       key={item.id}
-                      className="px-3 py-2 text-sm hover:bg-gray-100 cursor-pointer"
+                      className="px-3 py-2 text-xs font-medium text-neutral-700 hover:bg-gray-100 cursor-pointer"
                       onClick={() => {
-                        setData([]);
-                        setSearch(item.CustomerID);
-                        autofillUser(item);
+                        setData([])
+                        setSearch(item.CustomerID)
+                        autofillUser(item)
                       }}
                     >
-                      {item.firstname} – {item.mobile_no}
+                      {item.firstname} {item.lastname} – {item.mobile_no}
                     </div>
                   ))}
                 </div>
               )}
+              <span className='w-full bg-neutral-800 text-white text-[11px] opacity-0 group-hover:opacity-100 absolute px-3 py-1 shadow-sm leading-4 tracking-tight -top-12 rounded-md'>
+                Search by Customer's firstname, lastname, mobile No., CustomerID
+              </span>
+
             </div>
+
 
             <div className="flex items-center">
               <input
@@ -249,39 +249,26 @@ const CustomerApplication = () => {
                 placeholder="Application ID"
               />
             </div>
-            <div className="flex items-center justify-start lg:w-full lg:justify-end">
-              <button
-                type="button"
-                onClick={() => resetInput()}
-                className="border border-neutral-300 px-4 py-1 rounded-md shadow-sm text-sm flex items-center gap-2 hover:bg-gray-50 transition-colors duration-300 cursor-pointer"
-              >
-                <BrushCleaning size={14} className="text-neutral-500" />
-                Reset
-              </button>
+            <div className='flex items-center justify-start lg:w-full lg:justify-end'>
+              <button type='button' onClick={() => resetInput()} className='border border-neutral-300 px-4 py-1 rounded-md shadow-sm text-sm flex items-center gap-2 hover:bg-gray-50 transition-colors duration-300 cursor-pointer'><BrushCleaning size={14} className='text-neutral-500' />Reset</button>
             </div>
           </div>
           {userApplications.length > 0 && (
             <div className="mt-3 border border-neutral-300 rounded-md bg-white shadow-sm w-full">
               <div className="text-sm font-medium px-4 py-2 bg-slate-100 w-full flex items-center justify-between">
-                <h3 className="w-full">Previous Applications</h3>
-                <button
-                  onClick={() => setUserApplication([])}
-                  className="w-full items-end justify-end flex"
-                >
+                <h3 className='w-full'>Previous Applications</h3>
+                <button onClick={() => setUserApplication([])} className='w-full items-end justify-end flex'>
                   <X size={18} className="text-red-500" />
                 </button>
               </div>
 
               <div className="divide-y flex overflow-auto">
-                {userApplications.map((app) => (
+                {userApplications.map(app => (
                   <div
                     key={app.id}
                     className="flex items-center px-4 py-2 text-sm hover:bg-gray-50 gap-5 border border-neutral-300"
                   >
-                    <div
-                      onClick={() => autoFillChitDetails(app)}
-                      className="cursor-pointer "
-                    >
+                    <div onClick={() => autoFillChitDetails(app)} className='cursor-pointer '>
                       <p className="font-medium">
                         APP_ID - {app.application_id}
                       </p>
@@ -300,10 +287,8 @@ const CustomerApplication = () => {
             </div>
           )}
           {search && userApplications.length === 0 && (
-            <div className="flex items-center justify-center w-full">
-              <h1 className="font-medium text-neutral-500">
-                Customer has 0 Application
-              </h1>
+            <div className='flex items-center justify-center w-full'>
+              <h1 className='font-medium text-neutral-500'>Customer has 0 Application</h1>
             </div>
           )}
           <h1 className="text-md font-medium mb-3 w-full text-start px-5 py-2 shadow-sm text-white bg-[#004f9e] rounded-md  tracking-tight">
@@ -312,9 +297,7 @@ const CustomerApplication = () => {
 
           <div className="flex flex-col sm:flex-row items-center w-full gap-4">
             <div className="flex flex-col items-start w-full text-sm">
-              <label>
-                Byelaws No. <span className="text-red-500">*</span>
-              </label>
+              <label>Byelaws No. <span className="text-red-500">*</span></label>
               <input
                 className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
                 name="ByLawsNumber"
@@ -325,13 +308,11 @@ const CustomerApplication = () => {
               />
             </div>
             <div className="flex flex-col items-start w-full text-sm">
-              <label className="text-sm">
-                Byelaws Date <span className="text-red-500">*</span>
-              </label>
+              <label className="text-sm">Byelaws Date <span className="text-red-500">*</span></label>
               <input
                 className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
                 name="BylawsDate"
-                type="date"
+                type='date'
                 value={chitData.BylawsDate}
                 onChange={handleChitChange}
                 placeholder="Bylaws Date"
@@ -339,9 +320,7 @@ const CustomerApplication = () => {
               />
             </div>
             <div className="flex flex-col items-start w-full text-sm">
-              <label className="text-sm">
-                Group Code <span className="text-red-500">*</span>
-              </label>
+              <label className="text-sm">Group Code <span className="text-red-500">*</span></label>
               <input
                 className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
                 name="GroupCode"
@@ -354,9 +333,7 @@ const CustomerApplication = () => {
           </div>
           <div className="flex flex-col sm:flex-row items-center gap-4 w-full">
             <div className="flex flex-col items-start w-full text-sm">
-              <label>
-                Ticket No.<span className="text-red-500">*</span>
-              </label>
+              <label>Ticket No.<span className="text-red-500">*</span></label>
               <input
                 className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
                 name="TicketNmber"
@@ -367,13 +344,11 @@ const CustomerApplication = () => {
               />
             </div>
             <div className="flex flex-col items-start w-full text-sm">
-              <label>
-                Chit Value <span className="text-red-500">*</span>
-              </label>
+              <label>Chit Value <span className="text-red-500">*</span></label>
               <input
                 className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
                 name="ChitValue"
-                type="number"
+                type='number'
                 value={chitData.ChitValue}
                 onChange={handleChitChange}
                 placeholder="Chit Value"
@@ -397,8 +372,7 @@ const CustomerApplication = () => {
 
               <div className="flex flex-col items-start w-full text-sm">
                 <label>
-                  Days/Week/Months/Years
-                  <span className="text-red-500 ms-1">*</span>
+                  Days/Week/Months/Years<span className="text-red-500 ms-1">*</span>
                 </label>
                 <select
                   value={chitData.DurationCategory}
@@ -415,59 +389,29 @@ const CustomerApplication = () => {
                 </select>
               </div>
             </div>
+
+
           </div>
           <div className="flex flex-col items-start w-full text-sm">
-            <label>
-              Branch<span className="text-red-500 ms-1">*</span>
-            </label>
-            <select
-              value={chitData.branch}
-              onChange={handleChitChange}
-              className=" w-full lg:w-86  min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm text-neutral-500"
-              name="branch"
-              required
-            >
+            <label>Branch<span className="text-red-500 ms-1">*</span></label>
+            <select value={chitData.branch}
+              onChange={handleChitChange} className=" w-full lg:w-86  min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm text-neutral-500" name="branch" required>
               <option value="">Select Branch</option>
               {branchData.map((items) => (
-                <option key={items.id} value={items.id}>
-                  {items.branchName} – {items.branchLocation}
-                </option>
+                <option key={items.id} value={items.id}>{items.branchName} – {items.branchLocation}</option>
               ))}
             </select>
           </div>
 
-          <div className="w-full shadow-sm bg-slate-100 rounded-md">
+          <div className='w-full shadow-sm bg-slate-100 rounded-md'>
             <h1 className="text-lg font-medium mb-3 w-full text-start px-5 py-3 text-neutral-800 tracking-tight">
               Applicant Declaration
             </h1>
-            <div className="mx-4 bg-white border border-neutral-300 rounded-md mb-4 px-5 py-3">
-              <p className="text-sm tracking-wide text-neutral-600">
-                Dear Sir,
-                <br />
-                <br />
-                I/We (Name of the Co./Firm/Enterprises if applicant not
-                Individual) Age
-                <input className="border-b outline-none mx-1 font-semibold w-10 text-center" />
-                Son/Wife/daughter/Proprietor/proprietress/duly authorized
-                attorney/ Mrs
-                <input className="border-b outline-none mx-1 font-semibold text-center" />{" "}
-                Request you to reserve a membership/ Ticket in the above
-                chit/kuri being floated by you/ I have remitted this day a sum
-                of (Rupees
-                <input className="border-b outline-none mx-1 font-semibold text-center" />{" "}
-                only) being the first installment of the chit/kuri membership
-                applied for. I/We have received and gone through a copy of the
-                chit agreement cum bye-laws of the proposed chit/kuri being
-                registered and conducted by you as FOREMAN COMPANY and I have
-                read or caused to read / translated and understood the same.
-                Knowing the conditions. Accordingly I am submitting here with,
-                this bye law of proposed/floated chit agreement in duplicate
-                duly filled and signed by me/us as required by you for
-                registration of the chit under section 4 of the CHIT FUNDS ACT,
-                1982 and Maharashtra Chit Fund Rule 2004. I/we do hereby declare
-                to abide by and be bounded by the rules contained therein and
-                well any further amendments that may be made from time to time.
-              </p>
+            <div className='mx-4 bg-white border border-neutral-300 rounded-md mb-4 px-5 py-3'>
+
+              <p className='text-sm tracking-wide text-neutral-600'>
+                Dear Sir,<br /><br />
+                I/We (Name of the Co./Firm/Enterprises if applicant not Individual) Age<input className='border-b outline-none mx-1 font-semibold w-10 text-center' />Son/Wife/daughter/Proprietor/proprietress/duly authorized attorney/ Mrs<input className='border-b outline-none mx-1 font-semibold text-center' /> Request you to reserve a membership/ Ticket in the above chit/kuri being floated by you/ I have remitted this day a sum of (Rupees<input className='border-b outline-none mx-1 font-semibold text-center' /> only) being the first installment of the chit/kuri membership applied for. I/We have received and gone through a copy of the chit agreement cum bye-laws of the proposed chit/kuri being registered and conducted by you as FOREMAN COMPANY and I have read or caused to read / translated and understood the same. Knowing the conditions. Accordingly I am submitting here with, this bye law of proposed/floated chit agreement in duplicate duly filled and signed by me/us as required by you for registration of the chit under section 4 of the CHIT FUNDS ACT, 1982 and Maharashtra Chit Fund Rule 2004. I/we do hereby declare to abide by and be bounded by the rules contained therein and well any further amendments that may be made from time to time.</p>
             </div>
           </div>
           <h1 className="text-md font-medium mb-3 w-full text-start px-5 py-2 shadow-sm text-white bg-[#004f9e] rounded-md tracking-tight">
@@ -476,9 +420,7 @@ const CustomerApplication = () => {
 
           <div className="flex flex-col sm:flex-row items-center w-full gap-4">
             <div className="flex flex-col items-start w-full text-sm">
-              <label>
-                First Name <span className="text-red-500">*</span>
-              </label>
+              <label>First Name <span className="text-red-500">*</span></label>
               <input
                 className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
                 name="firstName"
@@ -489,9 +431,7 @@ const CustomerApplication = () => {
               />
             </div>
             <div className="flex flex-col items-start w-full text-sm">
-              <label className="text-sm">
-                Middle Name <span className="text-red-500">*</span>
-              </label>
+              <label className="text-sm">Middle Name <span className="text-red-500">*</span></label>
               <input
                 className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
                 name="middleName"
@@ -502,9 +442,7 @@ const CustomerApplication = () => {
               />
             </div>
             <div className="flex flex-col items-start w-full text-sm">
-              <label className="text-sm">
-                Last Name <span className="text-red-500">*</span>
-              </label>
+              <label className="text-sm">Last Name <span className="text-red-500">*</span></label>
               <input
                 className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
                 name="lastName"
@@ -516,11 +454,10 @@ const CustomerApplication = () => {
             </div>
           </div>
 
+
           <div className="flex flex-col sm:flex-row items-center gap-4 w-full">
             <div className="flex flex-col items-start w-full text-sm">
-              <label>
-                Mobile Number <span className="text-red-500">*</span>
-              </label>
+              <label>Mobile Number <span className="text-red-500">*</span></label>
               <input
                 className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
                 name="mobile"
@@ -531,22 +468,18 @@ const CustomerApplication = () => {
               />
             </div>
             <div className="flex flex-col items-start w-full text-sm">
-              <label>
-                Email <span className="text-red-500">*</span>
-              </label>
+              <label>Email </label>
               <input
                 className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
                 placeholder="Email"
-                required
+                
               />
             </div>
             <div className="flex flex-col items-start w-full text-sm">
-              <label>
-                Date of Birth <span className="text-red-500">*</span>
-              </label>
+              <label>Date of Birth <span className="text-red-500">*</span></label>
               <input
                 type="date"
                 className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
@@ -559,9 +492,7 @@ const CustomerApplication = () => {
           </div>
 
           <div>
-            <label className="text-sm">
-              Permanent Address <span className="text-red-500">*</span>
-            </label>
+            <label className="text-sm">Permanent Address <span className="text-red-500">*</span></label>
             <textarea
               className="w-full mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
               name="address"
@@ -575,9 +506,7 @@ const CustomerApplication = () => {
           <div className="w-full text-sm">
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div className="flex flex-col gap-1">
-                <label className="text-sm">
-                  PIN Code <span className="text-red-500">*</span>
-                </label>
+                <label className="text-sm">PIN Code <span className="text-red-500">*</span></label>
                 <input
                   className="w-full px-3 py-1 border border-neutral-300 rounded-md"
                   name="pincode"
@@ -589,9 +518,7 @@ const CustomerApplication = () => {
               </div>
 
               <div className="flex flex-col gap-1 relative">
-                <label className="text-sm">
-                  PAN Number <span className="text-red-500">*</span>
-                </label>
+                <label className="text-sm">PAN Number <span className="text-red-500">*</span></label>
 
                 <div className="flex items-center gap-2">
                   <input
@@ -606,9 +533,7 @@ const CustomerApplication = () => {
               </div>
 
               <div className="flex flex-col gap-1 relative">
-                <label className="text-sm">
-                  Aadhar Number <span className="text-red-500">*</span>
-                </label>
+                <label className="text-sm">Aadhar Number <span className="text-red-500">*</span></label>
 
                 <div className="flex items-center gap-2">
                   <input
@@ -619,6 +544,7 @@ const CustomerApplication = () => {
                     placeholder="Aadhar"
                     required
                   />
+
                 </div>
               </div>
             </div>
@@ -631,9 +557,7 @@ const CustomerApplication = () => {
 
             <div className="flex flex-col sm:flex-row gap-4 mt-4">
               <div className="flex flex-col items-start w-full text-sm">
-                <label>
-                  First Name <span className="text-red-500">*</span>
-                </label>
+                <label>First Name <span className="text-red-500">*</span></label>
                 <input
                   className="w-full min-w-0 border px-3 py-1 rounded text-sm border-neutral-300"
                   name="nominee_firstname"
@@ -644,9 +568,7 @@ const CustomerApplication = () => {
                 />
               </div>
               <div className="flex flex-col items-start w-full text-sm">
-                <label>
-                  Middle Name <span className="text-red-500">*</span>
-                </label>
+                <label>Middle Name <span className="text-red-500">*</span></label>
                 <input
                   className="w-full min-w-0 border px-3 py-1 rounded text-sm border-neutral-300"
                   name="nominee_middlename"
@@ -657,9 +579,7 @@ const CustomerApplication = () => {
                 />
               </div>
               <div className="flex flex-col items-start w-full text-sm">
-                <label>
-                  Last Name <span className="text-red-500">*</span>
-                </label>
+                <label>Last Name <span className="text-red-500">*</span></label>
                 <input
                   className="w-full min-w-0 border px-3 py-1 rounded text-sm border-neutral-300"
                   name="nominee_lastname"
@@ -673,9 +593,7 @@ const CustomerApplication = () => {
 
             <div className="flex flex-col sm:flex-row gap-4">
               <div className="flex flex-col items-start w-full text-sm">
-                <label>
-                  Relationship <span className="text-red-500">*</span>
-                </label>
+                <label>Relationship <span className="text-red-500">*</span></label>
                 <select
                   className="w-full min-w-0 border px-3 py-1 rounded text-sm border-neutral-300 bg-white relative z-50"
                   style={{ position: "relative" }}
@@ -696,9 +614,7 @@ const CustomerApplication = () => {
                 </select> 
               </div>
               <div className="flex flex-col items-start w-full text-sm">
-                <label>
-                  Date of Birth <span className="text-red-500">*</span>
-                </label>
+                <label>Date of Birth <span className="text-red-500">*</span></label>
                 <input
                   type="date"
                   className="w-full min-w-0 border px-3 py-1 rounded text-sm border-neutral-300"
@@ -709,9 +625,7 @@ const CustomerApplication = () => {
                 />
               </div>
               <div className="flex flex-col items-start w-full text-sm">
-                <label>
-                  Mobile Number <span className="text-red-500">*</span>
-                </label>
+                <label>Mobile Number <span className="text-red-500">*</span></label>
                 <input
                   className="w-full min-w-0 border px-3 py-1 rounded text-sm border-neutral-300"
                   name="nomineeMobile"
@@ -723,18 +637,14 @@ const CustomerApplication = () => {
               </div>
             </div>
           </div>
-          <div className="w-full shadow-sm bg-slate-100 rounded-md">
+          <div className='w-full shadow-sm bg-slate-100 rounded-md'>
             <h1 className="text-lg font-medium mb-3 w-full text-start px-5 py-3 text-neutral-800 tracking-tight">
               Declaration cum Authority for Bidding at Maximum Discount
             </h1>
-            <div className="mx-4 bg-white border border-neutral-300 rounded-md mb-4 px-5 py-3">
-              <p className="text-sm tracking-wide text-neutral-600">
-                I/We am/are willing to avail prized value at maximum discount of
-                40% of the chit value and here by authorize the Foreman company
-                to include my/our Name for the draw for first{" "}
-                <input className="border-b outline-none mx-1 font-semibold text-center" />{" "}
-                auction/draws.
-              </p>
+            <div className='mx-4 bg-white border border-neutral-300 rounded-md mb-4 px-5 py-3'>
+
+              <p className='text-sm tracking-wide text-neutral-600'>
+                I/We am/are willing to avail prized value at maximum discount of 40% of the chit value and here by authorize the Foreman company to include my/our Name for the draw for first <input className='border-b outline-none mx-1 font-semibold text-center' /> auction/draws.</p>
             </div>
           </div>
 
@@ -753,8 +663,9 @@ const CustomerApplication = () => {
         </form>
         {/* <ChitManagement data={allchitData} fetchChitsData={fetchChitsData}/> */}
       </div>
-    </Layout>
-  );
-};
 
-export default CustomerApplication;
+    </Layout>
+  )
+}
+
+export default CustomerApplication

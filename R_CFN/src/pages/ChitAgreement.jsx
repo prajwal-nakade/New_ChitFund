@@ -35,7 +35,7 @@ const ChitAgreement = () => {
     auction_frequency: "",
     auction_session_start: "",
     auction_session_end: "",
-    register_bank_branch: "",
+    register_bank_branch: "Chh. Sambhajinagar",
     foreman_name: "",
     company_reg_number: "",
     deposit_bank_name: "",
@@ -87,7 +87,6 @@ const ChitAgreement = () => {
         user: selectedChit.user.id,
         branch: selectedChit.branch,
         chit: selectedChit.id,
-
         conducts_of_chits: formData.conducts_of_chits,
         number_of_tickets: formData.number_of_tickets,
         number_of_installments: Number(formData.number_of_installments),
@@ -145,12 +144,15 @@ const ChitAgreement = () => {
       installment_amount: installmentAmt.toFixed(2),
       fullName: `${chit.user.firstname} ${chit.user.middlename} ${chit.user.lastname}`,
       permanent_address: chit.user.permanent_address || "",
+      conducts_of_chits : chit.GroupCode || ""
+
     });
 
     setFormData((prev) => ({
       ...prev,
       number_of_installments: chitDuration,
       installment_amount: installmentAmt,
+      conducts_of_chits : chit.GroupCode
     }));
   };
 
@@ -280,7 +282,7 @@ const ChitAgreement = () => {
               <input
                 type="text"
                 name="conducts_of_chits"
-                value={formData.conducts_of_chits}
+                value={displayData.conducts_of_chits}
                 onChange={handleChange}
                 placeholder="Conducts of Chit"
                 className="w-full mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
@@ -391,10 +393,9 @@ const ChitAgreement = () => {
         <div className="flex flex-col lg:flex-row w-full px-5 pb-2 border-neutral-200 gap-4">
           <div className="flex flex-col items-start w-full text-sm  ">
             <label>
-              Date of Commencement <span className="text-red-500">*</span>
+              Date of Commencement 
             </label>
             <input
-              required
               onChange={handleChange}
               name="date_of_commencement"
               type="date"
@@ -405,10 +406,9 @@ const ChitAgreement = () => {
 
           <div className="flex flex-col items-start w-full text-sm">
             <label>
-              Date of Termination <span className="text-red-500">*</span>
+              Date of Termination
             </label>
             <input
-              required
               onChange={handleChange}
               name="date_of_termination"
               type="date"
@@ -494,7 +494,7 @@ const ChitAgreement = () => {
           </h1>
           <input
             required
-            onChange={handleChange}
+            value={"Chh. Sambhajinagar"}
             name="register_bank_branch"
             type="text"
             placeholder="Register Branch"

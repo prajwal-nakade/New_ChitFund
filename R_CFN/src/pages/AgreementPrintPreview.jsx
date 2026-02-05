@@ -122,7 +122,7 @@ const AgreementPrintPreview = () => {
     <Layout>
       <div className="container">
         <div className="max-w-7xl mx-auto leading-5" ref={ref}>
-        <div className="text-end text-xs text-gray-600 pt-3 px-3">
+        <div className="text-end text-xs text-gray-600 pt-3 px-3 ">
           <p>Regd. No.: U64990MH2023PTC400938 </p>
         </div>
         <div className="mx-auto text-center mb-4 pt-2 flex flex-col justify-center items-center w-full">
@@ -185,7 +185,7 @@ const AgreementPrintPreview = () => {
             membership from Shri/Smt{" "}
             <input
               type="text"
-              className="border-b outline-none mx-5 text-center font-medium"
+              className="border-b outline-none mx-5 text-center font-medium w-60  "
               value={`${user.firstname} ${user.middlename} ${user.lastname}`}
             />
             (Here in after called the Subscriber, which expression shall include
@@ -287,7 +287,7 @@ const AgreementPrintPreview = () => {
             <div className="flex w-full px-4 py-2 schedule">
               <div className="flex items-start w-full text-sm">
                 <label className="text-center w-32">
-                  Time of Auction <span className="text-red-500">*</span>
+                  Time of Auction
                 </label>
                 <input
                   value={chitAgreementData.scheduled_auction_time}
@@ -300,7 +300,7 @@ const AgreementPrintPreview = () => {
 
               <div className="flex items-start w-full text-sm">
                 <label className="text-center w-32">
-                  Day of Auction <span className="text-red-500">*</span>
+                  Day of Auction 
                 </label>
                 <input
                   value={dayjs(chitAgreementData.scheduled_auction_day).format('DD MMM YYYY')}
@@ -313,7 +313,7 @@ const AgreementPrintPreview = () => {
             <div className="w-full text-sm flex">
               <label className="text-center px-4 py-1">
                 Last date for payment of Installment is{" "}
-                <span className="text-red-500">*</span>
+                
               </label>
               <input
                 value={dayjs(chitAgreementData.scheduled_last_date_of_payment).format('DD MMM YYYY')}
@@ -342,7 +342,7 @@ const AgreementPrintPreview = () => {
           <div className="flex ms-4 py-2">
             <div className="flex">
               <label className="w-48">
-                Date of Commencement <span className="text-red-500">*</span>
+                Date of Commencement
               </label>
               <input
                 type="text"
@@ -354,7 +354,7 @@ const AgreementPrintPreview = () => {
 
             <div className="flex">
               <label className="w-38">
-                Date of Termination<span className="text-red-500">*</span>
+                Date of Termination
               </label>
               <input
                 type="text"
@@ -604,7 +604,7 @@ const AgreementPrintPreview = () => {
             Registration Number{" "}
             <input
               type="text"
-              className="border-b text-center outline-none font-medium "
+              className="border-b text-center outline-none font-medium w-64"
               value={chitAgreementData.company_reg_number}
             />{" "}
             Date of Registration{" "}
@@ -1034,7 +1034,7 @@ const AgreementPrintPreview = () => {
               Any disputes arising out of this Agreement shall be subject to the
               Jurisdiction of Court at
               <input
-                className="mx-2 w-40 border-b outline-none text-center font-medium"
+                className="mx-2 w-40 border-b outline-none text-center font-medium w-64"
                 value={chitAgreementData.jurisdiction_place}
               />
               . In witness whereof the Foreman and the subscriber have set their
