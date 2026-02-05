@@ -20,7 +20,9 @@ const ApplicationForm = () => {
     pan: "",
     aadhar: "",
     pan_image: null,
+    pan_image_back: null,
     aadhar_image: null,
+    aadhar_image_back: null,
   });
 
   const [errors, setErrors] = useState({});
@@ -43,6 +45,11 @@ const ApplicationForm = () => {
     aadhar_image: null,
   });
 
+  const [backPreview, setBackPreview] = useState({
+    pan_image_back: null,
+    aadhar_image_back: null,
+  });
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -58,12 +65,48 @@ const ApplicationForm = () => {
     setNomineeData((prev) => ({ ...prev, [name]: value }));
   };
 
+  // ======== SINGLE BUTTON -> TWO IMAGES ========
   const handleImageChange = (e) => {
     const { name, files } = e.target;
-    if (!files || !files[0]) return;
+    if (!files || files.length === 0) return;
 
-    setFormData((prev) => ({ ...prev, [name]: files[0] }));
-    setPreview((prev) => ({ ...prev, [name]: files[0].name }));
+    const fileArray = Array.from(files);
+
+    if (name === "pan_image") {
+      setFormData((prev) => ({
+        ...prev,
+        pan_image: fileArray[0] || null,
+        pan_image_back: fileArray[1] || null,
+      }));
+
+      setPreview((p) => ({
+        ...p,
+        pan_image: fileArray[0]?.name || null,
+      }));
+
+      setBackPreview((p) => ({
+        ...p,
+        pan_image_back: fileArray[1]?.name || null,
+      }));
+    }
+
+    if (name === "aadhar_image") {
+      setFormData((prev) => ({
+        ...prev,
+        aadhar_image: fileArray[0] || null,
+        aadhar_image_back: fileArray[1] || null,
+      }));
+
+      setPreview((p) => ({
+        ...p,
+        aadhar_image: fileArray[0]?.name || null,
+      }));
+
+      setBackPreview((p) => ({
+        ...p,
+        aadhar_image_back: fileArray[1]?.name || null,
+      }));
+    }
   };
 
   const removePanImage = (e) => {
@@ -80,11 +123,19 @@ const ApplicationForm = () => {
     setPreview((p) => ({ ...p, aadhar_image: null }));
   };
 
-  useEffect(() => {
-    return () => {
-      Object.values(preview).forEach((v) => v && URL.revokeObjectURL(v));
-    };
-  }, [preview]);
+  const removePanBackImage = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setFormData((p) => ({ ...p, pan_image_back: null }));
+    setBackPreview((p) => ({ ...p, pan_image_back: null }));
+  };
+
+  const removeAadharBackImage = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setFormData((p) => ({ ...p, aadhar_image_back: null }));
+    setBackPreview((p) => ({ ...p, aadhar_image_back: null }));
+  };
 
   const validatePan = (panNo) => {
     const panRegex = /^[A-Z]{5}[0-9]{4}[A-Z]$/i;
@@ -148,6 +199,11 @@ const ApplicationForm = () => {
     if (formData.aadhar_image)
       data.append("aadhar_image", formData.aadhar_image);
 
+    if (formData.pan_image_back)
+      data.append("pan_image_back", formData.pan_image_back);
+    if (formData.aadhar_image_back)
+      data.append("aadhar_image_back", formData.aadhar_image_back);
+
     data.append("nominee_firstname", nomineeData.nominee_firstname);
     data.append("nominee_middlename", nomineeData.nominee_middlename);
     data.append("nominee_lastname", nomineeData.nominee_lastname);
@@ -160,6 +216,7 @@ const ApplicationForm = () => {
       const response = await userEntry(data);
       if (response.success) {
         toast.success("User Application Submited!");
+
         setFormData({
           firstName: "",
           middleName: "",
@@ -172,12 +229,21 @@ const ApplicationForm = () => {
           pan: "",
           aadhar: "",
           pan_image: null,
+          pan_image_back: null,
           aadhar_image: null,
+          aadhar_image_back: null,
         });
+
         setPreview({
           pan_image: null,
           aadhar_image: null,
         });
+
+        setBackPreview({
+          pan_image_back: null,
+          aadhar_image_back: null,
+        });
+
         setNomineeData({
           nominee_firstname: "",
           nominee_middlename: "",
@@ -186,32 +252,20 @@ const ApplicationForm = () => {
           nomineeDob: "",
           nomineeMobile: "",
         });
+
         await fetchUserEntriesData();
       } else {
         toast.error("Somthing went wrong");
       }
-      console.log(response);
     } catch (error) {
-      const errors = error?.response?.data;
-
-      if (errors && typeof errors === "object") {
-        Object.values(errors).forEach((fieldErrors) => {
-          if (Array.isArray(fieldErrors)) {
-            fieldErrors.forEach((msg) => toast.error(msg));
-          } else {
-            toast.error(fieldErrors);
-          }
-        });
-      } else {
-        toast.error("Something went wrong. Please try again.");
-      }
+      toast.error("Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
   };
+
   const fetchUserEntriesData = async () => {
     const data = await getUserEntries();
-    console.log(data);
     setUserEntriesData(data);
   };
 
@@ -368,6 +422,7 @@ const ApplicationForm = () => {
                         type="file"
                         hidden
                         name="pan_image"
+                        multiple
                         accept=".png,.jpg,.jpeg"
                         onChange={handleImageChange}
                       />
@@ -378,17 +433,31 @@ const ApplicationForm = () => {
                       {errors.pan}
                     </div>
                   )}
-                  {preview.pan_image && (
-                    <div className="flex items-center gap-2 text-green-600 text-xs -bottom-5 lg:-bottom-5 absolute">
-                      <span className="truncate">{preview.pan_image}</span>
-                      <button type="button" onClick={removePanImage}>
-                        <X size={14} />
-                      </button>
+
+                  {(preview.pan_image || backPreview.pan_image_back) && (
+                    <div className="flex items-center gap-2 text-green-600 text-xs mt-1">
+                      {preview.pan_image && (
+                        <>
+                          <span className="truncate">{preview.pan_image}</span>
+                          <button type="button" onClick={removePanImage}>
+                            <X size={14} />
+                          </button>
+                        </>
+                      )}
+
+                      {backPreview.pan_image_back && (
+                        <>
+                          <span className="truncate">{backPreview.pan_image_back}</span>
+                          <button type="button" onClick={removePanBackImage}>
+                            <X size={14} />
+                          </button>
+                        </>
+                      )}
                     </div>
                   )}
                 </div>
 
-                {/* AADHAR */}
+                {/* ===== AADHAR FIELD ===== */}
                 <div className="flex flex-col gap-1 relative">
                   <label className="text-sm">
                     Aadhar Number <span className="text-red-500">*</span>
@@ -396,7 +465,7 @@ const ApplicationForm = () => {
 
                   <div className="flex items-center gap-2">
                     <input
-                      className="w-full px-3 py-1 border border-neutral-300 rounded-md placeholder:text-xs"
+                      className="w-full px-3 py-1 border border-neutral-300 rounded-md"
                       name="aadhar"
                       value={formData.aadhar}
                       onChange={handleChange}
@@ -410,22 +479,40 @@ const ApplicationForm = () => {
                         type="file"
                         hidden
                         name="aadhar_image"
+                        multiple
                         accept=".png,.jpg,.jpeg"
                         onChange={handleImageChange}
                       />
                     </label>
                   </div>
+
                   {errors.aadhar && (
                     <div className="mt-1 text-xs text-red-600">
                       {errors.aadhar}
                     </div>
                   )}
-                  {preview.aadhar_image && (
-                    <div className="flex items-center gap-2 text-green-600 text-xs -bottom-5 absolute">
-                      <span className="truncate">{preview.aadhar_image}</span>
-                      <button type="button" onClick={removeAadharImage}>
-                        <X size={14} />
-                      </button>
+
+                  {(preview.aadhar_image || backPreview.aadhar_image_back) && (
+                    <div className="flex items-center gap-2 text-green-600 text-xs mt-1">
+                      {preview.aadhar_image && (
+                        <>
+                          <span className="truncate">{preview.aadhar_image}</span>
+                          <button type="button" onClick={removeAadharImage}>
+                            <X size={14} />
+                          </button>
+                        </>
+                      )}
+
+                      {backPreview.aadhar_image_back && (
+                        <>
+                          <span className="truncate">
+                            {backPreview.aadhar_image_back}
+                          </span>
+                          <button type="button" onClick={removeAadharBackImage}>
+                            <X size={14} />
+                          </button>
+                        </>
+                      )}
                     </div>
                   )}
                 </div>
