@@ -34,11 +34,12 @@ const CustomerApplication = () => {
       String(f?.CustomerID || "")
         .toLowerCase()
         .includes(keyword)
-      || f?.mobile_no.toLowerCase().includes(keyword))
+      || f?.mobile_no.toLowerCase().includes(keyword) || f?.firstname.toLowerCase().includes(keyword) || f?.lastname.toLowerCase().includes(keyword))
 
     setData(filtered)
   }
 
+  const today = new Date().toISOString().split("T")[0];
   const [formData, setFormData] = useState({
     firstName: "",
     middleName: "",
@@ -95,7 +96,7 @@ const CustomerApplication = () => {
       middleName: user.middlename || "",
       lastName: user.lastname || "",
       mobile: user.mobile_no || "",
-      email: user.email || "",
+      email: user.email===null ? 'N/A' : user.email || "",
       dob: user.dob || "",
       address: user.permanent_address || "",
       pincode: user.pincode || "",
@@ -204,7 +205,7 @@ const CustomerApplication = () => {
           className="flex flex-col gap-4 w-full bg-white px-5 py-3 shadow-lg rounded-b-md border border-neutral-300"
         >
           <div className='flex flex-col lg:flex-row items-start lg:items-center gap-3'>
-            <div className="flex items-center relative">
+            <div className="flex items-center relative group">
               <div className="absolute bg-gray-200 h-full rounded-l-md  border border-neutral-300 px-2">
                 <Search size={14} className="text-neutral-500 mt-2" />
               </div>
@@ -212,7 +213,7 @@ const CustomerApplication = () => {
                 onChange={(e) => handleSearch(e.target.value)}
                 value={search}
                 type="text"
-                className="border border-neutral-300 shadow-sm text-neutral-800 text-sm px-10 py-1 placeholder:text-xs rounded-md w-78 outline-none uppercase"
+                className="border border-neutral-300 shadow-sm text-neutral-800 text-sm px-10 py-1 placeholder:text-xs rounded-md w-78 outline-none uppercase "
                 placeholder="Enter CustomerID or mobile no."
               />
               {search && data.length > 0 && (
@@ -220,18 +221,21 @@ const CustomerApplication = () => {
                   {data.map(item => (
                     <div
                       key={item.id}
-                      className="px-3 py-2 text-sm hover:bg-gray-100 cursor-pointer"
+                      className="px-3 py-2 text-xs font-medium text-neutral-700 hover:bg-gray-100 cursor-pointer"
                       onClick={() => {
                         setData([])
                         setSearch(item.CustomerID)
                         autofillUser(item)
                       }}
                     >
-                      {item.firstname} – {item.mobile_no}
+                      {item.firstname} {item.lastname} – {item.mobile_no}
                     </div>
                   ))}
                 </div>
               )}
+              <span className='w-full bg-neutral-800 text-white text-[11px] opacity-0 group-hover:opacity-100 absolute px-3 py-1 shadow-sm leading-4 tracking-tight -top-12 rounded-md'>
+                Search by Customer's firstname, lastname, mobile No., CustomerID
+              </span>
 
             </div>
 
@@ -464,14 +468,14 @@ const CustomerApplication = () => {
               />
             </div>
             <div className="flex flex-col items-start w-full text-sm">
-              <label>Email <span className="text-red-500">*</span></label>
+              <label>Email </label>
               <input
                 className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
                 placeholder="Email"
-                required
+                
               />
             </div>
             <div className="flex flex-col items-start w-full text-sm">
@@ -590,14 +594,24 @@ const CustomerApplication = () => {
             <div className="flex flex-col sm:flex-row gap-4">
               <div className="flex flex-col items-start w-full text-sm">
                 <label>Relationship <span className="text-red-500">*</span></label>
-                <input
-                  className="w-full min-w-0 border px-3 py-1 rounded text-sm border-neutral-300"
+                <select
+                  className="w-full min-w-0 border px-3 py-1 rounded text-sm border-neutral-300 bg-white relative z-50"
+                  style={{ position: "relative" }}
                   name="relationship"
                   value={nomineeData.relationship}
                   onChange={handleNomineeChange}
-                  placeholder="Relationship"
                   required
-                />
+                >
+                  <option value="" disabled>
+                    Select Relationship
+                  </option>
+                  <option value="Father">Father</option>
+                  <option value="Mother">Mother</option>
+                  <option value="Brother">Brother</option>
+                  <option value="Sister">Sister</option>
+                  <option value="Son">Son</option>
+                  <option value="Daughter">Daughter</option>
+                </select> 
               </div>
               <div className="flex flex-col items-start w-full text-sm">
                 <label>Date of Birth <span className="text-red-500">*</span></label>
