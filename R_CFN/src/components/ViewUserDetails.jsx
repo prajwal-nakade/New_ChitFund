@@ -63,9 +63,9 @@ const ViewUserDetails = ({ onClose, user }) => {
                                     <th className="border-b border-neutral-300 px-5 py-3 text-left font-medium text-neutral-700">
                                         Email
                                     </th>
-                                    <td className="border-b border-l border-neutral-300 px-5 py-3 break-words">
+                                    <td className="border-b border-l border-neutral-300 px-5 py-3 wrap-break-word">
                                         <span className="block w-full border border-neutral-300 px-3 py-1 rounded-md bg-gray-50 shadow-inner">
-                                            {user.email}
+                                            {user.email===null ? 'N/A' : user.email}
                                         </span>
                                     </td>
                                 </tr>
@@ -155,6 +155,12 @@ const ViewUserDetails = ({ onClose, user }) => {
                                                     onClick={() => setPreview(`${baseUrl}${user.aadhar_image}`)} />
                                                 <img width={50} src={`${baseUrl}${user.pan_image}`} className='border border-neutral-300 shadow-sm cursor-pointer' 
                                                 onClick={() => setPreview(`${baseUrl}${user.pan_image}`)}
+                                                />
+                                                <img width={50} src={`${baseUrl}${user.pan_image_back}`} className='border border-neutral-300 shadow-sm cursor-pointer' 
+                                                onClick={() => setPreview(`${baseUrl}${user.pan_image_back}`)}
+                                                />
+                                                <img width={50} src={`${baseUrl}${user.aadhar_image_back}`} className='border border-neutral-300 shadow-sm cursor-pointer' 
+                                                onClick={() => setPreview(`${baseUrl}${user.aadhar_image_back}`)}
                                                 />
                                             </div>
                                         </span>
