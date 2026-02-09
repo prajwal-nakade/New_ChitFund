@@ -70,42 +70,26 @@ const ApplicationForm = () => {
     const { name, files } = e.target;
     if (!files || files.length === 0) return;
 
-    const fileArray = Array.from(files);
+    const file = files[0]; // Only one file per button now
 
     if (name === "pan_image") {
-      setFormData((prev) => ({
-        ...prev,
-        pan_image: fileArray[0] || null,
-        pan_image_back: fileArray[1] || null,
-      }));
+      setFormData((prev) => ({ ...prev, pan_image: file }));
+      setPreview((p) => ({ ...p, pan_image: file?.name || null }));
+    }
 
-      setPreview((p) => ({
-        ...p,
-        pan_image: fileArray[0]?.name || null,
-      }));
-
-      setBackPreview((p) => ({
-        ...p,
-        pan_image_back: fileArray[1]?.name || null,
-      }));
+    if (name === "pan_image_back") {
+      setFormData((prev) => ({ ...prev, pan_image_back: file }));
+      setBackPreview((p) => ({ ...p, pan_image_back: file?.name || null }));
     }
 
     if (name === "aadhar_image") {
-      setFormData((prev) => ({
-        ...prev,
-        aadhar_image: fileArray[0] || null,
-        aadhar_image_back: fileArray[1] || null,
-      }));
+      setFormData((prev) => ({ ...prev, aadhar_image: file }));
+      setPreview((p) => ({ ...p, aadhar_image: file?.name || null }));
+    }
 
-      setPreview((p) => ({
-        ...p,
-        aadhar_image: fileArray[0]?.name || null,
-      }));
-
-      setBackPreview((p) => ({
-        ...p,
-        aadhar_image_back: fileArray[1]?.name || null,
-      }));
+    if (name === "aadhar_image_back") {
+      setFormData((prev) => ({ ...prev, aadhar_image_back: file }));
+      setBackPreview((p) => ({ ...p, aadhar_image_back: file?.name || null }));
     }
   };
 
@@ -383,141 +367,8 @@ const ApplicationForm = () => {
             </div>
 
             {/* IDs */}
-            <div className="w-full text-sm">
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                {/* PIN CODE */}
-                <div className="flex flex-col gap-1">
-                  <label className="text-sm">
-                    PIN Code <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    className="w-full px-3 py-1 border border-neutral-300 rounded-md"
-                    name="pincode"
-                    value={formData.pincode}
-                    onChange={handleChange}
-                    placeholder="Pincode"
-                    required
-                  />
-                </div>
-
-                {/* PAN */}
-                <div className="flex flex-col gap-1 relative">
-                  <label className="text-sm">
-                    PAN Number <span className="text-red-500">*</span>
-                  </label>
-
-                  <div className="flex items-center gap-2">
-                    <input
-                      className="w-full px-3 py-1 border border-neutral-300 rounded-md uppercase"
-                      name="pan"
-                      value={formData.pan}
-                      onChange={handleChange}
-                      placeholder="PAN"
-                      required
-                    />
-
-                    <label className="px-3 py-1 border border-neutral-300 bg-gray-200 rounded-md cursor-pointer hover:bg-gray-300 shadow-inner">
-                      Upload
-                      <input
-                        type="file"
-                        hidden
-                        name="pan_image"
-                        multiple
-                        accept=".png,.jpg,.jpeg"
-                        onChange={handleImageChange}
-                      />
-                    </label>
-                  </div>
-                  {errors.pan && (
-                    <div className="mt-1 text-xs text-red-600">
-                      {errors.pan}
-                    </div>
-                  )}
-
-                  {(preview.pan_image || backPreview.pan_image_back) && (
-                    <div className="flex items-center gap-2 text-green-600 text-xs mt-1">
-                      {preview.pan_image && (
-                        <>
-                          <span className="truncate">{preview.pan_image}</span>
-                          <button type="button" onClick={removePanImage}>
-                            <X size={14} />
-                          </button>
-                        </>
-                      )}
-
-                      {backPreview.pan_image_back && (
-                        <>
-                          <span className="truncate">{backPreview.pan_image_back}</span>
-                          <button type="button" onClick={removePanBackImage}>
-                            <X size={14} />
-                          </button>
-                        </>
-                      )}
-                    </div>
-                  )}
-                </div>
-
-                {/* ===== AADHAR FIELD ===== */}
-                <div className="flex flex-col gap-1 relative">
-                  <label className="text-sm">
-                    Aadhar Number <span className="text-red-500">*</span>
-                  </label>
-
-                  <div className="flex items-center gap-2">
-                    <input
-                      className="w-full px-3 py-1 border border-neutral-300 rounded-md"
-                      name="aadhar"
-                      value={formData.aadhar}
-                      onChange={handleChange}
-                      placeholder="Enter your 12 digit Aadhar number"
-                      required
-                    />
-
-                    <label className="px-3 py-1 border border-neutral-300 bg-gray-200 rounded-md cursor-pointer hover:bg-gray-300 shadow-inner">
-                      Upload
-                      <input
-                        type="file"
-                        hidden
-                        name="aadhar_image"
-                        multiple
-                        accept=".png,.jpg,.jpeg"
-                        onChange={handleImageChange}
-                      />
-                    </label>
-                  </div>
-
-                  {errors.aadhar && (
-                    <div className="mt-1 text-xs text-red-600">
-                      {errors.aadhar}
-                    </div>
-                  )}
-
-                  {(preview.aadhar_image || backPreview.aadhar_image_back) && (
-                    <div className="flex items-center gap-2 text-green-600 text-xs mt-1">
-                      {preview.aadhar_image && (
-                        <>
-                          <span className="truncate">{preview.aadhar_image}</span>
-                          <button type="button" onClick={removeAadharImage}>
-                            <X size={14} />
-                          </button>
-                        </>
-                      )}
-
-                      {backPreview.aadhar_image_back && (
-                        <>
-                          <span className="truncate">
-                            {backPreview.aadhar_image_back}
-                          </span>
-                          <button type="button" onClick={removeAadharBackImage}>
-                            <X size={14} />
-                          </button>
-                        </>
-                      )}
-                    </div>
-                  )}
-                </div>
-              </div>
-              <div className="flex flex-col items-start w-86 py-1 text-sm">
+            <div className="w-full text-sm flex items-center gap-4">
+              <div className="flex flex-col items-start w-full text-sm">
                 <label>
                   Gender <span className="text-red-500">*</span>
                 </label>
@@ -530,6 +381,164 @@ const ApplicationForm = () => {
                   <option value="female">Female</option>
                   <option value="other">Other</option>
                 </select>
+              </div>
+
+              {/* PIN CODE */}
+              <div className="flex flex-col gap-1 w-full text-sm">
+                <label className="text-sm">
+                  PIN Code <span className="text-red-500">*</span>
+                </label>
+                <input
+                  className="w-full px-3 py-1 border border-neutral-300 rounded-md"
+                  name="pincode"
+                  value={formData.pincode}
+                  onChange={handleChange}
+                  placeholder="Pincode"
+                  required
+                />
+              </div>
+            </div>
+            {/* PAN */}
+
+            <div className="w-full text-sm flex items-center gap-4">
+              <div className="flex flex-col gap-1 relative w-full">
+                <label className="text-sm">
+                  PAN Number <span className="text-red-500">*</span>
+                </label>
+
+                <div className="flex items-center gap-2">
+                  <input
+                    className="w-full px-3 py-1 border border-neutral-300 rounded-md uppercase"
+                    name="pan"
+                    value={formData.pan}
+                    onChange={handleChange}
+                    placeholder="PAN"
+                    required
+                  />
+
+                  <div className="flex gap-2">
+                    <label className="px-3 py-1 border border-neutral-300 bg-gray-200 rounded-md cursor-pointer hover:bg-gray-300 shadow-inner text-xs whitespace-nowrap">
+                      PAN Front
+                      <input
+                        type="file"
+                        hidden
+                        name="pan_image"
+                        accept=".png,.jpg,.jpeg"
+                        onChange={handleImageChange}
+                      />
+                    </label>
+
+                    <label className="px-3 py-1 border border-neutral-300 bg-gray-200 rounded-md cursor-pointer hover:bg-gray-300 shadow-inner text-xs whitespace-nowrap">
+                      PAN Back
+                      <input
+                        type="file"
+                        hidden
+                        name="pan_image_back"
+                        accept=".png,.jpg,.jpeg"
+                        onChange={handleImageChange}
+                      />
+                    </label>
+                  </div>
+                </div>
+                {errors.pan && (
+                  <div className="mt-1 text-xs text-red-600">{errors.pan}</div>
+                )}
+
+                {(preview.pan_image || backPreview.pan_image_back) && (
+                  <div className="flex items-center gap-2 text-green-600 text-xs mt-1">
+                    {preview.pan_image && (
+                      <>
+                        <span className="truncate">{preview.pan_image}</span>
+                        <button type="button" onClick={removePanImage}>
+                          <X size={14} />
+                        </button>
+                      </>
+                    )}
+
+                    {backPreview.pan_image_back && (
+                      <>
+                        <span className="truncate">
+                          {backPreview.pan_image_back}
+                        </span>
+                        <button type="button" onClick={removePanBackImage}>
+                          <X size={14} />
+                        </button>
+                      </>
+                    )}
+                  </div>
+                )}
+              </div>
+
+              {/* ===== AADHAR FIELD ===== */}
+              <div className="flex flex-col gap-1  w-full">
+                <label className="text-sm">
+                  Aadhar Number <span className="text-red-500">*</span>
+                </label>
+
+                <div className="flex items-center gap-2">
+                  <input
+                    className="w-full px-3 py-1 border border-neutral-300 rounded-md"
+                    name="aadhar"
+                    value={formData.aadhar}
+                    onChange={handleChange}
+                    placeholder="Enter your 12 digit Aadhar number"
+                    required
+                  />
+
+                  <div className="flex gap-2">
+                    <label className="px-3 py-1 border border-neutral-300 bg-gray-200 rounded-md cursor-pointer hover:bg-gray-300 shadow-inner text-xs whitespace-nowrap">
+                      Aadhaar Front
+                      <input
+                        type="file"
+                        hidden
+                        name="aadhar_image"
+                        accept=".png,.jpg,.jpeg"
+                        onChange={handleImageChange}
+                      />
+                    </label>
+
+                    <label className="px-3 py-1 border border-neutral-300 bg-gray-200 rounded-md cursor-pointer hover:bg-gray-300 shadow-inner text-xs whitespace-nowrap">
+                      Aadhaar Back
+                      <input
+                        type="file"
+                        hidden
+                        name="aadhar_image_back"
+                        accept=".png,.jpg,.jpeg"
+                        onChange={handleImageChange}
+                      />
+                    </label>
+                  </div>
+                </div>
+
+                {errors.aadhar && (
+                  <div className="mt-1 text-xs text-red-600">
+                    {errors.aadhar}
+                  </div>
+                )}
+
+                {(preview.aadhar_image || backPreview.aadhar_image_back) && (
+                  <div className="flex items-center gap-2 text-green-600 text-xs mt-1">
+                    {preview.aadhar_image && (
+                      <>
+                        <span className="truncate">{preview.aadhar_image}</span>
+                        <button type="button" onClick={removeAadharImage}>
+                          <X size={14} />
+                        </button>
+                      </>
+                    )}
+
+                    {backPreview.aadhar_image_back && (
+                      <>
+                        <span className="truncate">
+                          {backPreview.aadhar_image_back}
+                        </span>
+                        <button type="button" onClick={removeAadharBackImage}>
+                          <X size={14} />
+                        </button>
+                      </>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
           </div>
