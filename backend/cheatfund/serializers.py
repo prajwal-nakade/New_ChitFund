@@ -15,7 +15,7 @@ class UserWithNomineeSerializer(serializers.ModelSerializer):
             'id', 'firstname','middlename', 'lastname', 'mobile_no', 'dob', 'email',
             'permanent_address', 'pincode',
             'pancard_no', 'aadharcard_no',
-            'pan_image', 'aadhar_image', 'created_at', 
+            'pan_image', 'aadhar_image', 'pan_image_back', 'aadhar_image_back', 'created_at', 
             'nominee_firstname', 'nominee_middlename', 'nominee_lastname', 'nominee_mobile',
             'nominee_dob', 'relationship'
         ]
@@ -51,7 +51,7 @@ class GetAllEntriesSerializer(serializers.ModelSerializer):
         fields = ['id', 'firstname', 'middlename', 'lastname', 'mobile_no', 'dob', 'email',
             'permanent_address', 'pincode','created_at',
             'pancard_no', 'aadharcard_no',
-            'pan_image', 'aadhar_image', 'nominees', 'status', 'CustomerID']
+            'pan_image', 'aadhar_image', 'pan_image_back', 'aadhar_image_back', 'nominees', 'status', 'CustomerID']
 
 class UserSerializer(serializers.ModelSerializer):
     nominees = NomineeSerializer(many = True,read_only=True)
@@ -60,7 +60,7 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ['id', 'firstname', 'middlename', 'lastname', 'mobile_no', 'dob', 'email',
             'permanent_address', 'pincode','created_at',
             'pancard_no', 'aadharcard_no',
-            'pan_image', 'aadhar_image', 'status', 'nominees']
+            'pan_image', 'aadhar_image', 'pan_image_back', 'aadhar_image_back', 'status', 'nominees']
         
 
 class UpdateUserSerializer(serializers.Serializer):
@@ -77,6 +77,8 @@ class UpdateUserSerializer(serializers.Serializer):
     aadharcard_no = serializers.CharField(required=False)
     pan_image = serializers.ImageField(required=False)
     aadhar_image = serializers.ImageField(required=False)
+    pan_image_back = serializers.ImageField(required=False)
+    aadhar_image_back = serializers.ImageField(required=False)
     
     #Nominee Fields
     nominee_firstname = serializers.CharField(required=False)
@@ -91,7 +93,7 @@ class UpdateUserSerializer(serializers.Serializer):
             'firstname', 'middlename', 'lastname', 'mobile_no', 'dob',
             'email', 'permanent_address', 'pincode',
             'pancard_no', 'aadharcard_no',
-            'pan_image', 'aadhar_image'
+            'pan_image', 'aadhar_image' , 'pan_image_back', 'aadhar_image_back',
         ]
         for field in user_field:
             if field in validated_data:
