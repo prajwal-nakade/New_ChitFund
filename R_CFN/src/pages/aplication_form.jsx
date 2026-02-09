@@ -445,7 +445,7 @@ const ApplicationForm = () => {
                 )}
 
                 {(preview.pan_image || backPreview.pan_image_back) && (
-                  <div className="flex items-center gap-2 text-green-600 text-xs mt-1">
+                  <div className="flex items-center gap-2 text-green-600 text-xs mt-1 absolute top-14">
                     {preview.pan_image && (
                       <>
                         <span className="truncate">{preview.pan_image}</span>
@@ -470,7 +470,7 @@ const ApplicationForm = () => {
               </div>
 
               {/* ===== AADHAR FIELD ===== */}
-              <div className="flex flex-col gap-1  w-full">
+              <div className="flex flex-col gap-1 relative w-full">
                 <label className="text-sm">
                   Aadhar Number <span className="text-red-500">*</span>
                 </label>
@@ -517,7 +517,7 @@ const ApplicationForm = () => {
                 )}
 
                 {(preview.aadhar_image || backPreview.aadhar_image_back) && (
-                  <div className="flex items-center gap-2 text-green-600 text-xs mt-1">
+                  <div className="flex items-center gap-2 text-green-600 text-xs mt-1 absolute top-14">
                     {preview.aadhar_image && (
                       <>
                         <span className="truncate">{preview.aadhar_image}</span>

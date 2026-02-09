@@ -385,11 +385,17 @@ const ChitPrintPreview = () => {
             </div>
           </div>
           <div className="print-page-break flex items-center justify-center">
-            <img src={`${BASE_URL}${user.aadhar_image}`} />
+            <div className="flex flex-col items-center justify-center gap-5">
+                <img src={`${BASE_URL}${user.aadhar_image}`} />
+                <img src={`${BASE_URL}${user.aadhar_image_back}`} />
+            </div>
           </div>
 
           <div className="print-page-break flex items-center justify-center">
-            <img src={`${BASE_URL}${user.pan_image}`} />
+            <div className="flex flex-col items-center justify-center gap-5">
+                <img src={`${BASE_URL}${user.pan_image}`} />
+                <img src={`${BASE_URL}${user.pan_image_back}`} />
+            </div>
           </div>
         </div>
       </div>
