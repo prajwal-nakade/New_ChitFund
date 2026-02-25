@@ -648,7 +648,7 @@ const ApplicationForm = () => {
                   Gender <span className="text-red-500">*</span>
                 </label>
                 <select
-                  className="w-full min-w-0 mt-1 px-3 py-1.5 border border-neutral-300 rounded-md text-sm"
+                  className="w-95 min-w-0 mt-1 px-2 py-1.5 border border-neutral-300 rounded-md text-sm"
                   required
                 >
                   <option value="">Select Gender</option>
