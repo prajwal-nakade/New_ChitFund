@@ -39,11 +39,14 @@ const Navbar = () => {
     { title: "View Applications", icon: <Table2 size={16} />, path: "/viewapplications" },
     { title: "Chit Agreement", icon: <Handshake size={16} />, path: "/ChitAgreement" },
     { title: "View Chit Agreement", icon: <ClipboardList size={16} />, path: "/ViewChitAgreement" },
+    
+    
   ];
 
   const masterSubMenus = [
     { title: "Customer Master", icon: <User size={16} />, path: "/application-form" },
     { title: "Branch Master", icon: <MapPin size={16} />, path: "/branch-master" },
+    { title: "Authentication Form", icon: <ClipboardList size={16} />, path: "/authenticationform" },
   ];
 
   return (
