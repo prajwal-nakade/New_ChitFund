@@ -643,7 +643,7 @@ const ApplicationForm = () => {
                 </div>
               </div>
 
-              <div className="flex flex-col items-start w-86  text-sm">
+              <div className="flex flex-col items-start w-full lg:w-96 text-sm">
                 <label>
                   Gender <span className="text-red-500">*</span>
                 </label>
