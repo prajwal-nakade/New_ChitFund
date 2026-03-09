@@ -12,6 +12,9 @@ import ApplicationViewMaster from "./pages/ApplicationViewMaster";
 import ChitAgreement from "./pages/ChitAgreement";
 import AgreementPrintPreview from "./pages/AgreementPrintPreview";
 import ViewChitAgreement from "./pages/ViewChitAgreement";
+import AuthenticationForm from "./pages/AuthenticationForm";
+import ViewAuthenticationForm from "./pages/ViewAuthenticationForm";
+
 
 function App() {
 
@@ -28,6 +31,8 @@ function App() {
         <Route path="/ChitAgreement" element={<ChitAgreement />} />
         <Route path="/AgreementPrintPreview/:id" element={<AgreementPrintPreview />} />
         <Route path="/ViewChitAgreement" element={<ViewChitAgreement />} />
+        <Route path="/authenticationform/:id" element={<AuthenticationForm/>} />
+        <Route path="/viewauthenticationform" element={<ViewAuthenticationForm />} />
       </Routes>
     </Router>
     <ToastContainer />

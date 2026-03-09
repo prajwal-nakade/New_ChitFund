@@ -63,7 +63,7 @@ const ViewUserDetails = ({ onClose, user }) => {
                                     <th className="border-b border-neutral-300 px-5 py-3 text-left font-medium text-neutral-700">
                                         Email
                                     </th>
-                                    <td className="border-b border-l border-neutral-300 px-5 py-3 break-words">
+                                    <td className="border-b border-l border-neutral-300 px-5 py-3 wrap-break-word">
                                         <span className="block w-full border border-neutral-300 px-3 py-1 rounded-md bg-gray-50 shadow-inner">
                                             {user.email===null ? 'N/A' : user.email}
                                         </span>
