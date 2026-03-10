@@ -1,10 +1,9 @@
-import dayjs from "dayjs";
 import React from "react";
 
-const GuaranteeAgreement = ({ chit, user, chitAgreementData }) => {
+const GuaranteeAgreement = () => {
   return (
     <>
-      <div className="max-w-4xl mx-auto bg-white border border-black px-8 py-6 text-[15px] leading-6">
+      <div className="max-w-4xl mx-auto bg-white border border-black px-8 py-6 text-[15px] leading-7">
         {/* CIN */}
         <div className="text-end text-xs">CIN NO.U64990MH2023PTC400938</div>
 
@@ -31,11 +30,7 @@ const GuaranteeAgreement = ({ chit, user, chitAgreementData }) => {
           In consideration of KARDE KRISHNA CHITS PRIVATE LIMITED (hereinafter
           referred to as “The Company”) granting of time for repayment or
           deferring the filing of suit for recover against
-          <input
-            className="border-b border-black w-full outline-none bg-transparent mx-2 flex-1 text-center"
-            disabled
-            value={`${user.firstname} ${user.middlename} ${user.lastname}`}
-          />
+          <input className="border-b border-black w-full outline-none bg-transparent mx-2 flex-1" />
         </p>
 
         <div className="flex items-center mt-2">
@@ -43,32 +38,31 @@ const GuaranteeAgreement = ({ chit, user, chitAgreementData }) => {
             (Hereinafter Called “The Prized Subscriber”) which expression shall
             where the context so admit his heirs, legal representative,
             administrator, executors and like, a sum of Rs.
-            <input className="border-b border-black w-28 outline-none bg-transparent mx-2" />
-            <span>(Rupees -</span>
-            <input className="border-b border-black w-80 outline-none bg-transparent mx-2" />
-            <span>) by way of Prized.</span>
-          </p>
+         
+          <input className="border-b border-black w-28 outline-none bg-transparent mx-2" />
+          <span>(Rupees -</span>
+          <input className="border-b border-black w-80 outline-none bg-transparent mx-2" />
+          <span>) by way of Prized.</span>
+
+           </p>
         </div>
 
         {/* TEXT */}
         <div className="flex flex-wrap items-center mt-2">
-          <p className="mt-3 text-justify">
-            Chit Amount ( hereinafter referred to as the “Prized Amount”) as
-            mentioned in the Chit Agreement which is registered with the Joint
-            Registrar of Chits, Aurangabad Registration No.
-            {/* REG DETAILS */}
-            <input
-              className="border-b border-black w-60 text-center outline-none bg-transparent mx-2"
-              disabled
-              value={chitAgreementData.company_reg_number}
-            />
-            <span>Of</span>
-            <input
-              className="border-b border-black w-40 outline-none bg-transparent mx-2 text-center"
-              disabled
-              value={dayjs(chit.BylawsDate).format("DD MMM YYYY")}
-            />
-            <span>under section 4” if the Maharashtra Chit Fund Act 1982</span>
+        <p className="mt-3 text-justify">
+          Under Chit Amount ( hereinafter referred to as the “Prized Amount”) as
+          mentioned in the Chit Agreement which is registered with the Joint
+          Registrar of Chits, Aurangabad Registration No.
+        
+
+        {/* REG DETAILS */}
+      
+          <input className="border-b border-black w-40 outline-none bg-transparent mx-2" />
+          <span>Of</span>
+          <input className="border-b border-black w-40 outline-none bg-transparent mx-2" />
+          <span>dated</span>
+          <input className="border-b border-black w-40 outline-none bg-transparent mx-2" />
+          <span>under section 4” if the Maharashtra Chit Fund Act1982</span>
           </p>
         </div>
 
@@ -222,37 +216,21 @@ const GuaranteeAgreement = ({ chit, user, chitAgreementData }) => {
           <p className="mt-3 text-[15px] leading-6">
             The Guarantee Agreement made and entered in to Chh. Sambhajinagar on
             the
-            <input
-              className="border-b border-black mx-2 w-28 outline-none bg-transparent text-center"
-              disabled
-              value={dayjs(chit.BylawsDate).format("DD")}
-            />
+            <input className="border-b border-black mx-2 w-28 outline-none bg-transparent" />
             day of
-            <input
-              className="border-b border-black mx-2 w-28 outline-none bg-transparent"
-              disabled
-              value={dayjs(chit.BylawsDate).format("MMMM YYYY")}
-            />
+            <input className="border-b border-black mx-2 w-28 outline-none bg-transparent" />
           </p>
         </div>
 
         {/* SIGNATURES */}
         <div className="mt-10 space-y-8 mx-10">
           <div className="flex items-center">
-            <input
-              className="border-b border-black w-100 outline-none bg-transparent text-center"
-              disabled
-              value={`${user.firstname} ${user.middlename} ${user.lastname}`}
-            />
+            <input className="border-b border-black w-100 outline-none bg-transparent" />
             <div className="w-20 h-24 border border-black ml-10"></div>
           </div>
 
           <div className="flex items-center">
-            <input
-              className="border-b border-black w-100 outline-none bg-transparent text-center"
-              disabled
-              value={`${user.nominees[0].firstname} ${user.nominees[0].middlename} ${user.nominees[0].lastname}`}
-            />
+            <input className="border-b border-black w-100 outline-none bg-transparent" />
             <div className="w-20 h-24 border border-black ml-10"></div>
           </div>
         </div>

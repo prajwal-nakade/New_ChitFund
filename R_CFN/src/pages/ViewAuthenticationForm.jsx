@@ -126,4 +126,6 @@ const ViewAuthenticationForm = () => {
   )
 }
 
-export default ViewAuthenticationForm;
+export default ViewAuthenticationForm
+
+

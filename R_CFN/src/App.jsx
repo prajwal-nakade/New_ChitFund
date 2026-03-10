@@ -28,6 +28,7 @@ import NOC from "./pages/NOC";
 function App() {
   return (
     <>
+
       <Router>
         <Routes>
           <Route path="/application-form" element={<ApplcationForm />} />
