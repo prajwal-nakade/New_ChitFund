@@ -2,15 +2,19 @@ import React, { useState, useEffect } from "react";
 import Layout from "../components/layout";
 import { useParams } from "react-router";
 import { getChitAgreementbyID } from "../api/endpoint";
-import { ShipWheel } from "lucide-react";
+import { Receipt, ShipWheel } from "lucide-react";
 import MeetingMinutesForm from "./MeetingMinutesForm";
 import dayjs from "dayjs";
 import PromissoryNote from "./PromissoryNote";
-
-
 import DemandPromissoryNote from "./DemandPromissoryNote";
 import GuaranteeAgreement from "./GuaranteeAgreement";
-
+import ReceiptForAuction from "./ReceiptForAuction";
+import Receiptform from "./Receipt";
+import BidPayableMemo from "./BidPayableMemo";
+import DebitParticulars from "./DebitParticulars";
+import CashVoucher from "./CashVoucher";
+import NoClaim from "./NoClaim";
+import NOC from "./NOC";
 
 const AuthenticationForm = () => {
   const { id } = useParams();
@@ -50,6 +54,8 @@ const AuthenticationForm = () => {
       case 2: return `${day}nd`;
       case 3: return `${day}rd`;
       default: return `${day}th`;
+
+    
     }
   };
   return (
@@ -83,6 +89,7 @@ const AuthenticationForm = () => {
             <input
               disabled
               value={dayjs(chit.BylawsDate).format('DD MMM YYYY')}
+
 
               type="text"
               className="border-b border-black w-48 outline-none text-center bg-transparent"
@@ -129,15 +136,6 @@ const AuthenticationForm = () => {
               • I wish to inform you that I would not be able to personally
               attend and participate in the auction
 
-              <p className="lg:ms-2">relation to the above group
-              to be held on
-              <input
-                type="text"
-                disabled
-                value={dayjs(chit.BylawsDate).format('DD MMM YYYY')}
-                className="border-b border-black w-72 outline-none bg-transparent mt-1 text-center font-normal"
-              />
-              </p>   
               <p className="lg:ms-2">
                 relation to the above group to be held on
                 <input
@@ -152,14 +150,7 @@ const AuthenticationForm = () => {
           <div>
             <p className="font-semibold">
               • I therefore request you to please allow
-              <p className="lg:ms-2">who is hereby authorized to bid on my behalf and whose signature is attended below:</p>
-              <p className="lg:ms-2">Signature of  Representative
-                 <input
-                type="text"
-                disabled
-                
-                className="border-b border-black w-72 outline-none bg-transparent mt-1 text-center font-normal"
-              />   
+
               <p className="lg:ms-2">
                 who is hereby authorized to bid on my behalf and whose signature
                 is attended below:
@@ -173,7 +164,6 @@ const AuthenticationForm = () => {
                 />
               </p>
             </p>
-            </p>
           </div>
 
           {/* POINT 2 */}
@@ -182,8 +172,6 @@ const AuthenticationForm = () => {
               • I request you accept my bid offer in which I am ready to forego
               up to Rs.
             </span>
-
-
             <span
               className="border-b border-black w-28 mx-2 outline-none bg-transparent font-normal text-center"
             >{chit.ChitValue}/-</span>
@@ -219,7 +207,6 @@ const AuthenticationForm = () => {
 
             <span>Thanking you.</span>
             <span>Your's faithfully</span>
-
           </div>
         </div>
 
@@ -241,7 +228,6 @@ const AuthenticationForm = () => {
 
             disabled
             value={user.permanent_address}
-
               type="text"
               className="border-b border-black outline-none bg-transparent w-full"
             />
@@ -279,12 +265,16 @@ const AuthenticationForm = () => {
         </div>
       </div>
       <MeetingMinutesForm chit={chit} user={user} chitAgreementData={chitAgreementData}/>
-
-      <PromissoryNote chit={chit} user={user} chitAgreementData={chitAgreementData}/>
-
+      <PromissoryNote/>
       <DemandPromissoryNote/>
       <GuaranteeAgreement/>
-
+      <ReceiptForAuction />
+      <Receiptform />
+      <BidPayableMemo />
+      <DebitParticulars/>
+      <CashVoucher/>
+      <NoClaim/>
+      <NOC/>
     </Layout>
   );
 };

@@ -30,43 +30,40 @@ const GuaranteeAgreement = () => {
           In consideration of KARDE KRISHNA CHITS PRIVATE LIMITED (hereinafter
           referred to as “The Company”) granting of time for repayment or
           deferring the filing of suit for recover against
+          <input className="border-b border-black w-full outline-none bg-transparent mx-2 flex-1" />
         </p>
 
-        {/* NAME */}
         <div className="flex items-center mt-2">
-          <input className="border-b border-black w-64 outline-none bg-transparent mx-2" />
-          <input className="border-b border-black w-64 outline-none bg-transparent mx-2" />
-        </div>
-
-        <p className="text-justify mt-2">
-          (Hereinafter Called “The Prized Subscriber”) which expression shall
-          where the context so admit his heirs, legal representative,
-          administrator, executors and like, a sum of Rs.
-        </p>
-
-        {/* AMOUNT */}
-        <div className="flex items-center mt-2">
+          <p className="text-justify mt-2">
+            (Hereinafter Called “The Prized Subscriber”) which expression shall
+            where the context so admit his heirs, legal representative,
+            administrator, executors and like, a sum of Rs.
+         
           <input className="border-b border-black w-28 outline-none bg-transparent mx-2" />
           <span>(Rupees -</span>
           <input className="border-b border-black w-80 outline-none bg-transparent mx-2" />
           <span>) by way of Prized.</span>
+
+           </p>
         </div>
 
         {/* TEXT */}
+        <div className="flex flex-wrap items-center mt-2">
         <p className="mt-3 text-justify">
           Under Chit Amount ( hereinafter referred to as the “Prized Amount”) as
           mentioned in the Chit Agreement which is registered with the Joint
           Registrar of Chits, Aurangabad Registration No.
-        </p>
+        
 
         {/* REG DETAILS */}
-        <div className="flex flex-wrap items-center mt-2">
+      
           <input className="border-b border-black w-40 outline-none bg-transparent mx-2" />
           <span>Of</span>
           <input className="border-b border-black w-40 outline-none bg-transparent mx-2" />
           <span>dated</span>
           <input className="border-b border-black w-40 outline-none bg-transparent mx-2" />
           <span>under section 4” if the Maharashtra Chit Fund Act1982</span>
+          </p>
         </div>
 
         <p className="mt-2 text-justify">

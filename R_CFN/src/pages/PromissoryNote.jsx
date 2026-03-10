@@ -1,4 +1,5 @@
 
+
 import dayjs from "dayjs";
 import React from "react";
 
@@ -7,7 +8,6 @@ const PromissoryNote = ({ chit, user, chitAgreementData }) => {
   return (
     <div className="max-w-4xl mx-auto bg-white border border-black px-8 py-6 text-[16px] leading-6 ">
 
-      {/* TOP RIGHT CIN */}
       {/* TOP RIGHT CIN */}
       <div className="text-end text-xs">CIN NO.U64990MH2023PTC400938</div>
 
@@ -40,11 +40,14 @@ const PromissoryNote = ({ chit, user, chitAgreementData }) => {
         <div className="flex items-center">
           <span className="mr-2">CHIT REF :</span>
           <input className="border-b border-black w-64 outline-none bg-transparent" disabled value={chit?.GroupCode} />
+
+
         </div>
 
         <div className="flex items-center mt-1">
           <span className="mr-2">Amount Rs:</span>
           <input className="border-b border-black w-40 outline-none bg-transparent" disabled value={chit?.ChitValue} />
+
         </div>
       </div>
 
@@ -84,6 +87,7 @@ const PromissoryNote = ({ chit, user, chitAgreementData }) => {
           only ) for
           <span className="inline-block border-b border-black w-16 mx-2 text-center">{chit?.Duration}</span>
           {chit?.DurationCategory}
+
           <span className="inline-block border-b border-black w-64 mx-2"></span>
         </div>
       </div>
@@ -124,6 +128,7 @@ const PromissoryNote = ({ chit, user, chitAgreementData }) => {
         {/* Guarantor 02 */}
         <div className="flex justify-between items-end ">
           <div className="w-[400px] flex flex-col items-center justify-center">
+
             <div className="border-b border-black w-full"></div>
             <p className="text-sm text-center mt-1">Name Of Guarantor 02</p>
           </div>
