@@ -17,6 +17,13 @@ import ViewAuthenticationForm from "./pages/ViewAuthenticationForm";
 import PromissoryNote from "./pages/PromissoryNote";
 import DemandPromissoryNote from "./pages/DemandPromissoryNote";
 import GuaranteeAgreement from "./pages/GuaranteeAgreement";
+import ReceiptForAuction from "./pages/ReceiptForAuction";
+import Receipt from "./pages/Receipt";
+import BidPayableMemo from "./pages/BidPayableMemo";
+import DebitParticulars from "./pages/DebitParticulars";
+import CashVoucher from "./pages/CashVoucher";
+import NoClaim from "./pages/NoClaim";
+import NOC from "./pages/NOC";
 
 function App() {
   return (
@@ -54,6 +61,14 @@ function App() {
           />
 
           <Route path="/GuaranteeAgreement" element={<GuaranteeAgreement />} />
+
+          <Route path="/ReceiptForAuction" element={<ReceiptForAuction />} />
+          <Route path="/Receipt" element={<Receipt />} />
+          <Route path="/BidPayableMemo" element={<BidPayableMemo />} />
+          <Route path="/DebitParticulars" element={<DebitParticulars />} />
+          <Route path="/CashVoucher" element={<CashVoucher />} />
+          <Route path="/NoClaim" element={<NoClaim />} />
+          <Route path="/NOC" element={<NOC/>}/>
         </Routes>
       </Router>
       <ToastContainer />
