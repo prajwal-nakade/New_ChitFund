@@ -5,7 +5,7 @@ import dayjs from "dayjs";
 const MeetingMinutesForm = ({ chit, user, chitAgreementData }) => {
   return (
     <>
-      <div className="max-w-4xl mx-auto bg-white border border-black p-6 text-[16px]  leading-relaxed">
+      <div className="max-w-4xl mx-auto bg-white border border-black p-6 text-[16px] leading-7 mt-2">
         {/* HEADER */}
         <div className="text-end text-xs">CIN NO.U64990MH2023PTC400938</div>
 
@@ -43,7 +43,7 @@ const MeetingMinutesForm = ({ chit, user, chitAgreementData }) => {
 
           <p className="flex flex-wrap items-center">
             <span className="">Office Where the Bye –Laws are Registered</span>
-            <input className="border-b border-black mx-2 w-120 outline-none bg-transparent" />
+            <input className="border-b border-black mx-2 w-90 outline-none bg-transparent" />
             <p className="flex mt-3">
               <span>Registration No.</span>
               <input disabled value={chitAgreementData.

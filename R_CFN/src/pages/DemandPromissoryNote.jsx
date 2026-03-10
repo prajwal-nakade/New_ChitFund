@@ -41,13 +41,13 @@ const DemandPromissoryNote = () => {
 
         {/* 1 */}
         <div className="mt-4 flex w-full items-center">
-          <span>1. On Demand I/We</span>
+          <span className="w-40">1. On Demand I/We</span>
           <input className="border-b border-black ml-3 w-[650px] outline-none bg-transparent" />
         </div>
 
         {/* 2 */}
         <div className="mt-3 flex items-center">
-          <span>2.Collective Add -</span>
+          <span className="w-40">2.Collective Add -</span>
           <input className="border-b border-black ml-3 w-[667px] outline-none bg-transparent" />
         </div>
 

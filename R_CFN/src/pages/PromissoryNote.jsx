@@ -52,7 +52,7 @@ const PromissoryNote = ({ chit, user, chitAgreementData }) => {
       </div>
 
       {/* BODY TEXT */}
-      <div className="mt-4 text-justify">
+      <div className="mt-4 ">
         ON DEMAND I/WE Jointly and Severally do hereby promise to pay KARDE
         KRISHNA CHITS PRIVATE LTD. Of Order the Sum of ( Rupees
         <span className="inline-block border-b border-black w-130 mx-2"></span>

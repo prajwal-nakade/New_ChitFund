@@ -3,7 +3,7 @@ import React from "react";
 const GuaranteeAgreement = () => {
   return (
     <>
-      <div className="max-w-4xl mx-auto bg-white border border-black px-8 py-6 text-[15px] leading-6">
+      <div className="max-w-4xl mx-auto bg-white border border-black px-8 py-6 text-[15px] leading-7">
         {/* CIN */}
         <div className="text-end text-xs">CIN NO.U64990MH2023PTC400938</div>
 
