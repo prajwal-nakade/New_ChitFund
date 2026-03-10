@@ -252,16 +252,16 @@ const AuthenticationForm = () => {
         </div>
       </div>
       <MeetingMinutesForm chit={chit} user={user} chitAgreementData={chitAgreementData}/>
-      <PromissoryNote/>
-      <DemandPromissoryNote/>
-      <GuaranteeAgreement/>
-      <ReceiptForAuction />
-      <Receiptform />
-      <BidPayableMemo />
-      <DebitParticulars/>
-      <CashVoucher/>
-      <NoClaim/>
-      <NOC/>
+      <PromissoryNote chit={chit} user={user} chitAgreementData={chitAgreementData}/>
+      <DemandPromissoryNote chit={chit} user={user} chitAgreementData={chitAgreementData}/>
+      <GuaranteeAgreement chit={chit} user={user} chitAgreementData={chitAgreementData}/>
+      <ReceiptForAuction chit={chit} user={user} chitAgreementData={chitAgreementData} />
+      <Receiptform chit={chit} user={user} chitAgreementData={chitAgreementData}/>
+      <BidPayableMemo chit={chit} user={user} chitAgreementData={chitAgreementData}/>
+      <DebitParticulars chit={chit} user={user} chitAgreementData={chitAgreementData}/>
+      <CashVoucher chit={chit} user={user} chitAgreementData={chitAgreementData}/>
+      <NoClaim chit={chit} user={user} chitAgreementData={chitAgreementData}/>
+      <NOC chit={chit} user={user} chitAgreementData={chitAgreementData}/>
     </Layout>
   );
 };

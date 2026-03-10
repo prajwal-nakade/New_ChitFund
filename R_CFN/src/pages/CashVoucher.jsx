@@ -1,6 +1,6 @@
 import React from "react";
 
-const CashVoucher = () => {
+const CashVoucher = ({ chit, user, chitAgreementData }) => {
   return (
     <>
       <div className="max-w-4xl mx-auto bg-white border border-black px-8 py-6 text-[15px] leading-8 text-justify">
@@ -26,7 +26,8 @@ const CashVoucher = () => {
         <div className=" mt-10">
           <div className="flex">
             <p>Pay to:</p>
-            <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1" />
+            <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1" disabled
+                    value={`${user.firstname} ${user.middlename} ${user.lastname}`} />
           </div>
           <div className="flex">
             <p>Rs.:</p>
@@ -64,7 +65,7 @@ const CashVoucher = () => {
         <div className=" mt-10 ">
           <div className="flex ">
             <p>Paid by- </p>
-            <input className="border-b border-black w-64 outline-none bg-transparent mx-2 " />
+            <input className="border-b border-black w-64 outline-none bg-transparent mx-2 text-center " value={"Karde krishna chit Pvt.Ltd"}/>
           </div>
           <div className="flex ">
             <p>Cash or Cheque- </p>
