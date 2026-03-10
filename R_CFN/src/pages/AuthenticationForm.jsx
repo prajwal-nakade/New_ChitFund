@@ -7,6 +7,11 @@ import MeetingMinutesForm from "./MeetingMinutesForm";
 import dayjs from "dayjs";
 import PromissoryNote from "./PromissoryNote";
 
+
+import DemandPromissoryNote from "./DemandPromissoryNote";
+import GuaranteeAgreement from "./GuaranteeAgreement";
+
+
 const AuthenticationForm = () => {
   const { id } = useParams();
   const [chitAgreementData, setChitAgreementData] = useState(null);
@@ -49,7 +54,7 @@ const AuthenticationForm = () => {
   };
   return (
     <Layout>
-      <div className="max-w-6xl mx-auto bg-white border border-black p-6 text-[16px] ">
+      <div className="max-w-4xl mx-auto bg-white border border-black p-6 text-[16px] ">
         {/* CIN */}
         <div className="text-end text-xs">CIN NO.U64990MH2023PTC400938</div>
 
@@ -78,6 +83,7 @@ const AuthenticationForm = () => {
             <input
               disabled
               value={dayjs(chit.BylawsDate).format('DD MMM YYYY')}
+
               type="text"
               className="border-b border-black w-48 outline-none text-center bg-transparent"
             />
@@ -122,6 +128,7 @@ const AuthenticationForm = () => {
             <p className="font-semibold">
               • I wish to inform you that I would not be able to personally
               attend and participate in the auction
+
               <p className="lg:ms-2">relation to the above group
               to be held on
               <input
@@ -131,6 +138,15 @@ const AuthenticationForm = () => {
                 className="border-b border-black w-72 outline-none bg-transparent mt-1 text-center font-normal"
               />
               </p>   
+              <p className="lg:ms-2">
+                relation to the above group to be held on
+                <input
+                  type="text"
+                  disabled
+                  value={dayjs(chit.BylawsDate).format("DD MMM YYYY")}
+                  className="border-b border-black w-72 outline-none bg-transparent mt-1 text-center font-normal"
+                />
+              </p>
             </p>
           </div>
           <div>
@@ -144,7 +160,19 @@ const AuthenticationForm = () => {
                 
                 className="border-b border-black w-72 outline-none bg-transparent mt-1 text-center font-normal"
               />   
+              <p className="lg:ms-2">
+                who is hereby authorized to bid on my behalf and whose signature
+                is attended below:
               </p>
+              <p className="lg:ms-2">
+                Signature of Representative
+                <input
+                  type="text"
+                  disabled
+                  className="border-b border-black w-72 outline-none bg-transparent mt-1 text-center font-normal"
+                />
+              </p>
+            </p>
             </p>
           </div>
 
@@ -155,15 +183,23 @@ const AuthenticationForm = () => {
               up to Rs.
             </span>
 
+
             <span
               className="border-b border-black w-28 mx-2 outline-none bg-transparent font-normal text-center"
             >{chit.ChitValue}/-</span>
 
+            <span className="border-b border-black w-28 mx-2 outline-none bg-transparent font-normal text-center">
+              {chit.ChitValue}/-
+            </span>
+
+
             <span className="lg:ms-2">for the month of</span>
 
             <input
+
             disabled
             value={dayjs(chit.BylawsDate).format('MMMM YYYY')}
+
               type="text"
               className="border-b border-black w-40 ml-2 outline-none bg-transparent font-normal text-center"
             />
@@ -177,8 +213,13 @@ const AuthenticationForm = () => {
           </p>
 
           <div className="w-full flex justify-between items-center">
+
               <span>Thanking you.</span>
               <span>Your's faithfully</span>
+
+            <span>Thanking you.</span>
+            <span>Your's faithfully</span>
+
           </div>
         </div>
 
@@ -197,8 +238,10 @@ const AuthenticationForm = () => {
           <div className="flex w-full">
             <label className="mr-2 w-20">Address :</label>
             <textarea
+
             disabled
             value={user.permanent_address}
+
               type="text"
               className="border-b border-black outline-none bg-transparent w-full"
             />
@@ -236,7 +279,12 @@ const AuthenticationForm = () => {
         </div>
       </div>
       <MeetingMinutesForm chit={chit} user={user} chitAgreementData={chitAgreementData}/>
+
       <PromissoryNote chit={chit} user={user} chitAgreementData={chitAgreementData}/>
+
+      <DemandPromissoryNote/>
+      <GuaranteeAgreement/>
+
     </Layout>
   );
 };
