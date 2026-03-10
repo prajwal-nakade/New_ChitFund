@@ -1,6 +1,8 @@
+import dayjs from "dayjs";
 import React from "react";
 
-const NoClaim = () => {
+
+const NoClaim = ({ chit, user, chitAgreementData }) => {
   return (
     <>
       <div className="max-w-4xl mx-auto bg-white border border-black px-8 py-6 text-[15px] leading-8 text-justify">
@@ -25,7 +27,7 @@ const NoClaim = () => {
 
         <div className="flex justify-end">
           <p>Date -</p>
-          <input className="border-b border-black w-64 outline-none bg-transparent" />
+          <input className="border-b border-black w-64 outline-none bg-transparent text-center" disabled value={dayjs(chit.BylawsDate).format('DD MMM YYYY')} />
         </div>
 
         <div>
@@ -33,7 +35,7 @@ const NoClaim = () => {
             To,
             <br />
             The Registrar of Chits <br />
-            <input className="border-b border-black w-64 outline-none bg-transparent" />
+            <input className="border-b border-black w-64 outline-none bg-transparent" disabled value={chitAgreementData.register_bank_branch}/>
           </p>
         </div>
 
@@ -42,9 +44,9 @@ const NoClaim = () => {
             Dear Sir,
             <br />
             I/We am / are subscriber's to chit group{" "}
-            <input className="border-b border-black w-50 outline-none bg-transparent" />{" "}
+            <input className="border-b border-black w-50 outline-none bg-transparent text-center" disabled value={chit.GroupCode} />{" "}
             Ticket No.{" "}
-            <input className="border-b border-black w-30 outline-none bg-transparent" />
+            <input className="border-b border-black w-30 outline-none bg-transparent text-center" disabled value={chit.TicketNmber}/>
             Conducted by KARDE KRISHNA CHITS PRIVATE LIMITED Address{" "}
             <input className="border-b border-black w-110 outline-none bg-transparent" />{" "}
             and wish to inform you that I/We have received the Cheque No.{" "}
@@ -54,7 +56,7 @@ const NoClaim = () => {
             on{" "}
             <input className="border-b border-black w-64 outline-none bg-transparent" />{" "}
             having lifted the above mentioned chit on{" "}
-            <input className="border-b border-black w-64 outline-none bg-transparent" />
+            <input className="border-b border-black w-64 outline-none bg-transparent text-center"  disabled value={dayjs(chit.BylawsDate).format('DD MMM YYYY')}/>
             I/We have no claim whatsoever on them pertaining to this chit group.
           </p>
         </div>
@@ -75,7 +77,8 @@ const NoClaim = () => {
           <p>Signature of the Subscriber</p>
           <div className="flex">
             <p>NAME -</p>
-            <input className="border-b border-black w-100 outline-none bg-transparent" />
+            <input className="border-b border-black w-100 outline-none bg-transparent text-center" disabled
+                    value={`${user.firstname} ${user.middlename} ${user.lastname}`} />
           </div>
         </div>
       </div>

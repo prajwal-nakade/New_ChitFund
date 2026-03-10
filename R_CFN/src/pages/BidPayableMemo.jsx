@@ -1,6 +1,6 @@
 import React from "react";
 
-const BidPayableMemo = () => {
+const BidPayableMemo = ({ chit, user, chitAgreementData }) => {
   return (
     <>
       <div className="max-w-4xl mx-auto bg-white border border-black px-8 py-6 text-[15px] leading-8 text-justify">
@@ -26,18 +26,19 @@ const BidPayableMemo = () => {
         <div className="mt-5">
           <div className="flex">
             <p>Name-</p>
-            <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1" />
+            <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1 " disabled
+                    value={`${user.firstname} ${user.middlename} ${user.lastname}`}/>
           </div>
           <div className="flex">
             <p>Chit Ref -</p>
-            <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1" />
+            <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1 text-center" disabled value={chit.GroupCode}/>
 
             <p>Date of Auction-</p>
             <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1" />
           </div>
           <div className="flex">
             <p>Chit Value Rs. -</p>
-            <input className="border-b border-black w-40 outline-none bg-transparent mx-2 " />
+            <input className="border-b border-black w-40 outline-none bg-transparent mx-2 text-center" disabled value={chit.ChitValue} />
             <p>Rs. -</p>
             <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1" />
           </div>
