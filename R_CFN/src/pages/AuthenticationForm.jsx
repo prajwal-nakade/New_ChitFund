@@ -2,12 +2,19 @@ import React, { useState, useEffect } from "react";
 import Layout from "../components/layout";
 import { useParams } from "react-router";
 import { getChitAgreementbyID } from "../api/endpoint";
-import { ShipWheel } from "lucide-react";
+import { Receipt, ShipWheel } from "lucide-react";
 import MeetingMinutesForm from "./MeetingMinutesForm";
 import dayjs from "dayjs";
 import PromissoryNote from "./PromissoryNote";
 import DemandPromissoryNote from "./DemandPromissoryNote";
 import GuaranteeAgreement from "./GuaranteeAgreement";
+import ReceiptForAuction from "./ReceiptForAuction";
+import Receiptform from "./Receipt";
+import BidPayableMemo from "./BidPayableMemo";
+import DebitParticulars from "./DebitParticulars";
+import CashVoucher from "./CashVoucher";
+import NoClaim from "./NoClaim";
+import NOC from "./NOC";
 
 const AuthenticationForm = () => {
   const { id } = useParams();
@@ -248,6 +255,13 @@ const AuthenticationForm = () => {
       <PromissoryNote/>
       <DemandPromissoryNote/>
       <GuaranteeAgreement/>
+      <ReceiptForAuction />
+      <Receiptform />
+      <BidPayableMemo />
+      <DebitParticulars/>
+      <CashVoucher/>
+      <NoClaim/>
+      <NOC/>
     </Layout>
   );
 };
