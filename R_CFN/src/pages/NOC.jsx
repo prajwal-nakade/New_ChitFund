@@ -1,6 +1,6 @@
 import React from "react";
 
-const NOC = () => {
+const NOC = ({ chit, user, chitAgreementData }) => {
   return (
     <>
       <div className="max-w-4xl mx-auto bg-white border border-black px-8 py-6 text-[15px] leading-8 text-justify">
