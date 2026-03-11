@@ -26,8 +26,7 @@ const CashVoucher = ({ chit, user, chitAgreementData }) => {
         <div className=" mt-10">
           <div className="flex">
             <p>Pay to:</p>
-            <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1" disabled
-                    value={`${user.firstname} ${user.middlename} ${user.lastname}`} />
+            <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1" disabled value={`${user?.firstname} ${user?.middlename} ${user?.lastname} `} />
           </div>
           <div className="flex">
             <p>Rs.:</p>
@@ -65,7 +64,7 @@ const CashVoucher = ({ chit, user, chitAgreementData }) => {
         <div className=" mt-10 ">
           <div className="flex ">
             <p>Paid by- </p>
-            <input className="border-b border-black w-64 outline-none bg-transparent mx-2 text-center " value={"Karde krishna chit Pvt.Ltd"}/>
+            <input className="border-b border-black w-64 outline-none bg-transparent mx-2 text-center" disabled value={'Karde Krishana Chit Pvt.Ltd'} />
           </div>
           <div className="flex ">
             <p>Cash or Cheque- </p>
