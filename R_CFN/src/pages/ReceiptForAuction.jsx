@@ -3,7 +3,7 @@ import React from "react";
 const ReceiptForAuction = () => {
   return (
     <>
-      <div className="max-w-4xl mx-auto bg-white border border-black px-8 py-6 text-[15px] leading-6 text-justify">
+      <div className="max-w-4xl mx-auto bg-white border border-black px-8 py-6 text-[15px] leading-5.5 text-justify">
         {/* CIN */}
         <div className="text-end text-xs">CIN NO.U64990MH2023PTC400938</div>
 
@@ -111,7 +111,7 @@ const ReceiptForAuction = () => {
           <b>Signed By Shri- </b>
         </div>
 
-        <div className="mt-10 space-y-8 mx-10">
+        <div className="space-y-2 mx-10">
           <div className="flex items-center">
             <input className="border-b border-black w-100 outline-none bg-transparent" />
             <div className="w-20 h-24 border border-black ml-10"></div>

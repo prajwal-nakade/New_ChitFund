@@ -471,6 +471,7 @@ const ApplicationForm = () => {
 
               {/* ===== AADHAR FIELD ===== */}
               <div className="flex flex-col gap-1 relative w-full">
+
                 <label className="text-sm">
                   Aadhar Number <span className="text-red-500">*</span>
                 </label>
@@ -517,7 +518,9 @@ const ApplicationForm = () => {
                 )}
 
                 {(preview.aadhar_image || backPreview.aadhar_image_back) && (
+
                   <div className="flex items-center gap-2 text-green-600 text-xs mt-1 absolute top-14">
+                  
                     {preview.aadhar_image && (
                       <>
                         <span className="truncate">{preview.aadhar_image}</span>
@@ -643,7 +646,7 @@ const ApplicationForm = () => {
                 </div>
               </div>
 
-              <div className="flex flex-col items-start w-86  text-sm">
+              <div className="flex flex-col items-start w-full lg:w-96 text-sm">
                 <label>
                   Gender <span className="text-red-500">*</span>
                 </label>

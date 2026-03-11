@@ -1,6 +1,8 @@
+import dayjs from "dayjs";
 import React from "react";
 
-const DemandPromissoryNote = () => {
+
+const DemandPromissoryNote = ({ chit, user, chitAgreementData }) => {
   return (
     <>
       <div className="max-w-4xl mx-auto bg-white border border-black px-8 py-6 text-[16px] leading-6 ">
@@ -28,27 +30,27 @@ const DemandPromissoryNote = () => {
         {/* DATE */}
         <div className="flex justify-end mt-3">
           <span className="mr-2">Date :</span>
-          <input className="border-b border-black w-48 outline-none bg-transparent" />
+          <input className="border-b border-black w-48 outline-none bg-transparent text-center" disabled value={chit?.BylawsDate ? dayjs(chit.BylawsDate).format("DD MMM YYYY") : ""}/>
         </div>
 
         {/* CHIT REF + DATE */}
         <div className="flex justify-between mt-3">
           <div className="flex items-center">
             <span className="mr-2">CHIT REF :</span>
-            <input className="border-b border-black w-60 outline-none bg-transparent" />
+            <input className="border-b border-black w-60 outline-none bg-transparent text-center " disabled value={chit?.GroupCode} />
           </div>
         </div>
 
         {/* 1 */}
         <div className="mt-4 flex w-full items-center">
-          <span>1. On Demand I/We</span>
-          <input className="border-b border-black ml-3 w-[650px] outline-none bg-transparent" />
+          <span className="w-40">1. On Demand I/We</span>
+          <input className="border-b border-black ml-3 w-[650px] outline-none bg-transparent text-center" disabled value={`${user?.firstname} ${user?.middlename} ${user?.lastname} `} />
         </div>
 
         {/* 2 */}
         <div className="mt-3 flex items-center">
-          <span>2.Collective Add -</span>
-          <input className="border-b border-black ml-3 w-[667px] outline-none bg-transparent" />
+          <span className="w-40">2.Collective Add -</span>
+          <textarea className="border-b border-black ml-3 w-[667px] outline-none bg-transparent resize-none text-sm" readOnly value={user?.permanent_address} />
         </div>
 
         {/* TEXT */}
@@ -76,27 +78,27 @@ const DemandPromissoryNote = () => {
           Payable with interest @18% per annum, being my/our liability to <b>Karde
           Krishna Chits Private Limited Chh.Sambhajinagar </b>in respect of Ticket
           number
-          <input className="border-b border-black mx-2 w-28 outline-none bg-transparent" />
+          <input className="border-b border-black mx-2 w-28 outline-none bg-transparent text-center" disabled value={chit?.TicketNmber}/>
           in Group Number
-          <input className="border-b border-black mx-2 w-28 outline-none bg-transparent" />
+          <input className="border-b border-black mx-2 w-28 outline-none bg-transparent text-center" disabled value={chit?.GroupCode}/>
           for the value received.
         </p>
 
         {/* RS BOX */}
         <div className="mt-4 border border-black w-44 h-10 flex items-center px-2 font-semibold">
           Rs.
-          <input className="outline-none ml-2 bg-transparent w-28" />
+          <input className="outline-none ml-2 bg-transparent w-28 " disabled value={chit.ChitValue} />/-
         </div>
 
         {/* SIGNATURES */}
         <div className="mt-10 space-y-8 mx-10">
           <div className="flex items-center">
-            <input className="border-b border-black w-100 outline-none bg-transparent" />
+            <input className="border-b border-black w-100 outline-none bg-transparent text-center" disabled value={`${user?.firstname} ${user?.middlename} ${user?.lastname} `}/>
             <div className="w-20 h-24 border border-black ml-10"></div>
           </div>
 
           <div className="flex items-center">
-            <input className="border-b border-black w-100 outline-none bg-transparent" />
+            <input className="border-b border-black w-100 outline-none bg-transparent text-center" disabled value={`${user?.nominees[0].firstname} ${user?.nominees[0].middlename} ${user?.nominees[0].lastname} `} />
             <div className="w-20 h-24 border border-black ml-10"></div>
           </div>
         </div>

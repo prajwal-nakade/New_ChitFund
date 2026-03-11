@@ -1,6 +1,10 @@
+
+
+import dayjs from "dayjs";
 import React from "react";
 
-const PromissoryNote = () => {
+
+const PromissoryNote = ({ chit, user, chitAgreementData }) => {
   return (
     <div className="max-w-4xl mx-auto bg-white border border-black px-8 py-6 text-[16px] leading-6 ">
 
@@ -28,24 +32,27 @@ const PromissoryNote = () => {
       {/* DATE */}
       <div className="flex justify-end mt-3">
         <span className="mr-2">Date :</span>
-        <input className="border-b border-black w-48 outline-none bg-transparent" />
+        <input className="border-b border-black w-48 outline-none bg-transparent text-center" disabled value={chit?.BylawsDate ? dayjs(chit.BylawsDate).format("DD MMM YYYY") : ""}/>
       </div>
 
       {/* REF + AMOUNT */}
       <div className="mt-3">
         <div className="flex items-center">
           <span className="mr-2">CHIT REF :</span>
-          <input className="border-b border-black w-64 outline-none bg-transparent" />
+          <input className="border-b border-black w-64 outline-none bg-transparent text-center " disabled value={chit?.GroupCode} />
+
+
         </div>
 
         <div className="flex items-center mt-1">
           <span className="mr-2">Amount Rs:</span>
-          <input className="border-b border-black w-40 outline-none bg-transparent" />
+          <input className="border-b border-black w-40 outline-none bg-transparent text-center" disabled value={chit?.ChitValue} />
+
         </div>
       </div>
 
       {/* BODY TEXT */}
-      <div className="mt-4 text-justify">
+      <div className="mt-4 ">
         ON DEMAND I/WE Jointly and Severally do hereby promise to pay KARDE
         KRISHNA CHITS PRIVATE LTD. Of Order the Sum of ( Rupees
         <span className="inline-block border-b border-black w-130 mx-2"></span>
@@ -67,30 +74,33 @@ const PromissoryNote = () => {
 
         <div className="mt-2">
           In respect of Ticket No.
-          <span className="inline-block border-b border-black w-20 mx-2"></span>
+          <span className="inline-block border-b border-black w-20 mx-2 text-center">{chit?.TicketNmber}</span>
           in
-          <span className="inline-block border-b border-black w-32 mx-2"></span>
+          <span className="inline-block border-b border-black w-32 mx-2 text-center">{chit?.GroupCode}</span>
           series, in Monthly Installment of Rs.
-          <span className="inline-block border-b border-black w-24 mx-2"></span>
+          <span className="inline-block border-b border-black w-24 mx-2 text-center ">{chitAgreementData?.installment_amount}</span>
         </div>
 
         <div className="mt-1">
           ( Rupees
           <span className="inline-block border-b border-black w-64 mx-2"></span>
           only ) for
-          <span className="inline-block border-b border-black w-16 mx-2"></span>
-          Months
+          <span className="inline-block border-b border-black w-16 mx-2 text-center">{chit?.Duration}</span>
+          {chit?.DurationCategory}
+
           <span className="inline-block border-b border-black w-64 mx-2"></span>
         </div>
       </div>
 
       {/* SIGNATURE AREA */}
-      <div className="mt-10 space-y-15">
+      <div className="mt-10 space-y-15 max-w-3xl mx-auto">
 
         {/* Subscriber */}
         <div className="flex justify-between items-end">
-          <div className="w-[400px] flex flex-col items-center justify-center mx-auto">
-            <div className="border-b border-black w-full"></div>
+          <div className="w-[400px] flex flex-col items-center justify-center ">
+            <div className="border-b border-black w-full text-center">
+                <span className="text-center w-full">{`${user?.firstname} ${user?.middlename} ${user?.lastname} `}</span>
+            </div>
             <p className="text-sm mt-1 text-center">Name Of Subscriber</p>
           </div>
 
@@ -102,8 +112,10 @@ const PromissoryNote = () => {
 
         {/* Guarantor 01 */}
         <div className="flex justify-between items-end">
-          <div className="w-[400px] flex flex-col items-center justify-center mx-auto">
-            <div className="border-b border-black w-full"></div>
+          <div className="w-[400px] flex flex-col items-center justify-center">
+            <div className="border-b border-black w-full text-center">
+                <span className="text-center w-full">{`${user?.nominees[0]?.firstname} ${user?.nominees[0]?.middlename} ${user?.nominees[0]?.lastname} `}</span>
+            </div>
             <p className="text-sm mt-1 text-center">Name Of Guarantor 01</p>
           </div>
 
@@ -115,7 +127,8 @@ const PromissoryNote = () => {
 
         {/* Guarantor 02 */}
         <div className="flex justify-between items-end ">
-          <div className="w-[400px] flex flex-col items-center justify-center mx-auto">
+          <div className="w-[400px] flex flex-col items-center justify-center">
+
             <div className="border-b border-black w-full"></div>
             <p className="text-sm text-center mt-1">Name Of Guarantor 02</p>
           </div>
