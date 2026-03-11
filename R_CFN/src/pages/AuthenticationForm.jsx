@@ -128,13 +128,13 @@ const AuthenticationForm = () => {
   return (
     <Layout>
 
-      <div className="max-w-4xl mx-auto mt-4" >
+      <div className="max-w-4xl mx-5 lg:mx-auto mt-4" >
         <div className="w-full flex flex-col items-start justify-start gap-1 ">
         <h1 className="w-full font-semibold text-neutral-800 tracking-tight text-2xl flex items-center gap-1"><File size={22} className="text-neutral-800"/>Select Forms</h1>
         <span className="text-sm text-neutral-500 tracking-tight leading-3">Choose the forms you need to process.</span>
         </div>
       </div>
-      <div className="grid grid-col-1 lg:grid-cols-2 space-x-7 mb-6 max-w-4xl mx-auto my-7 space-y-3 w-full">
+      <div className="grid grid-col-1 lg:grid-cols-2 space-x-7 mb-6 max-w-4xl mx-4 lg:mx-auto my-7 space-y-3 w-full">
         <label className="px-3 py-1 text-sm border border-neutral-300 flex items-center justify-start gap-3 rounded-lg shadow hover:bg-gray-100 cursor-pointer hover:scale-102 transition-all du"><input type="checkbox" onChange={(e) => setSelectedForms(prev => ({ ...prev, authenticationForm: e.target.checked }))} />Authentication Form</label>
         <label className="px-3 py-1 text-sm border border-neutral-300 flex items-center justify-start gap-3 rounded-lg shadow hover:bg-gray-100 cursor-pointer hover:scale-102 transition-all du"><input type="checkbox" onChange={(e) => setSelectedForms(prev => ({ ...prev, meetingMinutes: e.target.checked }))} /> Meeting Minutes</label>
 
