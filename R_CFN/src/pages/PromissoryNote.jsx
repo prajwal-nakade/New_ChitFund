@@ -39,14 +39,14 @@ const PromissoryNote = ({ chit, user, chitAgreementData }) => {
       <div className="mt-3">
         <div className="flex items-center">
           <span className="mr-2">CHIT REF :</span>
-          <input className="border-b border-black w-64 outline-none bg-transparent" disabled value={chit?.GroupCode} />
+          <input className="border-b border-black w-64 outline-none bg-transparent text-center " disabled value={chit?.GroupCode} />
 
 
         </div>
 
         <div className="flex items-center mt-1">
           <span className="mr-2">Amount Rs:</span>
-          <input className="border-b border-black w-40 outline-none bg-transparent" disabled value={chit?.ChitValue} />
+          <input className="border-b border-black w-40 outline-none bg-transparent text-center" disabled value={chit?.ChitValue} />
 
         </div>
       </div>

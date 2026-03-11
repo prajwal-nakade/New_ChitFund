@@ -1,6 +1,7 @@
+import dayjs from "dayjs";
 import React from "react";
 
-const DebitParticulars = () => {
+const DebitParticulars = ({ chit, user, chitAgreementData }) => {
   return (
     <>
       <div className="max-w-4xl mx-auto bg-white border border-black px-8 py-6 text-[15px] leading-8 text-justify">
@@ -26,24 +27,24 @@ const DebitParticulars = () => {
         <div className="flex justify-between">
           <div className="flex ">
             <p>CHIT REF :</p>
-            <input className="border-b border-black w-64 outline-none bg-transparent" />
+            <input className="border-b border-black w-64 outline-none bg-transparent text-center" disabled value={chit?.GroupCode} />
           </div>
           <div className="flex">
             <p>Date :</p>
-            <input className="border-b border-black w-40 outline-none bg-transparent" />
+            <input className="border-b border-black w-40 outline-none bg-transparent text-center" disabled value={chit?.BylawsDate ? dayjs(chit.BylawsDate).format("DD MMM YYYY") : ""} />
           </div>
         </div>
 
         <div className=" mt-10">
           <div className="flex">
             <p>Paid to Shri/Smt.</p>
-            <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1" />
+            <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1 text-sm" disabled value={`${user?.firstname} ${user?.middlename} ${user?.lastname} `} />
           </div>
           <p>being the Successor / successful bidder in the auction held on</p>
 
           <div className="flex">
             <p>Total Value of the Chit -</p>
-            <input className="border-b border-black w-64 outline-none bg-transparent mx-2 " />
+            <input className="border-b border-black w-64 outline-none bg-transparent mx-2 text-center" disabled value={chit?.ChitValue} />
           </div>
 
           <div className="flex">
@@ -87,7 +88,7 @@ const DebitParticulars = () => {
             (Rupees{" "}
             <input className="border-b border-black w-64 outline-none bg-transparent" />{" "}
             ) being the Bid Payable Amount paid to Shri/Smt.{" "}
-            <input className="border-b border-black w-64 outline-none bg-transparent" />{" "}
+            <input className="border-b border-black w-64 outline-none bg-transparent text-center" disabled value={`${user?.firstname} ${user?.middlename} ${user?.lastname} `} />{" "}
           </p>
         </div>
 
