@@ -46,7 +46,7 @@ const Navbar = () => {
   const masterSubMenus = [
     { title: "Customer Master", icon: <User size={16} />, path: "/application-form" },
     { title: "Branch Master", icon: <MapPin size={16} />, path: "/branch-master" },
-    { title: "Authentication Form", icon: <ClipboardList size={16} />, path: "/authenticationform" },
+    { title: "Authentication Form", icon: <ClipboardList size={16} />, path: "/viewauthenticationform" },
   ];
 
   return (
