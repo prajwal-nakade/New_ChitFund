@@ -10,6 +10,9 @@ const ChitManagement = ({ data = [], fetchChitsData }) => {
   useEffect(() => {
     setChitData(data);
   }, [data]);
+  useEffect(()=>{
+    fetchChitsData()
+}, [])
 
   const handleSearch = (value) => {
     const keyword = value.toLowerCase();
