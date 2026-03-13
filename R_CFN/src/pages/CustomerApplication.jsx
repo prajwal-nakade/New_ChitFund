@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router'
 
 const CustomerApplication = () => {
   const [loading, setLoading] = useState(false)
-  const { userData, branchData, fetchBranchData, allchitData, fetchChitsData } = useContext(UserContext)
+  const { userData, branchData, fetchBranchData, allchitData, fetchChitsData, fetchUserEntriesData } = useContext(UserContext)
   const [search, setSearch] = useState("")
   const [data, setData] = useState([])
   const [selectedUserID, setSelectedUserID] = useState(null)
@@ -20,6 +20,7 @@ const CustomerApplication = () => {
   useEffect(() => {
     fetchBranchData()
     fetchChitsData()
+    fetchUserEntriesData()
   }, [])
   const handleSearch = (value) => {
     setSearch(value)

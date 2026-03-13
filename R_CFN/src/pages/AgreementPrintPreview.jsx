@@ -303,10 +303,10 @@ const AgreementPrintPreview = () => {
                   Day of Auction 
                 </label>
                 <input
-                  value={dayjs(chitAgreementData.scheduled_auction_day).format('DD MMM YYYY')}
+                  value={getOrdinal(chitAgreementData.scheduled_auction_day)}
                   type="text"
                   placeholder="Day of Auction"
-                  className="border-b w-50 px-3 py-1 text-start me-10 outline-none font-medium"
+                  className="border-b w-50 px-3 py-1 me-10 outline-none font-medium text-center"
                 />
               </div>
             </div>
@@ -316,7 +316,7 @@ const AgreementPrintPreview = () => {
                 
               </label>
               <input
-                value={dayjs(chitAgreementData.scheduled_last_date_of_payment).format('DD MMM YYYY')}
+                value={getOrdinal(chitAgreementData.scheduled_last_date_of_payment)}
                 type="text"
                 placeholder="Day of Auction"
                 className="border-b w-90 px-3 py-1 text-center outline-none font-medium"
