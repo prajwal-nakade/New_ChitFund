@@ -256,7 +256,7 @@ const ApplicationForm = () => {
   useEffect(() => {
     fetchUserEntriesData();
   }, []);
-
+  console.log(localStorage.getItem('username'))
   return (
     <Layout>
       <div className="max-w-7xl mx-auto rounded-md p-6">
@@ -367,7 +367,7 @@ const ApplicationForm = () => {
             </div>
 
             {/* IDs */}
-            <div className="w-full text-sm flex items-center gap-4">
+            <div className="w-full text-sm flex flex-col lg:flex-row items-center gap-4">
               <div className="flex flex-col items-start w-full text-sm">
                 <label>
                   Gender <span className="text-red-500">*</span>
@@ -400,13 +400,13 @@ const ApplicationForm = () => {
             </div>
             {/* PAN */}
 
-            <div className="w-full text-sm flex items-center gap-4">
+            <div className="w-full text-sm flex flex-col lg:flex-row items-center gap-4">
               <div className="flex flex-col gap-1 relative w-full">
                 <label className="text-sm">
                   PAN Number <span className="text-red-500">*</span>
                 </label>
 
-                <div className="flex items-center gap-2">
+                <div className="flex flex-col lg:flex-row items-start lg:items-center gap-2">
                   <input
                     className="w-full px-3 py-1 border border-neutral-300 rounded-md uppercase"
                     name="pan"
@@ -476,7 +476,7 @@ const ApplicationForm = () => {
                   Aadhar Number <span className="text-red-500">*</span>
                 </label>
 
-                <div className="flex items-center gap-2">
+                <div className="flex flex-col lg:flex-row items-start lg:items-center gap-2">
                   <input
                     className="w-full px-3 py-1 border border-neutral-300 rounded-md"
                     name="aadhar"

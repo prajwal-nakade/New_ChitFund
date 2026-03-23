@@ -22,16 +22,19 @@ const Navbar = () => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [isMasterOpen, setIsMasterOpen] = useState(false);
+  
 
   const handleLogout = async () => {
     try {
       await logout();
       toast.success("Logout successful");
+      localStorage.clear()
       navigate("/");
     } catch {
       toast.error("Logout failed");
     }
   };
+  const username = localStorage.getItem('username')
 
   // 🔹 SAME MENUS AS SIDEBAR
   const Menus = [
@@ -118,7 +121,7 @@ const Navbar = () => {
                 ))}
               </div>
             )}
-
+              
             <button
               onClick={handleLogout}
               className="mt-4 px-3 py-2 border border-red-500 text-red-600 rounded hover:bg-red-50 text-sm"
@@ -137,11 +140,14 @@ const Navbar = () => {
         >
           {open ? <X size={22} /> : <Menu size={22} />}
         </button>
-
-        <div className="hidden md:block w-full">
+        <span className="lg:hidden inline-flex items-center ms-auto justify-end font-semibold tracking-tight text-sm text-neutral-600 gap-1 px-3 py-1 border border-neutral-300 rounded-md shadow-inner cursor-not-allowed bg-gray-100"><User size={16}/>{username ? username.charAt(0).toUpperCase() + username.slice(1) : ""}</span>
+        <div className="hidden md:block w-full lg:flex items-center gap-4">
+          <div className="w-full flex items-end justify-end">
+            <span className="inline-flex items-center lg:ms-auto justify-end font-semibold tracking-tight text-sm text-neutral-600 gap-1 px-3 py-1 border border-neutral-300 rounded-md shadow-inner cursor-not-allowed bg-gray-100"><User size={16}/>{username ? username.charAt(0).toUpperCase() + username.slice(1) : ""}</span>
+          </div>
           <button
             onClick={handleLogout}
-            className="px-3 py-1.5 border border-red-500 text-red-600 rounded hover:bg-red-50 text-sm flex justify-end ms-auto"
+            className="px-3 py-1.5 border border-red-500 text-red-600 rounded hover:bg-red-50 text-sm flex justify-end ms-auto cursor-pointer"
           >
             Logout
           </button>

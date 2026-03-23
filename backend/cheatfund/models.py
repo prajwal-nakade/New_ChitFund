@@ -163,7 +163,7 @@ class ChitAgreementDetails(models.Model):
     deposit_date = models.DateField()
     term_month = models.CharField(max_length=10)
     prize_collection = models.CharField(max_length=60)
-    jurisdiction_place = models.CharField(max_length=50)
+    jurisdiction_place = models.CharField(max_length=50, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
