@@ -109,7 +109,7 @@ const ChitAgreement = () => {
         deposit_date: formData.deposit_date,
         term_month: formData.term_month,
         prize_collection: formData.prize_collection,
-        jurisdiction_place: formData.jurisdiction_place,
+        jurisdiction_place: formData.jurisdiction_place || null,
       };
 
       const response = await createChitAgreement(payload);
@@ -211,10 +211,10 @@ const ChitAgreement = () => {
               </label>
               <textarea
                 name="fullName"
-                value={`${displayData.fullName}\n${displayData.permanent_address}`}
+                value={displayData.fullName || displayData.permanent_address ? `${displayData.fullName}\n${displayData.permanent_address}` : ""}
                 onChange={handleChange}
                 placeholder="Full Name and Address"
-                className="w-full  px-3 py-1 border border-neutral-300 rounded-md text-sm"
+                className="w-full  px-3 py-1 border border-neutral-300 rounded-md text-sm "
                 required
               />
             </div>
@@ -622,7 +622,7 @@ const ChitAgreement = () => {
                 Jurisdiction Place <span className="text-red-500">*</span>
               </label>
               <input
-                required
+                
                 onChange={handleChange}
                 name="jurisdiction_place"
                 type="text"

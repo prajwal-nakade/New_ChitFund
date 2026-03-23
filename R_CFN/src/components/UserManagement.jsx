@@ -12,6 +12,7 @@ import ViewUserDetails from "./ViewUserDetails";
 import { deleteUser, getUserEntries, is_admin, toggleStatus } from "../api/endpoint";
 import { toast } from "react-toastify";
 import EditUserDetails from "./EditUserDetails";
+import axios from "axios";
 
 const UserManagement = ({ data, setUserEntriesData }) => {
   const [selectedUser, setSelectedUser] = useState(null);
@@ -33,16 +34,23 @@ const UserManagement = ({ data, setUserEntriesData }) => {
     }
   };
 
-  const isAdmin = async()=>{
-    const data = await is_admin()
-    console.log(data)
-    setIssuperuser(data.is_superuser)
-  }
+  const superUser = localStorage.getItem('is_superuser')
+  // const isAdmin = async()=>{
+  //   const data = await is_admin()
+  //   console.log(data)
+    
+  // }
+const [dummyData, setDummyData] = useState([])
 
+  const fetchDummyData = async ()=>{
+    const response = await axios.get('https://dummyjson.com/products?limit=100')
+    const data = await response.data
+    console.log(data.products)
+  }
   useEffect(() => {
     setUserData(data);
-    
-    isAdmin()
+    fetchDummyData()
+    setIssuperuser(superUser)
   }, [data]);
 
   const handleDelete = async (id, firstname) => {
@@ -88,6 +96,7 @@ const UserManagement = ({ data, setUserEntriesData }) => {
       toast.error("Something went wrong");
     }
   };
+  
 
   return (
     <>
@@ -135,7 +144,7 @@ const UserManagement = ({ data, setUserEntriesData }) => {
               <th className="border border-neutral-300 text-white font-medium p-2">
                 Address
               </th>
-              {isSuperuser && (
+              {isSuperuser === "true" && (
                 <th className="border border-neutral-300 text-white font-medium p-2">
                   Status
                 </th>
@@ -187,7 +196,7 @@ const UserManagement = ({ data, setUserEntriesData }) => {
                   <td className="border border-neutral-300 text-center p-2">
                     {item.permanent_address}
                   </td>
-                  {isSuperuser && (
+                  {isSuperuser === "true" && (
                     <td className="border border-neutral-300 text-center p-2">
                       <button
                         onClick={() => handleStatus(item.id, item.status)}
@@ -207,7 +216,7 @@ const UserManagement = ({ data, setUserEntriesData }) => {
                   </td>
                   <td className="border border-neutral-300 p-2">
                     <div className="flex items-center justify-center gap-2">
-                      {isSuperuser && (
+                      {isSuperuser === "true" && (
                         <>
                           <button
                             onClick={() => {
@@ -295,7 +304,7 @@ const UserManagement = ({ data, setUserEntriesData }) => {
         </div>
 
         <div className="mt-3 flex justify-between items-center">
-          {isSuperuser && (
+          {isSuperuser === "true" && (
             <button
               onClick={() => handleStatus(item.id, item.status)}
               className="flex items-center gap-1"
@@ -310,7 +319,7 @@ const UserManagement = ({ data, setUserEntriesData }) => {
           )}
 
           <div className="flex gap-2">
-            {isSuperuser && (
+            {isSuperuser === "true" && (
               <>
                 <button
                   onClick={() => {

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router'
-import { adminLogin } from '../api/endpoint'
+import { adminLogin, is_admin } from '../api/endpoint'
 import { toast } from 'react-toastify'
 import { Eye, EyeClosed, Loader2 } from 'lucide-react'
 
@@ -28,10 +28,14 @@ function LoginPage() {
             console.log(data)
             if (data.success) {
                 toast.success(data.message || 'Login Success!')
-                localStorage.setItem('is_superuser', JSON.stringify(data.is_superuser))
+                const data2 = await is_admin()
+                if(data2.success){
+                    localStorage.setItem('is_superuser', data2.is_superuser)
+                    localStorage.setItem('username', data2.username)
+                }
                 setTimeout(() => {
                     navigate('/application-form')
-                }, 2000)
+                }, 3000)
             }
             else {
                 toast.error('Invalid Credentials')
