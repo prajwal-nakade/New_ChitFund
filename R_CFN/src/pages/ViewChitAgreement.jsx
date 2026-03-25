@@ -32,15 +32,18 @@ const ViewChitAgreement = () => {
           </div>
 
           {/* Table */}
-          <div className="overflow-x-auto mt-3">
+          <div className="overflow-x-auto mt-3 ">
             <table className="w-full border border-neutral-300 text-sm rounded-md overflow-hidden">
-              <thead className=" bg-[#004f9e]">
+              <thead className=" bg-[#004f9e] ">
                 <tr>
                   <th className="border p-2 text-white font-medium border-black">
                     Agreement Id
                   </th>
                   <th className="border p-2 text-white font-medium border-black">
                     Bylaws No
+                  </th>
+                  <th className="border p-2 text-white font-medium border-black">
+                    Group Code
                   </th>
                   <th className="border p-2 text-white font-medium border-black">
                     Customer Name
@@ -63,7 +66,7 @@ const ViewChitAgreement = () => {
                   </th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="">
                 {chitAgreementData.length > 0 ? (
                   chitAgreementData.map((item) => (
                     <tr key={item.id} className="text-center border-t">
@@ -75,7 +78,9 @@ const ViewChitAgreement = () => {
                       <td className="border p-2">
                         {item.chit?.ByLawsNumber || "-"}
                       </td>
-
+                      <td className="border p-2 uppercase">
+                        {item.chit?.GroupCode ?? "-"}
+                      </td>
                       {/* Customer Name */}
                       <td className="border p-2">
                         {`${item.chit.user?.firstname} ${item.chit.user?.lastname}`}

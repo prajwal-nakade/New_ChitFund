@@ -20,7 +20,6 @@ const ApplicationForm = () => {
     pan: "",
     aadhar: "",
     pan_image: null,
-    pan_image_back: null,
     aadhar_image: null,
     aadhar_image_back: null,
   });
@@ -46,7 +45,6 @@ const ApplicationForm = () => {
   });
 
   const [backPreview, setBackPreview] = useState({
-    pan_image_back: null,
     aadhar_image_back: null,
   });
 
@@ -77,10 +75,6 @@ const ApplicationForm = () => {
       setPreview((p) => ({ ...p, pan_image: file?.name || null }));
     }
 
-    if (name === "pan_image_back") {
-      setFormData((prev) => ({ ...prev, pan_image_back: file }));
-      setBackPreview((p) => ({ ...p, pan_image_back: file?.name || null }));
-    }
 
     if (name === "aadhar_image") {
       setFormData((prev) => ({ ...prev, aadhar_image: file }));
@@ -105,13 +99,6 @@ const ApplicationForm = () => {
     e.stopPropagation();
     setFormData((p) => ({ ...p, aadhar_image: null }));
     setPreview((p) => ({ ...p, aadhar_image: null }));
-  };
-
-  const removePanBackImage = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setFormData((p) => ({ ...p, pan_image_back: null }));
-    setBackPreview((p) => ({ ...p, pan_image_back: null }));
   };
 
   const removeAadharBackImage = (e) => {
@@ -183,8 +170,6 @@ const ApplicationForm = () => {
     if (formData.aadhar_image)
       data.append("aadhar_image", formData.aadhar_image);
 
-    if (formData.pan_image_back)
-      data.append("pan_image_back", formData.pan_image_back);
     if (formData.aadhar_image_back)
       data.append("aadhar_image_back", formData.aadhar_image_back);
 
@@ -213,7 +198,6 @@ const ApplicationForm = () => {
           pan: "",
           aadhar: "",
           pan_image: null,
-          pan_image_back: null,
           aadhar_image: null,
           aadhar_image_back: null,
         });
@@ -224,7 +208,6 @@ const ApplicationForm = () => {
         });
 
         setBackPreview({
-          pan_image_back: null,
           aadhar_image_back: null,
         });
 
@@ -616,6 +599,7 @@ const ApplicationForm = () => {
                     <option value="Sister">Sister</option>
                     <option value="Son">Son</option>
                     <option value="Daughter">Daughter</option>
+                    <option value="Wife">Wife</option>
                   </select>
                 </div>
                 <div className="flex flex-col items-start w-full text-sm">

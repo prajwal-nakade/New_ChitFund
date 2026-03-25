@@ -16,7 +16,6 @@ const EditUserDetails = ({ user, onClose, getUserEntries }) => {
     pan: "",
     aadhar: "",
     pan_image: null,
-    pan_image_back: null, // Add back image for PAN
     aadhar_image: null,
     aadhar_image_back: null, // Add back image for Aadhar
   });
@@ -39,7 +38,6 @@ const EditUserDetails = ({ user, onClose, getUserEntries }) => {
 
   // Add state for back image previews
   const [backPreview, setBackPreview] = useState({
-    pan_image_back: null,
     aadhar_image_back: null,
   });
 
@@ -58,7 +56,6 @@ const EditUserDetails = ({ user, onClose, getUserEntries }) => {
       pan: user.pancard_no || "",
       aadhar: user.aadharcard_no || "",
       pan_image: null,
-      pan_image_back: null,
       aadhar_image: null,
       aadhar_image_back: null,
     });
@@ -95,11 +92,6 @@ const EditUserDetails = ({ user, onClose, getUserEntries }) => {
       setPreview((p) => ({ ...p, pan_image: file?.name || null }));
     }
 
-    if (name === "pan_image_back") {
-      setFormData((prev) => ({ ...prev, pan_image_back: file }));
-      setBackPreview((p) => ({ ...p, pan_image_back: file?.name || null }));
-    }
-
     if (name === "aadhar_image") {
       setFormData((prev) => ({ ...prev, aadhar_image: file }));
       setPreview((p) => ({ ...p, aadhar_image: file?.name || null }));
@@ -124,11 +116,6 @@ const EditUserDetails = ({ user, onClose, getUserEntries }) => {
   };
 
   // Add functions to remove back images
-  const removePanBackImage = (e) => {
-    e.preventDefault();
-    setFormData((p) => ({ ...p, pan_image_back: null }));
-    setBackPreview((p) => ({ ...p, pan_image_back: null }));
-  };
 
   const removeAadharBackImage = (e) => {
     e.preventDefault();
@@ -158,8 +145,6 @@ const EditUserDetails = ({ user, onClose, getUserEntries }) => {
       if (formData.aadhar_image)
         data.append("aadhar_image", formData.aadhar_image);
       // Add back images to FormData
-      if (formData.pan_image_back)
-        data.append("pan_image_back", formData.pan_image_back);
       if (formData.aadhar_image_back)
         data.append("aadhar_image_back", formData.aadhar_image_back);
 
@@ -340,7 +325,7 @@ const EditUserDetails = ({ user, onClose, getUserEntries }) => {
                       />
                     </label>
 
-                    <label className="px-3 py-1 border border-neutral-300 bg-gray-200 rounded-md cursor-pointer hover:bg-gray-300 text-xs whitespace-nowrap">
+                    {/* <label className="px-3 py-1 border border-neutral-300 bg-gray-200 rounded-md cursor-pointer hover:bg-gray-300 text-xs whitespace-nowrap">
                       PAN Back
                       <input
                         type="file"
@@ -349,7 +334,7 @@ const EditUserDetails = ({ user, onClose, getUserEntries }) => {
                         accept="image/*"
                         onChange={handleImageChange}
                       />
-                    </label>
+                    </label> */}
                   </div>
                 </div>
 

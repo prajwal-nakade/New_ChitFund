@@ -37,6 +37,7 @@ const ViewBidAgreement = () => {
               <tr>
                 <th className="border p-2 text-white border-black">ID</th>
                 <th className="border p-2 text-white border-black">Bylaws No</th>
+                <th className="border p-2 text-white border-black">Group Code</th>
                 <th className="border p-2 text-white border-black">Customer Name</th>
                 <th className="border p-2 text-white border-black">Auction No</th>
                 <th className="border p-2 text-white border-black">Bid Amount</th>
@@ -63,6 +64,9 @@ const ViewBidAgreement = () => {
                       {/* Bylaws */}
                       <td className="border p-2">
                         {chit?.ByLawsNumber || "-"}
+                      </td>
+                      <td className="border p-2 uppercase">
+                        {chit?.GroupCode || "-"}
                       </td>
 
                       {/* Customer */}

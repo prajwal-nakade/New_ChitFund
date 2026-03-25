@@ -2,9 +2,12 @@
 
 import dayjs from "dayjs";
 import React from "react";
+import { convertToWords, toOrdinal } from 'react-number-to-words';
+import { numberToWords } from "amount-to-words";
 
 
 const PromissoryNote = ({ chit, user, chitAgreement, bidAgreement, gurantor }) => {
+  const inWords = numberToWords(chit?.ChitValue)
   return (
     <div className="max-w-4xl mx-auto bg-white border border-black px-8 py-6 text-[16px] leading-6 ">
 
@@ -55,7 +58,7 @@ const PromissoryNote = ({ chit, user, chitAgreement, bidAgreement, gurantor }) =
       <div className="mt-4 ">
         ON DEMAND I/WE Jointly and Severally do hereby promise to pay KARDE
         KRISHNA CHITS PRIVATE LTD. Of Order the Sum of ( Rupees
-        <span className="inline-block border-b border-black w-130 mx-2"></span>
+        <span className="inline-block border-b border-black w-130 mx-2 text-center">{inWords} Rupees</span>
         only )
       </div>
 
@@ -83,7 +86,7 @@ const PromissoryNote = ({ chit, user, chitAgreement, bidAgreement, gurantor }) =
 
         <div className="mt-1">
           ( Rupees
-          <span className="inline-block border-b border-black w-64 mx-2"></span>
+          <span className="inline-block border-b border-black w-64 mx-2">{numberToWords(chitAgreement?.installment_amount)}</span>
           only ) for
           <span className="inline-block border-b border-black w-16 mx-2 text-center">{bidAgreement?.totalMemberofGroup}</span>
           Months

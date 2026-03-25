@@ -87,7 +87,7 @@ const ChitAgreement = () => {
         user: selectedChit.user.id,
         branch: selectedChit.branch,
         chit: selectedChit.id,
-        conducts_of_chits: formData.conducts_of_chits,
+        conducts_of_chits: formData.conducts_of_chits.toUpperCase(),
         number_of_tickets: formData.number_of_tickets,
         number_of_installments: Number(formData.number_of_installments),
         installment_amount: Number(formData.installment_amount),
@@ -191,7 +191,7 @@ const ChitAgreement = () => {
                     <span className="font-semibold">
                       APP_ID : {item.application_id}
                     </span>{" "}
-                    – {item.ByLawsNumber}
+                    – <span className="uppercase">{item.GroupCode}</span> – {`${item.user.firstname} ${item.user.middlename} ${item.user.lastname}`}
                   </div>
                 ))}
               </div>
@@ -284,7 +284,7 @@ const ChitAgreement = () => {
                   value={displayData.conducts_of_chits}
                   onChange={handleChange}
                   placeholder="Conducts of Chit"
-                  className="w-full mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
+                  className="w-full mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm uppercase"
                   required
                 />
               </div>
@@ -352,6 +352,7 @@ const ChitAgreement = () => {
                 type="time"
                 placeholder="Time of Auction"
                 className="border border-neutral-300 w-full rounded-md px-3 py-1"
+                value={formData.scheduled_auction_time || "21:00"}
               />
             </div>
 
@@ -464,6 +465,7 @@ const ChitAgreement = () => {
                 type="time"
                 placeholder="Time of Auction"
                 className="border border-neutral-300 w-full rounded-md px-3 py-1"
+                value={formData.auction_session_start || "21:00"}
               />
             </div>
 
@@ -478,6 +480,7 @@ const ChitAgreement = () => {
                 type="time"
                 placeholder="Time of Auction"
                 className="border border-neutral-300 w-full rounded-md px-3 py-1"
+                value={formData.auction_session_end || "21:30"}
               />
             </div>
           </div>
