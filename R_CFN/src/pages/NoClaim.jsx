@@ -43,7 +43,7 @@ const NoClaim = ({ chit, user, chitAgreement, bidAgreement, gurantor }) => {
             Dear Sir,
             <br />
             I/We am / are subscriber's to chit group{" "}
-            <input className="border-b border-black w-50 outline-none bg-transparent text-center" disabled value={chit?.GroupCode} />{" "}
+            <input className="border-b border-black w-50 outline-none bg-transparent text-center uppercase" disabled value={chit?.GroupCode} />{" "}
             Ticket No.{" "}
             <input className="border-b border-black w-30 outline-none bg-transparent text-center" disabled value={chit?.TicketNmber} />
             Conducted by KARDE KRISHNA CHITS PRIVATE LIMITED

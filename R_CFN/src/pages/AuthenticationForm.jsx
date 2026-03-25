@@ -127,6 +127,7 @@ const chitAgreement = bidAgreementData[0]?.chitAgreement;
 const chit = chitAgreement?.chit;
 const user = chit?.user;
 const gurantor = bidAgreementData[0]?.gurantor[0] ?? [];
+const gurantor2 = bidAgreementData[0]?.gurantor[1] ?? [];
   const getOrdinal = (day) => {
     if (day > 3 && day < 21) return `${day}th`; // 11th–19th
     switch (day % 10) {
@@ -230,7 +231,7 @@ const gurantor = bidAgreementData[0]?.gurantor[0] ?? [];
                   <input
                     disabled
                     type="text"
-                    className="border-b border-black w-48 outline-none text-center bg-transparent text-sm"
+                    className="border-b border-black w-48 outline-none text-center bg-transparent text-sm uppercase"
                     value={
   chit
     ? `${chit.GroupCode} / ${chit.TicketNmber}`
@@ -406,52 +407,52 @@ const gurantor = bidAgreementData[0]?.gurantor[0] ?? [];
 
         {selectedForm.promissoryNote && (
           <div className="print-page">
-            <PromissoryNote chit={chit} user={user} chitAgreement={chitAgreement} bidAgreement={bidAgreement} gurantor={gurantor}/>
+            <PromissoryNote chit={chit} user={user} chitAgreement={chitAgreement} bidAgreement={bidAgreement} gurantor={gurantor} gurantor2={gurantor2}/>
           </div>
         )}
         {selectedForm.demandPromissoryNote && (
           <div className="print-page">
-            <DemandPromissoryNote chit={chit} user={user} chitAgreement={chitAgreement} bidAgreement={bidAgreement} gurantor={gurantor}/>
+            <DemandPromissoryNote chit={chit} user={user} chitAgreement={chitAgreement} bidAgreement={bidAgreement} gurantor={gurantor} gurantor2={gurantor2}/>
           </div>
         )}
         {selectedForm.guaranteeAgreement && (
           <div className="print-page">
-            <GuaranteeAgreement chit={chit} user={user} chitAgreement={chitAgreement} bidAgreement={bidAgreement} gurantor={gurantor}/>
+            <GuaranteeAgreement chit={chit} user={user} chitAgreement={chitAgreement} bidAgreement={bidAgreement} gurantor={gurantor} gurantor2={gurantor2}/>
           </div>
         )}
         {selectedForm.receiptForAuction && (
           <div className="print-page">
-            <ReceiptForAuction chit={chit} user={user} chitAgreement={chitAgreement} bidAgreement={bidAgreement} gurantor={gurantor}/>
+            <ReceiptForAuction chit={chit} user={user} chitAgreement={chitAgreement} bidAgreement={bidAgreement} gurantor={gurantor} gurantor2={gurantor2}/>
           </div>
         )}
         {selectedForm.receipt && (
           <div className="print-page">
-            <Receiptform chit={chit} user={user} chitAgreement={chitAgreement} bidAgreement={bidAgreement} gurantor={gurantor}/>
+            <Receiptform chit={chit} user={user} chitAgreement={chitAgreement} bidAgreement={bidAgreement} gurantor={gurantor} gurantor2={gurantor2}/>
           </div>
         )}
         {selectedForm.bidPayableMemo && (
           <div className="print-page">
-            <BidPayableMemo chit={chit} user={user} chitAgreement={chitAgreement} bidAgreement={bidAgreement} gurantor={gurantor}/>
+            <BidPayableMemo chit={chit} user={user} chitAgreement={chitAgreement} bidAgreement={bidAgreement} gurantor={gurantor} gurantor2={gurantor2}/>
           </div>
         )}
         {selectedForm.debitParticulars && (
           <div className="print-page">
-            <DebitParticulars chit={chit} user={user} chitAgreement={chitAgreement} bidAgreement={bidAgreement} gurantor={gurantor}/>
+            <DebitParticulars chit={chit} user={user} chitAgreement={chitAgreement} bidAgreement={bidAgreement} gurantor={gurantor} gurantor2={gurantor2}/>
           </div>
         )}
         {selectedForm.cashVoucher && (
           <div className="print-page">
-            <CashVoucher chit={chit} user={user} chitAgreement={chitAgreement} bidAgreement={bidAgreement} gurantor={gurantor}/>
+            <CashVoucher chit={chit} user={user} chitAgreement={chitAgreement} bidAgreement={bidAgreement} gurantor={gurantor} gurantor2={gurantor2}/>
           </div>
         )}
         {selectedForm.noClaim && (
           <div className="print-page">
-            <NoClaim chit={chit} user={user} chitAgreement={chitAgreement} bidAgreement={bidAgreement} gurantor={gurantor}/>
+            <NoClaim chit={chit} user={user} chitAgreement={chitAgreement} bidAgreement={bidAgreement} gurantor={gurantor} gurantor2={gurantor2}/>
           </div>
         )}
         {selectedForm.noc && (
           <div className="print-page">
-            <NOC chit={chit} user={user} chitAgreement={chitAgreement} bidAgreement={bidAgreement} gurantor={gurantor}/>
+            <NOC chit={chit} user={user} chitAgreement={chitAgreement} bidAgreement={bidAgreement} gurantor={gurantor} gurantor2={gurantor2}/>
           </div>
         )}
       </div>

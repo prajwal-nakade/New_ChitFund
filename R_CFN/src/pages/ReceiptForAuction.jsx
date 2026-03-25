@@ -2,7 +2,7 @@ import dayjs, { Dayjs } from "dayjs";
 import React from "react";
 import { numberToWords } from "amount-to-words";
 
-const ReceiptForAuction = ({chit, user, chitAgreement, bidAgreement, gurantor}) => {
+const ReceiptForAuction = ({chit, user, chitAgreement, bidAgreement, gurantor, gurantor2}) => {
   return (
     <>
       <div className="max-w-4xl mx-auto bg-white border border-black px-8 py-6 text-[15px] leading-5.5 text-justify">
@@ -127,7 +127,11 @@ const ReceiptForAuction = ({chit, user, chitAgreement, bidAgreement, gurantor}) 
           </div>
 
           <div className="flex items-center">
-            <input className="border-b border-black w-100 outline-none bg-transparent text-center" />
+            <input className="border-b border-black w-100 outline-none bg-transparent text-center" value={
+              gurantor2
+                ? `${gurantor2?.firstname || ""} ${gurantor2?.middlename || ""} ${gurantor2?.lastname || ""}`
+                : ""
+            }/>
             <div className="w-20 h-24 border border-black ml-10"></div>
           </div>
         </div>
