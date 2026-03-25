@@ -1,5 +1,6 @@
 import dayjs from "dayjs";
 import React from "react";
+import { numberToWords } from "amount-to-words";
 
 const BidPayableMemo = ({ chit, user, chitAgreement, bidAgreement, gurantor }) => {
   return (
@@ -39,8 +40,8 @@ const BidPayableMemo = ({ chit, user, chitAgreement, bidAgreement, gurantor }) =
           <div className="flex">
             <p>Chit Value Rs. -</p>
             <input className="border-b border-black w-40 outline-none bg-transparent mx-2 text-center" disabled value={chit?.ChitValue} />
-            <p>Rs. -</p>
-            <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1" />
+            <p>Rs. (In words)-</p>
+            <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1 text-center" value={`${numberToWords(chit?.ChitValue)} Rupees`}/>
           </div>
           <div className="flex">
             <p>Less Bid Rs. -</p>
@@ -53,13 +54,13 @@ const BidPayableMemo = ({ chit, user, chitAgreement, bidAgreement, gurantor }) =
           <div className="flex">
             <p>Dividend to Members Rs. -</p>
             <input className="border-b border-black w-40 outline-none bg-transparent mx-2 text-center " value={bidAgreement?.dividend} />
-            <p>Rs. -</p>
-            <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1" />
+            <p>Rs. (In words)-</p>
+            <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1" value={`${numberToWords(bidAgreement?.dividend)}`}/>
           </div>
           <div className="flex">
             <p>Payable Amount-</p>
             <input className="border-b border-black w-40 outline-none bg-transparent mx-2 " />
-            <p>Rs. -</p>
+            <p>Rs. (In words)-</p>
             <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1" />
           </div>
         </div>

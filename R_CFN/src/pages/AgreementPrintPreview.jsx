@@ -40,7 +40,9 @@ const AgreementPrintPreview = () => {
           width: 100%;
           margin: 0 auto;
         }
-
+        .name{
+        width : 110px
+        }
         table {
           width: 100%;
           border-collapse: collapse;
@@ -240,10 +242,11 @@ const AgreementPrintPreview = () => {
                 <tbody>
                   <tr className="h-30">
                     <td className="border-t  border-black p-2 align-top">
-                      <textarea
-                        className="w-full h-20 resize-none outline-none text-start font-medium ps-3"
-                        value={`${user.firstname} ${user.middlename} ${user.lastname} \n \n${chitAgreementData.branchName}`}
-                      />
+                      <div className="w-full h-20 resize-none outline-none text-start font-medium ps-3 flex flex-col items-start justify-start gap-2">
+                        
+                        <span className="flex gap-4 w-full "><strong className="w-39 name">Fullname:</strong>{`${user.firstname} ${user.middlename} ${user.lastname}`}</span>
+                        <span className="text-xs flex gap-4 "><strong className="w-full">Address:</strong>{`${user.permanent_address}`}</span>
+                      </div>
                     </td>
 
                     <td className="border-r border-l border-black p-2 align-top">
@@ -536,7 +539,7 @@ const AgreementPrintPreview = () => {
             <input
               type="text"
               className="border-b text-center outline-none font-medium"
-              value={getOrdinal(dayjs(chitAgreementData.auction_frequency).date())}
+              value={getOrdinal(chitAgreementData.auction_frequency)}
             />
             day of every month/day/week between{" "}
             <input

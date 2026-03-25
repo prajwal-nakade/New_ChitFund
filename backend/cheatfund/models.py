@@ -47,11 +47,7 @@ class Users(models.Model):
         blank=True,
         null=True
     )
-    pan_image_back = models.ImageField(
-        upload_to="user_documents/pan/",
-        blank=True,
-        null=True
-    )
+
     aadhar_image = models.ImageField(
         upload_to="user_documents/aadhar/",
         blank=True,
@@ -204,7 +200,7 @@ class BidAgreementDetails(models.Model):
     dividend = models.IntegerField()
     totalMemberofGroup = models.IntegerField()
     suretyReceived = models.CharField(max_length=100)
-    suretiesVerified = models.CharField(max_length=100)
+    suretiesVerified = models.CharField(max_length=100, null=True)
     dateOfPayment = models.DateField()
     chequeNo = models.CharField(max_length=100)
     cheqDate = models.DateField()

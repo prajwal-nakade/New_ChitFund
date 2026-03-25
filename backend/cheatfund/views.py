@@ -217,16 +217,27 @@ def get_ChitAgreementDetails(request, agreement_id):
         return Response(serializer.data, status=200)
     except ChitAgreementDetails.DoesNotExist:
         return Response({"detail": "Agreement not found"}, status=status.HTTP_404_NOT_FOUND)
-    
+
+from django.db.models import Exists, OuterRef
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_All_ChitAgreementDetails(request):
     try:
-        chits = ChitAgreementDetails.objects.all()
+        # 🔥 Subquery to check if bid exists
+        bid_exists = BidAgreementDetails.objects.filter(
+            chitAgreement=OuterRef('pk')
+        )
+
+        # 🔥 Annotate each chit with has_bid
+        chits = ChitAgreementDetails.objects.select_related('chit', 'user').annotate(
+            has_bid=Exists(bid_exists)
+        )
+
         serializer = ChitAgreementDetailsSerializer(chits, many=True)
         return Response(serializer.data, status=200)
-    except ChitAgreementDetails.DoesNotExist:
-        return Response({"detail": "Agreement not found"}, status=status.HTTP_404_NOT_FOUND)
+
+    except Exception as e:
+        return Response({"error": str(e)}, status=500)
     
     
 @api_view(['POST'])
@@ -344,6 +355,7 @@ def createBidAgreement(request):
             if not bid_serializer.is_valid():
                 print(f"❌ Bid validation errors: {bid_serializer.errors}")
                 return Response({"error": "Bid validation failed", "details": bid_serializer.errors}, status=400)
+            
                 
             bid_instance = bid_serializer.save()
             bid_instance.gurantor.set(gurantor_ids)

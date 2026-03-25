@@ -323,9 +323,9 @@ const CustomerApplication = () => {
             <div className="flex flex-col items-start w-full text-sm">
               <label className="text-sm">Group Code <span className="text-red-500">*</span></label>
               <input
-                className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
+                className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm uppercase"
                 name="GroupCode"
-                value={chitData.GroupCode}
+                value={chitData.GroupCode.toUpperCase()}
                 onChange={handleChitChange}
                 placeholder="Group code"
                 required

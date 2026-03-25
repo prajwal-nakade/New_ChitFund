@@ -1,5 +1,6 @@
 import React from "react";
 import dayjs, { Dayjs } from "dayjs";
+import { numberToWords } from "amount-to-words";
 
 const Receipt = ({chit, user, chitAgreement, bidAgreement, gurantor}) => {
   return (
@@ -83,10 +84,10 @@ const Receipt = ({chit, user, chitAgreement, bidAgreement, gurantor}) => {
                 under Ticket No-
                 <input className="border-b border-black w-30 outline-none bg-transparent mx-2 flex-1 text-center" value={chit?.TicketNmber}/>
                 of the value of Rs{" "}
-                <input className="border-b border-black w-50 outline-none bg-transparent mx-2 flex-1" value={chit?.ChitValue} />{" "}
+                <input className="border-b border-black w-50 outline-none bg-transparent mx-2 flex-1 text-center" value={chit?.ChitValue} />{" "}
                 (Rupee{" "}
-                <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1" />
-                ) which was auctioned /draw on 05/01 /26and the amount including the
+                <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1 text-center" value={`${numberToWords(chit?.ChitValue)} Rupees`}/>
+                ) which was auctioned / draw on <span>{dayjs(bidAgreement?.dateofAuction).format('DD/MM/YYYY')}</span> and the amount including the
                 Foreman's Commission viz Rs.{" "}
                 <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1 text-center" value={bidAgreement?.foremanCommision } />{" "}
                 by way of foreman's commission and auction discount to be
@@ -97,9 +98,9 @@ const Receipt = ({chit, user, chitAgreement, bidAgreement, gurantor}) => {
             <div className="mt-2">
               <p>
                 The receipt for the said amount of Rs{" "}
-                <input className="border-b border-black w-50 outline-none bg-transparent mx-2 flex-1" />{" "}
+                <input className="border-b border-black w-50 outline-none bg-transparent mx-2 flex-1 text-center" />{" "}
                 (Rupees{" "}
-                <input className="border-b border-black w-50 outline-none bg-transparent mx-2 flex-1" />{" "}
+                <input className="border-b border-black w-50 outline-none bg-transparent mx-2 flex-1 text-center" />{" "}
                 ) is hereby given by the payee in token of having received the
                 amount of Rs.{" "}
                 <input className="border-b border-black w-50 outline-none bg-transparent mx-2 flex-1" />{" "}

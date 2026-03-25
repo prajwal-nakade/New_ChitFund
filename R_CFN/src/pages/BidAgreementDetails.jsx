@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Layout from "../components/layout";
 import { useNavigate, useParams } from "react-router";
 import { createBidAgreement, getChitAgreementbyID } from "../api/endpoint";
-import { ShipWheel } from "lucide-react";
+import { ShipWheel, X, Paperclip } from "lucide-react";
 import { toast } from "react-toastify";
 
 const BidAgreementDetails = () => {
@@ -18,6 +18,26 @@ const BidAgreementDetails = () => {
         pan2: null,
         aadharFront2: null,
         aadharBack2: null,
+    });
+
+    // Preview states for Guarantor 1
+    const [preview1, setPreview1] = useState({
+        pan_image: null,
+        pan_name: null,
+        aadhar_image: null,
+        aadhar_name: null,
+        aadhar_image_back: null,
+        aadhar_back_name: null,
+    });
+
+    // Preview states for Guarantor 2
+    const [preview2, setPreview2] = useState({
+        pan_image: null,
+        pan_name: null,
+        aadhar_image: null,
+        aadhar_name: null,
+        aadhar_image_back: null,
+        aadhar_back_name: null,
     });
 
     useEffect(() => {
@@ -38,17 +58,106 @@ const BidAgreementDetails = () => {
         fetchData();
     }, [id]);
 
-    const handleImageChange = (e, key) => {
+    const handleImageChange = (e, key, type, guarantor = 1) => {
         const file = e.target.files[0];
         if (file) {
+            // Update images state
             setImages((prev) => ({
                 ...prev,
                 [key]: {
                     file,
                     preview: URL.createObjectURL(file),
+                    name: file.name,
                 },
             }));
+
+            // Update preview state based on guarantor
+            if (guarantor === 1) {
+                if (type === 'pan') {
+                    setPreview1((prev) => ({ 
+                        ...prev, 
+                        pan_image: URL.createObjectURL(file),
+                        pan_name: file.name 
+                    }));
+                } else if (type === 'aadhar') {
+                    setPreview1((prev) => ({ 
+                        ...prev, 
+                        aadhar_image: URL.createObjectURL(file),
+                        aadhar_name: file.name 
+                    }));
+                } else if (type === 'aadhar_back') {
+                    setPreview1((prev) => ({ 
+                        ...prev, 
+                        aadhar_image_back: URL.createObjectURL(file),
+                        aadhar_back_name: file.name 
+                    }));
+                }
+            } else if (guarantor === 2) {
+                if (type === 'pan') {
+                    setPreview2((prev) => ({ 
+                        ...prev, 
+                        pan_image: URL.createObjectURL(file),
+                        pan_name: file.name 
+                    }));
+                } else if (type === 'aadhar') {
+                    setPreview2((prev) => ({ 
+                        ...prev, 
+                        aadhar_image: URL.createObjectURL(file),
+                        aadhar_name: file.name 
+                    }));
+                } else if (type === 'aadhar_back') {
+                    setPreview2((prev) => ({ 
+                        ...prev, 
+                        aadhar_image_back: URL.createObjectURL(file),
+                        aadhar_back_name: file.name 
+                    }));
+                }
+            }
         }
+    };
+
+    // Remove image functions for Guarantor 1
+    const removePanImage1 = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setImages((p) => ({ ...p, pan1: null }));
+        setPreview1((p) => ({ ...p, pan_image: null, pan_name: null }));
+    };
+
+    const removeAadharImage1 = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setImages((p) => ({ ...p, aadharFront1: null }));
+        setPreview1((p) => ({ ...p, aadhar_image: null, aadhar_name: null }));
+    };
+
+    const removeAadharBackImage1 = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setImages((p) => ({ ...p, aadharBack1: null }));
+        setPreview1((p) => ({ ...p, aadhar_image_back: null, aadhar_back_name: null }));
+    };
+
+    // Remove image functions for Guarantor 2
+    const removePanImage2 = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setImages((p) => ({ ...p, pan2: null }));
+        setPreview2((p) => ({ ...p, pan_image: null, pan_name: null }));
+    };
+
+    const removeAadharImage2 = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setImages((p) => ({ ...p, aadharFront2: null }));
+        setPreview2((p) => ({ ...p, aadhar_image: null, aadhar_name: null }));
+    };
+
+    const removeAadharBackImage2 = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setImages((p) => ({ ...p, aadharBack2: null }));
+        setPreview2((p) => ({ ...p, aadhar_image_back: null, aadhar_back_name: null }));
     };
 
     const handleSubmit = async (e) => {
@@ -88,7 +197,6 @@ const BidAgreementDetails = () => {
         payload.append("debitBankName", form.get("debitBankName"));
 
         // --- GUARANTOR 1 ---
-        // IMPORTANT: Append user ID INSIDE each guarantor object (not at root)
         payload.append("gurantors[0][user]", userId);
         payload.append("gurantors[0][firstname]", form.get("firstname"));
         payload.append("gurantors[0][middlename]", form.get("middlename"));
@@ -106,7 +214,6 @@ const BidAgreementDetails = () => {
             payload.append("gurantors[0][aadhar_image_back]", images.aadharBack1.file);
 
         // --- GUARANTOR 2 ---
-        // Append user ID INSIDE guarantor 2 object as well
         payload.append("gurantors[1][user]", userId);
         payload.append("gurantors[1][firstname]", form.get("g2_firstname"));
         payload.append("gurantors[1][middlename]", form.get("g2_middlename"));
@@ -236,6 +343,11 @@ const BidAgreementDetails = () => {
         "w-full px-3 py-2 border border-neutral-300 rounded-md text-sm focus:ring-1 focus:ring-[#004f9e] outline-none";
     const fileBtnClass =
         "px-3 py-1 border border-neutral-300 bg-gray-200 rounded-md cursor-pointer hover:bg-gray-300 shadow-inner text-xs whitespace-nowrap";
+    const previewContainerClass = "mt-2 flex gap-2 flex-wrap";
+    const previewImageClass = "relative w-20 h-20 rounded-md overflow-hidden border border-neutral-300";
+    const removeBtnClass = "absolute -top-1 -right-1 bg-red-500 text-white rounded-full p-0.5 cursor-pointer hover:bg-red-600";
+    const fileInfoClass = "flex items-center gap-2 bg-gray-50 px-3 py-2 rounded-md border border-neutral-200";
+    const fileNameClass = "text-xs text-gray-600 truncate max-w-[150px]";
 
     return (
         <Layout>
@@ -486,21 +598,36 @@ const BidAgreementDetails = () => {
                                     PAN Number <span className="text-red-500">*</span>
                                 </td>
                                 <td className={inputCellClass}>
-                                    <div className="flex items-center gap-2">
-                                        <input
-                                            placeholder="PAN"
-                                            className={`${inputClass} uppercase`}
-                                            required name="pancard_no"
-                                        />
-                                        <label className={fileBtnClass}>
-                                            PAN Front
+                                    <div className="flex flex-col gap-2">
+                                        <div className="flex items-center gap-2">
                                             <input
-                                                type="file"
-                                                hidden
-                                                accept=".png,.jpg,.jpeg"
-                                                onChange={(e) => handleImageChange(e, 'pan1')}
+                                                placeholder="PAN"
+                                                className={`${inputClass} uppercase`}
+                                                required name="pancard_no"
                                             />
-                                        </label>
+                                            <label className={fileBtnClass}>
+                                                PAN Front
+                                                <input
+                                                    type="file"
+                                                    hidden
+                                                    accept=".png,.jpg,.jpeg"
+                                                    onChange={(e) => handleImageChange(e, 'pan1', 'pan', 1)}
+                                                />
+                                            </label>
+                                        </div>
+                                        {preview1.pan_name && (
+                                            <div className={fileInfoClass}>
+                                                <Paperclip size={14} className="text-gray-500" />
+                                                <span className={fileNameClass}>{preview1.pan_name}</span>
+                                                <button
+                                                    type="button"
+                                                    onClick={removePanImage1}
+                                                    className="ml-auto text-red-500 hover:text-red-700"
+                                                >
+                                                    <X size={14} />
+                                                </button>
+                                            </div>
+                                        )}
                                     </div>
                                 </td>
                             </tr>
@@ -522,7 +649,7 @@ const BidAgreementDetails = () => {
                                                 <input
                                                     type="file"
                                                     hidden
-                                                    onChange={(e) => handleImageChange(e, 'aadharFront1')}
+                                                    onChange={(e) => handleImageChange(e, 'aadharFront1', 'aadhar', 1)}
                                                 />
                                             </label>
                                             <label className={fileBtnClass}>
@@ -530,9 +657,37 @@ const BidAgreementDetails = () => {
                                                 <input
                                                     type="file"
                                                     hidden
-                                                    onChange={(e) => handleImageChange(e, 'aadharBack1')}
+                                                    onChange={(e) => handleImageChange(e, 'aadharBack1', 'aadhar_back', 1)}
                                                 />
                                             </label>
+                                        </div>
+                                        <div className="flex flex-col gap-2">
+                                            {preview1.aadhar_name && (
+                                                <div className={fileInfoClass}>
+                                                    <Paperclip size={14} className="text-gray-500" />
+                                                    <span className={fileNameClass}>Front: {preview1.aadhar_name}</span>
+                                                    <button
+                                                        type="button"
+                                                        onClick={removeAadharImage1}
+                                                        className="ml-auto text-red-500 hover:text-red-700"
+                                                    >
+                                                        <X size={14} />
+                                                    </button>
+                                                </div>
+                                            )}
+                                            {preview1.aadhar_back_name && (
+                                                <div className={fileInfoClass}>
+                                                    <Paperclip size={14} className="text-gray-500" />
+                                                    <span className={fileNameClass}>Back: {preview1.aadhar_back_name}</span>
+                                                    <button
+                                                        type="button"
+                                                        onClick={removeAadharBackImage1}
+                                                        className="ml-auto text-red-500 hover:text-red-700"
+                                                    >
+                                                        <X size={14} />
+                                                    </button>
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                 </td>
@@ -592,22 +747,37 @@ const BidAgreementDetails = () => {
                                     PAN Number <span className="text-red-500">*</span>
                                 </td>
                                 <td className={inputCellClass}>
-                                    <div className="flex items-center gap-2">
-                                        <input
-                                            placeholder="PAN"
-                                            className={`${inputClass} uppercase`}
-                                            
-                                            name="g2_pancard_no"
-                                        />
-                                        <label className={fileBtnClass}>
-                                            PAN Front
+                                    <div className="flex flex-col gap-2">
+                                        <div className="flex items-center gap-2">
                                             <input
-                                                type="file"
-                                                hidden
-                                                accept=".png,.jpg,.jpeg"
-                                                onChange={(e) => handleImageChange(e, 'pan2')}
+                                                placeholder="PAN"
+                                                className={`${inputClass} uppercase`}
+                                                
+                                                name="g2_pancard_no"
                                             />
-                                        </label>
+                                            <label className={fileBtnClass}>
+                                                PAN Front
+                                                <input
+                                                    type="file"
+                                                    hidden
+                                                    accept=".png,.jpg,.jpeg"
+                                                    onChange={(e) => handleImageChange(e, 'pan2', 'pan', 2)}
+                                                />
+                                            </label>
+                                        </div>
+                                        {preview2.pan_name && (
+                                            <div className={fileInfoClass}>
+                                                <Paperclip size={14} className="text-gray-500" />
+                                                <span className={fileNameClass}>{preview2.pan_name}</span>
+                                                <button
+                                                    type="button"
+                                                    onClick={removePanImage2}
+                                                    className="ml-auto text-red-500 hover:text-red-700"
+                                                >
+                                                    <X size={14} />
+                                                </button>
+                                            </div>
+                                        )}
                                     </div>
                                 </td>
                             </tr>
@@ -629,7 +799,7 @@ const BidAgreementDetails = () => {
                                                 <input
                                                     type="file"
                                                     hidden
-                                                    onChange={(e) => handleImageChange(e, 'aadharFront2')}
+                                                    onChange={(e) => handleImageChange(e, 'aadharFront2', 'aadhar', 2)}
                                                 />
                                             </label>
                                             <label className={fileBtnClass}>
@@ -637,9 +807,37 @@ const BidAgreementDetails = () => {
                                                 <input
                                                     type="file"
                                                     hidden
-                                                    onChange={(e) => handleImageChange(e, 'aadharBack2')}
+                                                    onChange={(e) => handleImageChange(e, 'aadharBack2', 'aadhar_back', 2)}
                                                 />
                                             </label>
+                                        </div>
+                                        <div className="flex flex-col gap-2">
+                                            {preview2.aadhar_name && (
+                                                <div className={fileInfoClass}>
+                                                    <Paperclip size={14} className="text-gray-500" />
+                                                    <span className={fileNameClass}>Front: {preview2.aadhar_name}</span>
+                                                    <button
+                                                        type="button"
+                                                        onClick={removeAadharImage2}
+                                                        className="ml-auto text-red-500 hover:text-red-700"
+                                                    >
+                                                        <X size={14} />
+                                                    </button>
+                                                </div>
+                                            )}
+                                            {preview2.aadhar_back_name && (
+                                                <div className={fileInfoClass}>
+                                                    <Paperclip size={14} className="text-gray-500" />
+                                                    <span className={fileNameClass}>Back: {preview2.aadhar_back_name}</span>
+                                                    <button
+                                                        type="button"
+                                                        onClick={removeAadharBackImage2}
+                                                        className="ml-auto text-red-500 hover:text-red-700"
+                                                    >
+                                                        <X size={14} />
+                                                    </button>
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                 </td>

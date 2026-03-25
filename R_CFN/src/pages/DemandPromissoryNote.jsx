@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import React from "react";
 
-
+import { numberToWords } from "amount-to-words";
 const DemandPromissoryNote = ({chit, user, chitAgreement, bidAgreement, gurantor}) => {
   return (
     <>
@@ -64,7 +64,7 @@ const DemandPromissoryNote = ({chit, user, chitAgreement, bidAgreement, gurantor
         {/* AMOUNT */}
         <div className="mt-3 flex items-center">
           <span>Or wherever demand the sum of</span>
-          <input className="border-b border-black mx-3 w-130 outline-none bg-transparent" />
+          <input className="border-b border-black mx-3 w-130 outline-none bg-transparent text-center" value={`${numberToWords(chit?.ChitValue)} Rupees`}/>
         </div>
 
         {/* BAR */}

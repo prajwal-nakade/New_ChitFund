@@ -152,7 +152,7 @@ const ChitPrintPreview = () => {
               <div className="flex items-center w-1/3">
                 <label className="w-28 text-sm font-medium">Group Code:</label>
                 <div className="border-b border-gray-800 flex-1 text-center">
-                  <span className="font-medium text-sm">
+                  <span className="font-medium text-sm uppercase">
                     {chitDetails.GroupCode}
                   </span>
                 </div>
@@ -386,15 +386,14 @@ const ChitPrintPreview = () => {
           </div>
           <div className="print-page-break flex items-center justify-center">
             <div className="flex flex-col items-center justify-center gap-5">
-                <img src={`${BASE_URL}${user.aadhar_image}`} />
-                <img src={`${BASE_URL}${user.aadhar_image_back}`} />
+                <img width={450} src={`${BASE_URL}${user.aadhar_image}`} />
+                <img width={450} src={`${BASE_URL}${user.aadhar_image_back}`} />
             </div>
           </div>
 
-          <div className="print-page-break flex items-center justify-center">
+          <div className="flex items-center justify-center">
             <div className="flex flex-col items-center justify-center gap-5">
-                <img src={`${BASE_URL}${user.pan_image}`} />
-                <img src={`${BASE_URL}${user.pan_image_back}`} />
+                <img width={450} src={`${BASE_URL}${user.pan_image}`} />
             </div>
           </div>
         </div>

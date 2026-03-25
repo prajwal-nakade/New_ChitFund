@@ -156,9 +156,7 @@ const ViewUserDetails = ({ onClose, user }) => {
                                                 <img width={50} src={`${baseUrl}${user.pan_image}`} className='border border-neutral-300 shadow-sm cursor-pointer' 
                                                 onClick={() => setPreview(`${baseUrl}${user.pan_image}`)}
                                                 />
-                                                <img width={50} src={`${baseUrl}${user.pan_image_back}`} className='border border-neutral-300 shadow-sm cursor-pointer' 
-                                                onClick={() => setPreview(`${baseUrl}${user.pan_image_back}`)}
-                                                />
+                                                
                                                 <img width={50} src={`${baseUrl}${user.aadhar_image_back}`} className='border border-neutral-300 shadow-sm cursor-pointer' 
                                                 onClick={() => setPreview(`${baseUrl}${user.aadhar_image_back}`)}
                                                 />

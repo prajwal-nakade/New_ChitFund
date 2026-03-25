@@ -38,7 +38,7 @@ const CashVoucher = ({ chit, user, chitAgreement, bidAgreement, gurantor }) => {
           </div>
           <div className="flex">
             <p>being.</p>
-            <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1" value={`Bid Payable Amount Paid towards prized chit (${chit?.GroupCode})`}/>
+            <span className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1">Bid Payable Amount Paid towards prized chit <span className="uppercase">{`(${chit?.GroupCode})`}</span></span>
           </div>
           <div className="flex">
             <p>and debit </p>
