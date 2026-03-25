@@ -101,3 +101,19 @@ export const getChitAgreementbyID = async(id)=>{
   const response = await api.get(`api/getChitAgreement/${id}/`)
   return response.data
 }
+
+
+export const createBidAgreement = async(payload)=>{
+  const response = await api.post(`api/createBidagreement/`, payload)
+  return response.data
+}
+
+export const getBidAgreementbyID = async(id)=>{
+  const response = await api.get(`api/getBidagreement/${id}/`)
+  return response.data
+}
+
+export const getAllBidAgreement = async()=>{
+  const response = await api.get(`api/getAllBidAgreement/`)
+  return response.data
+}

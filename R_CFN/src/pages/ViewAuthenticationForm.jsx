@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import Layout from '../components/layout'
 import { getAllChitAgreement } from "../api/endpoint";
-import { Printer } from "lucide-react";
+import { CircleCheckBig, Printer } from "lucide-react";
 import { useNavigate } from 'react-router'
 
 const ViewAuthenticationForm = () => {
@@ -104,8 +104,8 @@ const ViewAuthenticationForm = () => {
 
                       {/* Action */}
                       <td className="border p-2">
-                        <button onClick={()=> navigate(`/authenticationform/${item.id}`)} className="px-1 py-1 text-xs bg-blue-600 text-white rounded cursor-pointer hover:bg-blue-700 transition-colors duration-200">
-                          <Printer size={18}/>
+                        <button onClick={()=> navigate(`/BidAgreementDetails/${item.id}`)} className="px-1 py-1 text-xs bg-blue-600 text-white rounded cursor-pointer hover:bg-blue-700 transition-colors duration-200">
+                          <CircleCheckBig size={18}/>
                         </button>
                       </td>
 

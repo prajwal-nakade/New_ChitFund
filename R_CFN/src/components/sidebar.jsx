@@ -11,8 +11,8 @@ const Sidebar = () => {
     { title: "Chit Agreement", icon: <Handshake size={16} />, path: "/ChitAgreement" },
 
     { title: "View Chit Agreement", icon: <ClipboardList size={16} />, path: "/ViewChitAgreement" },
-    { title: "Authentication Form", icon: <BookOpenCheck size={16} />, path: "/viewauthenticationform" },
-    // { title: "Menu 2", icon: <LayoutDashboard size={16} />, path: "/menu2" },
+    { title: "Bid Agreement", icon: <BookOpenCheck size={16} />, path: "/viewauthenticationform" },
+    { title: "View Bid Agreements", icon: <LayoutDashboard size={16} />, path: "/viewbidAgreements" },
   ];
 
   const masterSubMenus = [
