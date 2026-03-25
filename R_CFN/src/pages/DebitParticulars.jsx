@@ -27,7 +27,7 @@ const DebitParticulars = ({chit, user, chitAgreement, bidAgreement, gurantor }) 
         <div className="flex justify-between">
           <div className="flex ">
             <p>CHIT REF :</p>
-            <input className="border-b border-black w-64 outline-none bg-transparent text-center" disabled value={chit?.GroupCode} />
+            <input className="border-b border-black w-64 outline-none bg-transparent text-center uppercase" disabled value={chit?.GroupCode} />
           </div>
           <div className="flex">
             <p>Date :</p>

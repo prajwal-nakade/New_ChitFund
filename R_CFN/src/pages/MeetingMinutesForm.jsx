@@ -76,7 +76,7 @@ const MeetingMinutesForm = ({ chit, user, chitAgreement, bidAgreement}) => {
 
           <p className="flex flex-wrap items-center">
             2. Chit Group No.
-            <input className="border-b border-black mx-2 w-40 outline-none bg-transparent text-center" disabled value={`${chit.GroupCode}/ ${chit?.TicketNmber}`} />
+            <input className="border-b border-black mx-2 w-40 outline-none bg-transparent text-center uppercase" disabled value={`${chit.GroupCode}/ ${chit?.TicketNmber}`} />
             Installment No.
             <input className="border-b border-black mx-2 w-20 outline-none bg-transparent text-center" disabled value={bidAgreement?.auctionNumber} />
             Total Amount of the Chits
@@ -102,7 +102,7 @@ const MeetingMinutesForm = ({ chit, user, chitAgreement, bidAgreement}) => {
             <tbody>
               <tr className="h-20">
                 <td className="border-r border-black">
-                  <textarea
+                  <input
                     className="w-full text-center outline-none bg-transparent resize-none overflow-hidden"
                     rows={2}
                     disabled
@@ -110,7 +110,7 @@ const MeetingMinutesForm = ({ chit, user, chitAgreement, bidAgreement}) => {
                   />
                 </td>
                 <td className="border-r border-black">
-                  <input className="w-full text-center outline-none bg-transparent" disabled value={chit?.GroupCode}  />
+                  <input className="w-full text-center outline-none bg-transparent uppercase" disabled value={chit?.GroupCode}  />
                 </td>
                 <td className="border-r border-black">
                   <input className="w-full text-center outline-none bg-transparent" disabled value={chit?.TicketNmber}/>
@@ -134,7 +134,7 @@ const MeetingMinutesForm = ({ chit, user, chitAgreement, bidAgreement}) => {
             Date :
             <input className="border-b border-black mx-2 w-32 outline-none bg-transparent text-center" disabled value={dayjs(bidAgreement?.dateofAuction).format('DD MMM YYYY')} />
             In Chit No.
-            <input className="border-b border-black mx-2 w-32 outline-none bg-transparent text-center" disabled value={chit?.GroupCode}/>
+            <input className="border-b border-black mx-2 w-32 outline-none bg-transparent text-center uppercase" disabled value={chit?.GroupCode}/>
             is Shri.
             <input className="border-b border-black mx-2 w-80 outline-none bg-transparent text-center" disabled
                     value={`${user?.firstname} ${user?.middlename} ${user?.lastname}`}/>
@@ -202,7 +202,7 @@ const MeetingMinutesForm = ({ chit, user, chitAgreement, bidAgreement}) => {
 
           <p>
             b) Future Subscription of Prized Subscriber in No.
-            <input className="border-b border-black mx-2 w-32 outline-none bg-transparent text-center" disabled value={`${chit?.GroupCode}/ ${chit?.TicketNmber}`} />
+            <input className="border-b border-black mx-2 w-32 outline-none bg-transparent text-center uppercase" disabled value={`${chit?.GroupCode}/ ${chit?.TicketNmber}`} />
             On
             <input className="border-b border-black mx-2 w-28 outline-none bg-transparent text-center" disabled value={dayjs(bidAgreement?.dateofAuction).format('DD MMM YYYY')}  />
             Withdrawals, if any.

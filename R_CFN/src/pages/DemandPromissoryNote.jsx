@@ -2,7 +2,7 @@ import dayjs from "dayjs";
 import React from "react";
 
 import { numberToWords } from "amount-to-words";
-const DemandPromissoryNote = ({chit, user, chitAgreement, bidAgreement, gurantor}) => {
+const DemandPromissoryNote = ({ chit, user, chitAgreement, bidAgreement, gurantor, gurantor2 }) => {
   return (
     <>
       <div className="max-w-4xl mx-auto bg-white border border-black px-8 py-6 text-[16px] leading-6 ">
@@ -30,14 +30,14 @@ const DemandPromissoryNote = ({chit, user, chitAgreement, bidAgreement, gurantor
         {/* DATE */}
         <div className="flex justify-end mt-3">
           <span className="mr-2">Date :</span>
-          <input className="border-b border-black w-48 outline-none bg-transparent text-center" disabled value={bidAgreement?.dateofAuction ? dayjs(bidAgreement?.dateofAuction).format("DD MMM YYYY") : ""}/>
+          <input className="border-b border-black w-48 outline-none bg-transparent text-center" disabled value={bidAgreement?.dateofAuction ? dayjs(bidAgreement?.dateofAuction).format("DD MMM YYYY") : ""} />
         </div>
 
         {/* CHIT REF + DATE */}
         <div className="flex justify-between mt-3">
           <div className="flex items-center">
             <span className="mr-2">CHIT REF :</span>
-            <input className="border-b border-black w-60 outline-none bg-transparent text-center " disabled value={`${chit?.GroupCode} / ${chit?.TicketNmber}`} />
+            <input className="border-b border-black w-60 outline-none bg-transparent text-center uppercase " disabled value={`${chit?.GroupCode} / ${chit?.TicketNmber}`} />
           </div>
         </div>
 
@@ -58,29 +58,29 @@ const DemandPromissoryNote = ({chit, user, chitAgreement, bidAgreement, gurantor
           Jointly and severally promise to <b> KARDE KRISHNA CHITS PRIVATE LIMITED</b> a
           company Near in corporate under companies act 1956, having its
           registered office at <b>Plot No. 7, Gut No. 216 Holakar Chauk Satara
-          Parisar Chh. Sambhajinagar 431001</b>
+            Parisar Chh. Sambhajinagar 431001</b>
         </p>
 
         {/* AMOUNT */}
         <div className="mt-3 flex items-center">
           <span>Or wherever demand the sum of</span>
-          <input className="border-b border-black mx-3 w-130 outline-none bg-transparent text-center" value={`${numberToWords(chit?.ChitValue)} Rupees`}/>
+          <input className="border-b border-black mx-3 w-130 outline-none bg-transparent text-center" value={`${numberToWords(chit?.ChitValue)} Rupees`} />
         </div>
 
         {/* BAR */}
         <div className="font-bold">
-         AFTER THE DEDUCTION OF FILE CHARGES VERIFICATION CHARGES AND DOCUMENTATION
+          AFTER THE DEDUCTION OF FILE CHARGES VERIFICATION CHARGES AND DOCUMENTATION
           CHARGES
         </div>
 
         {/* INTEREST TEXT */}
         <p className="mt-3 text-[15px] leading-6">
           Payable with interest @18% per annum, being my/our liability to <b>Karde
-          Krishna Chits Private Limited Chh.Sambhajinagar </b>in respect of Ticket
+            Krishna Chits Private Limited Chh.Sambhajinagar </b>in respect of Ticket
           number
-          <input className="border-b border-black mx-2 w-28 outline-none bg-transparent text-center" disabled value={chit?.TicketNmber}/>
+          <input className="border-b border-black mx-2 w-28 outline-none bg-transparent text-center" disabled value={chit?.TicketNmber} />
           in Group Number
-          <input className="border-b border-black mx-2 w-28 outline-none bg-transparent text-center" disabled value={chit?.GroupCode}/>
+          <input className="border-b border-black mx-2 w-28 outline-none bg-transparent text-center uppercase" disabled value={chit?.GroupCode} />
           for the value received.
         </p>
 
@@ -93,7 +93,7 @@ const DemandPromissoryNote = ({chit, user, chitAgreement, bidAgreement, gurantor
         {/* SIGNATURES */}
         <div className="mt-10 space-y-8 mx-10">
           <div className="flex items-center">
-            <input className="border-b border-black w-100 outline-none bg-transparent text-center" disabled value={`${user?.firstname} ${user?.middlename} ${user?.lastname} `}/>
+            <input className="border-b border-black w-100 outline-none bg-transparent text-center" disabled value={`${user?.firstname} ${user?.middlename} ${user?.lastname} `} />
             <div className="w-20 h-24 border border-black ml-10"></div>
           </div>
 
@@ -103,7 +103,11 @@ const DemandPromissoryNote = ({chit, user, chitAgreement, bidAgreement, gurantor
           </div>
 
           <div className="flex items-center">
-            <input className="border-b border-black w-100 outline-none bg-transparent text-center" disabled />
+            <input className="border-b border-black w-100 outline-none bg-transparent text-center" disabled value={
+              gurantor2
+                ? `${gurantor2?.firstname || ""} ${gurantor2?.middlename || ""} ${gurantor2?.lastname || ""}`
+                : ""
+            } />
             <div className="w-20 h-24 border border-black ml-10"></div>
           </div>
         </div>
