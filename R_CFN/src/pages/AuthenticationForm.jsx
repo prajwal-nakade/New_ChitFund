@@ -122,10 +122,11 @@ const AuthenticationForm = () => {
       </Layout>
     );
   }
- const chitAgreement = bidAgreementData?.chitAgreement ?? null;
-const chit = chitAgreement?.chit ?? null;
-const user = chit?.user ?? null;
-const gurantor = bidAgreementData?.gurantor ?? [];
+  const bidAgreement =  bidAgreementData[0]
+const chitAgreement = bidAgreementData[0]?.chitAgreement;
+const chit = chitAgreement?.chit;
+const user = chit?.user;
+const gurantor = bidAgreementData[0]?.gurantor[0] ?? [];
   const getOrdinal = (day) => {
     if (day > 3 && day < 21) return `${day}th`; // 11th–19th
     switch (day % 10) {
@@ -216,7 +217,7 @@ const gurantor = bidAgreementData?.gurantor ?? [];
                   <label className="mr-2">Date :</label>
                   <input
                     disabled
-                    value={dayjs(chit.BylawsDate).format('DD MMM YYYY')}
+                    value={dayjs(bidAgreementData.dateofAuction).format('DD MMM YYYY')}
 
 
                     type="text"
@@ -230,7 +231,11 @@ const gurantor = bidAgreementData?.gurantor ?? [];
                     disabled
                     type="text"
                     className="border-b border-black w-48 outline-none text-center bg-transparent text-sm"
-                    value={chit.GroupCode}
+                    value={
+  chit
+    ? `${chit.GroupCode} / ${chit.TicketNmber}`
+    : ""
+}
                   />
                 </div>
               </div>
@@ -247,7 +252,7 @@ const gurantor = bidAgreementData?.gurantor ?? [];
                   <label className="mr-2">Branch :</label>
                   <input
                     disabled
-                    value={chit.branchName}
+                    value={chit?.branchName}
                     type="text"
                     className="border-b border-black w-64 outline-none bg-transparent text-sm"
                   />
@@ -269,7 +274,7 @@ const gurantor = bidAgreementData?.gurantor ?? [];
                       <input
                         type="text"
                         disabled
-                        value={dayjs(chit.BylawsDate).format("DD MMM YYYY")}
+                        value={dayjs(bidAgreementData.dateofAuction).format("DD MMM YYYY")}
                         className="border-b border-black w-72 outline-none bg-transparent mt-1 text-center font-normal text-sm"
                       />
                     </p>
@@ -302,11 +307,11 @@ const gurantor = bidAgreementData?.gurantor ?? [];
                   </span>
                   <span
                     className="border-b border-black w-28 mx-2 outline-none bg-transparent font-normal text-center text-sm"
-                  >{chit.ChitValue}/-</span>
+                  >{bidAgreementData[0]?.totalBidAmount}/-</span>
 
-                  <span className="border-b border-black w-28 mx-2 outline-none bg-transparent font-normal text-center text-sm">
+                  {/* <span className="border-b border-black w-28 mx-2 outline-none bg-transparent font-normal text-center text-sm">
                     {chit.ChitValue}/-
-                  </span>
+                  </span> */}
 
 
                   <span className="lg:ms-2">for the month of</span>
@@ -314,7 +319,7 @@ const gurantor = bidAgreementData?.gurantor ?? [];
                   <input
 
                     disabled
-                    value={dayjs(chit.BylawsDate).format('MMMM YYYY')}
+                    value={dayjs(bidAgreementData.dateofAuction).format('MMMM')}
 
                     type="text"
                     className="border-b border-black w-40 ml-2 outline-none bg-transparent font-normal text-center text-sm"
@@ -344,7 +349,7 @@ const gurantor = bidAgreementData?.gurantor ?? [];
                   <label className="mr-2">Name :</label>
                   <input
                     type="text"
-                    value={`${user.firstname} ${user.middlename} ${user.lastname}`}
+                    value={`${user?.firstname} ${user?.middlename} ${user?.lastname}`}
                     className="font-medium border-b border-black w-153 outline-none bg-transparent text-sm"
                     disabled
                   />
@@ -354,7 +359,7 @@ const gurantor = bidAgreementData?.gurantor ?? [];
                   <label className="mr-2 w-24">Address :</label>
                   <textarea
                     disabled
-                    value={user.permanent_address}
+                    value={user?.permanent_address}
                     className="w-full border-b border-black outline-none bg-transparent resize-none overflow-hidden leading-tight text-sm"
                   />
                 </div>
@@ -395,58 +400,58 @@ const gurantor = bidAgreementData?.gurantor ?? [];
 
         {selectedForm.meetingMinutes && (
           <div className="print-page">
-            <MeetingMinutesForm chit={chit} user={user} chitAgreementData={chitAgreementData} />
+            <MeetingMinutesForm chit={chit} user={user} chitAgreement={chitAgreement} bidAgreement={bidAgreement}/>
           </div>
         )}
 
         {selectedForm.promissoryNote && (
           <div className="print-page">
-            <PromissoryNote chit={chit} user={user} chitAgreementData={chitAgreementData} />
+            <PromissoryNote chit={chit} user={user} chitAgreement={chitAgreement} bidAgreement={bidAgreement} gurantor={gurantor}/>
           </div>
         )}
         {selectedForm.demandPromissoryNote && (
           <div className="print-page">
-            <DemandPromissoryNote chit={chit} user={user} chitAgreementData={chitAgreementData} />
+            <DemandPromissoryNote chit={chit} user={user} chitAgreement={chitAgreement} bidAgreement={bidAgreement} gurantor={gurantor}/>
           </div>
         )}
         {selectedForm.guaranteeAgreement && (
           <div className="print-page">
-            <GuaranteeAgreement chit={chit} user={user} chitAgreementData={chitAgreementData} />
+            <GuaranteeAgreement chit={chit} user={user} chitAgreement={chitAgreement} bidAgreement={bidAgreement} gurantor={gurantor}/>
           </div>
         )}
         {selectedForm.receiptForAuction && (
           <div className="print-page">
-            <ReceiptForAuction chit={chit} user={user} chitAgreementData={chitAgreementData} />
+            <ReceiptForAuction chit={chit} user={user} chitAgreement={chitAgreement} bidAgreement={bidAgreement} gurantor={gurantor}/>
           </div>
         )}
         {selectedForm.receipt && (
           <div className="print-page">
-            <Receiptform chit={chit} user={user} chitAgreementData={chitAgreementData} />
+            <Receiptform chit={chit} user={user} chitAgreement={chitAgreement} bidAgreement={bidAgreement} gurantor={gurantor}/>
           </div>
         )}
         {selectedForm.bidPayableMemo && (
           <div className="print-page">
-            <BidPayableMemo chit={chit} user={user} chitAgreementData={chitAgreementData} />
+            <BidPayableMemo chit={chit} user={user} chitAgreement={chitAgreement} bidAgreement={bidAgreement} gurantor={gurantor}/>
           </div>
         )}
         {selectedForm.debitParticulars && (
           <div className="print-page">
-            <DebitParticulars chit={chit} user={user} chitAgreementData={chitAgreementData} />
+            <DebitParticulars chit={chit} user={user} chitAgreement={chitAgreement} bidAgreement={bidAgreement} gurantor={gurantor}/>
           </div>
         )}
         {selectedForm.cashVoucher && (
           <div className="print-page">
-            <CashVoucher chit={chit} user={user} chitAgreementData={chitAgreementData} />
+            <CashVoucher chit={chit} user={user} chitAgreement={chitAgreement} bidAgreement={bidAgreement} gurantor={gurantor}/>
           </div>
         )}
         {selectedForm.noClaim && (
           <div className="print-page">
-            <NoClaim chit={chit} user={user} chitAgreementData={chitAgreementData} />
+            <NoClaim chit={chit} user={user} chitAgreement={chitAgreement} bidAgreement={bidAgreement} gurantor={gurantor}/>
           </div>
         )}
         {selectedForm.noc && (
           <div className="print-page">
-            <NOC chit={chit} user={user} chitAgreementData={chitAgreementData} />
+            <NOC chit={chit} user={user} chitAgreement={chitAgreement} bidAgreement={bidAgreement} gurantor={gurantor}/>
           </div>
         )}
       </div>

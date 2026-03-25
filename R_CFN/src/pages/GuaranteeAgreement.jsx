@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import React from "react";
 
-const GuaranteeAgreement = ({ chit, user, chitAgreementData }) => {
+const GuaranteeAgreement = ({ chit, user, chitAgreement, bidAgreement, gurantor }) => {
   return (
     <>
       <div className="max-w-4xl mx-auto bg-white border border-black px-8 py-6 text-[15px] leading-7">
@@ -58,11 +58,10 @@ const GuaranteeAgreement = ({ chit, user, chitAgreementData }) => {
 
         {/* REG DETAILS */}
       
-          <input className="border-b border-black w-60 outline-none bg-transparent mx-2" disabled value={chitAgreementData?.company_reg_number}/>
+          <input className="border-b border-black w-60 outline-none bg-transparent mx-2" disabled value={chitAgreement?.company_reg_number}/>
           <span>Of</span>
-          <input className="border-b border-black w-40 outline-none bg-transparent mx-2 text-center" disabled value={chit?.BylawsDate ? dayjs(chit.BylawsDate).format("DD MMM YYYY") : ""}/>
-          <span>dated</span>
-          <input className="border-b border-black w-40 outline-none bg-transparent mx-2" />
+          <input className="border-b border-black w-40 outline-none bg-transparent mx-2 text-center" disabled value={bidAgreement?.dateofAuction ? dayjs(chitAgreement.dateofAuction).format("DD MMM YYYY") : ""}/>
+          
           <span>under section 4” if the Maharashtra Chit Fund Act1982</span>
           </p>
         </div>
@@ -217,9 +216,9 @@ const GuaranteeAgreement = ({ chit, user, chitAgreementData }) => {
           <p className="mt-3 text-[15px] leading-6">
             The Guarantee Agreement made and entered in to Chh. Sambhajinagar on
             the
-            <input className="border-b border-black mx-2 w-28 outline-none bg-transparent text-center" disabled value={chit?.BylawsDate ? dayjs(chit.BylawsDate).format("DD") : ""} />
+            <input className="border-b border-black mx-2 w-28 outline-none bg-transparent text-center" disabled value={bidAgreement?.dateofAuction ? dayjs(chitAgreement.dateofAuction).format("DD") : ""} />
             day of
-            <input className="border-b border-black mx-2 w-28 outline-none bg-transparent" disabled value={chit?.BylawsDate ? dayjs(chit.BylawsDate).format("MMMM YYYY") : ""}/>
+            <input className="border-b border-black mx-2 w-28 outline-none bg-transparent" disabled value={ bidAgreement.dateofAuction ? dayjs(bidAgreement.dateofAuction).format("MMMM YYYY") : ""}/>
           </p>
         </div>
 
@@ -231,7 +230,12 @@ const GuaranteeAgreement = ({ chit, user, chitAgreementData }) => {
           </div>
 
           <div className="flex items-center">
-            <input className="border-b border-black w-100 outline-none bg-transparent text-center" disabled value={`${user?.nominees[0].firstname} ${user?.nominees[0].middlename} ${user?.nominees[0].lastname} `} />
+            <input className="border-b border-black w-100 outline-none bg-transparent text-center" disabled value={`${gurantor?.firstname} ${gurantor?.middlename} ${gurantor?.lastname} `} />
+            <div className="w-20 h-24 border border-black ml-10"></div>
+          </div>
+
+          <div className="flex items-center">
+            <input className="border-b border-black w-100 outline-none bg-transparent text-center" disabled />
             <div className="w-20 h-24 border border-black ml-10"></div>
           </div>
         </div>

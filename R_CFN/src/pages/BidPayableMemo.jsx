@@ -1,6 +1,7 @@
+import dayjs from "dayjs";
 import React from "react";
 
-const BidPayableMemo = ({ chit, user, chitAgreementData }) => {
+const BidPayableMemo = ({ chit, user, chitAgreement, bidAgreement, gurantor }) => {
   return (
     <>
       <div className="max-w-4xl mx-auto bg-white border border-black px-8 py-6 text-[15px] leading-8 text-justify">
@@ -30,28 +31,28 @@ const BidPayableMemo = ({ chit, user, chitAgreementData }) => {
           </div>
           <div className="flex">
             <p>Chit Ref -</p>
-            <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1 text-center" value={chit.GroupCode} />
+            <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1 text-center uppercase" value={`${chit?.GroupCode} / ${chit?.TicketNmber}`} />
 
             <p>Date of Auction-</p>
-            <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1" />
+            <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1 text-center" value={dayjs(bidAgreement?.dateofAuction).format("DD MMM YYYY")}/>
           </div>
           <div className="flex">
             <p>Chit Value Rs. -</p>
-            <input className="border-b border-black w-40 outline-none bg-transparent mx-2 text-center" disabled value={chit.ChitValue} />
+            <input className="border-b border-black w-40 outline-none bg-transparent mx-2 text-center" disabled value={chit?.ChitValue} />
             <p>Rs. -</p>
             <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1" />
           </div>
           <div className="flex">
             <p>Less Bid Rs. -</p>
-            <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1" />
+            <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1" value={bidAgreement?.totalBidAmount} />
           </div>
           <div className="flex">
             <p>Foreman's Commission Rs.-</p>
-            <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1" />
+            <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1" value={bidAgreement?.foremanCommision}/>
           </div>
           <div className="flex">
             <p>Dividend to Members Rs. -</p>
-            <input className="border-b border-black w-40 outline-none bg-transparent mx-2 " />
+            <input className="border-b border-black w-40 outline-none bg-transparent mx-2 text-center " value={bidAgreement?.dividend} />
             <p>Rs. -</p>
             <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1" />
           </div>
