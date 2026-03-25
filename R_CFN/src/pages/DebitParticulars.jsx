@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import React from "react";
 
-const DebitParticulars = ({ chit, user, chitAgreementData }) => {
+const DebitParticulars = ({chit, user, chitAgreement, bidAgreement, gurantor }) => {
   return (
     <>
       <div className="max-w-4xl mx-auto bg-white border border-black px-8 py-6 text-[15px] leading-8 text-justify">
@@ -31,7 +31,7 @@ const DebitParticulars = ({ chit, user, chitAgreementData }) => {
           </div>
           <div className="flex">
             <p>Date :</p>
-            <input className="border-b border-black w-40 outline-none bg-transparent text-center" disabled value={chit?.BylawsDate ? dayjs(chit.BylawsDate).format("DD MMM YYYY") : ""} />
+            <input className="border-b border-black w-40 outline-none bg-transparent text-center" disabled value={bidAgreement?.dateofAuction ? dayjs(bidAgreement?.dateofAuction).format("DD MMM YYYY") : ""} />
           </div>
         </div>
 
@@ -49,12 +49,12 @@ const DebitParticulars = ({ chit, user, chitAgreementData }) => {
 
           <div className="flex">
             <p>Less Foremen Commission-</p>
-            <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1" />
+            <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1" value={bidAgreement?.foremanCommision} />
           </div>
 
           <div className="flex">
             <p>Less Dividend to Members -</p>
-            <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1" />
+            <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1" value={bidAgreement?.dividend}/>
           </div>
           <div className="flex">
             <p>Less Service Tаx -</p>

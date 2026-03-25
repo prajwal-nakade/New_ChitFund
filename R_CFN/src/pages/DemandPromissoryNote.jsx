@@ -2,7 +2,7 @@ import dayjs from "dayjs";
 import React from "react";
 
 
-const DemandPromissoryNote = ({ chit, user, chitAgreementData }) => {
+const DemandPromissoryNote = ({chit, user, chitAgreement, bidAgreement, gurantor}) => {
   return (
     <>
       <div className="max-w-4xl mx-auto bg-white border border-black px-8 py-6 text-[16px] leading-6 ">
@@ -30,14 +30,14 @@ const DemandPromissoryNote = ({ chit, user, chitAgreementData }) => {
         {/* DATE */}
         <div className="flex justify-end mt-3">
           <span className="mr-2">Date :</span>
-          <input className="border-b border-black w-48 outline-none bg-transparent text-center" disabled value={chit?.BylawsDate ? dayjs(chit.BylawsDate).format("DD MMM YYYY") : ""}/>
+          <input className="border-b border-black w-48 outline-none bg-transparent text-center" disabled value={bidAgreement?.dateofAuction ? dayjs(bidAgreement?.dateofAuction).format("DD MMM YYYY") : ""}/>
         </div>
 
         {/* CHIT REF + DATE */}
         <div className="flex justify-between mt-3">
           <div className="flex items-center">
             <span className="mr-2">CHIT REF :</span>
-            <input className="border-b border-black w-60 outline-none bg-transparent text-center " disabled value={chit?.GroupCode} />
+            <input className="border-b border-black w-60 outline-none bg-transparent text-center " disabled value={`${chit?.GroupCode} / ${chit?.TicketNmber}`} />
           </div>
         </div>
 
@@ -98,7 +98,12 @@ const DemandPromissoryNote = ({ chit, user, chitAgreementData }) => {
           </div>
 
           <div className="flex items-center">
-            <input className="border-b border-black w-100 outline-none bg-transparent text-center" disabled value={`${user?.nominees[0].firstname} ${user?.nominees[0].middlename} ${user?.nominees[0].lastname} `} />
+            <input className="border-b border-black w-100 outline-none bg-transparent text-center" disabled value={`${gurantor?.firstname} ${gurantor?.middlename} ${gurantor?.lastname} `} />
+            <div className="w-20 h-24 border border-black ml-10"></div>
+          </div>
+
+          <div className="flex items-center">
+            <input className="border-b border-black w-100 outline-none bg-transparent text-center" disabled />
             <div className="w-20 h-24 border border-black ml-10"></div>
           </div>
         </div>

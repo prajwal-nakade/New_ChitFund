@@ -1,6 +1,6 @@
 import React from "react";
 
-const NOC = () => {
+const NOC = ({chit, user, chitAgreement, bidAgreement, gurantor}) => {
   return (
     <>
       <div className="max-w-4xl mx-auto bg-white border border-black px-8 py-6 text-[15px] leading-8 text-justify">
@@ -42,9 +42,9 @@ const NOC = () => {
             मी वर्गणीदारश्री./सौ.{" "}
             <input className="border-b border-black w-64 outline-none bg-transparent" />{" "}
             ग्रुप नं.{" "}
-            <input className="border-b border-black w-50 outline-none bg-transparent" />{" "}
+            <input className="border-b border-black w-50 outline-none bg-transparent text-center uppercase" value={chit?.GroupCode}/>{" "}
             तिकीट नं.{" "}
-            <input className="border-b border-black w-30 outline-none bg-transparent" />{" "}
+            <input className="border-b border-black w-30 outline-none bg-transparent text-center" value={chit?.TicketNmber}/>{" "}
             मला सदर करडे कृष्णा चिट्स प्रायव्हेट लिमिटेड यांच्या कडून दिनांक{" "}
             <input className="border-b border-black w-64 outline-none bg-transparent" />{" "}
             रोजी{" "}

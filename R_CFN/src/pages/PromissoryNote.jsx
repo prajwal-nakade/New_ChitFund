@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 import React from "react";
 
 
-const PromissoryNote = ({ chit, user, chitAgreementData }) => {
+const PromissoryNote = ({ chit, user, chitAgreement, bidAgreement, gurantor }) => {
   return (
     <div className="max-w-4xl mx-auto bg-white border border-black px-8 py-6 text-[16px] leading-6 ">
 
@@ -32,14 +32,14 @@ const PromissoryNote = ({ chit, user, chitAgreementData }) => {
       {/* DATE */}
       <div className="flex justify-end mt-3">
         <span className="mr-2">Date :</span>
-        <input className="border-b border-black w-48 outline-none bg-transparent text-center" disabled value={chit?.BylawsDate ? dayjs(chit.BylawsDate).format("DD MMM YYYY") : ""}/>
+        <input className="border-b border-black w-48 outline-none bg-transparent text-center" disabled value={chit?.BylawsDate ? dayjs(bidAgreement?.dateofAuction).format("DD MMM YYYY") : ""}/>
       </div>
 
       {/* REF + AMOUNT */}
       <div className="mt-3">
         <div className="flex items-center">
           <span className="mr-2">CHIT REF :</span>
-          <input className="border-b border-black w-64 outline-none bg-transparent text-center " disabled value={chit?.GroupCode} />
+          <input className="border-b border-black w-64 outline-none bg-transparent text-center " disabled value={`${chit?.GroupCode}/${chit?.TicketNmber}`} />
 
 
         </div>
@@ -61,7 +61,7 @@ const PromissoryNote = ({ chit, user, chitAgreementData }) => {
 
       <div className="mt-3">
         Repayable with interest at
-        <span className="inline-block border-b border-black w-20 mx-2"></span>
+        <span className="inline-block border-b border-black w-20 mx-2">18%</span>
         Percent per annum being the amount of the future installment due to
         Messrs.
       </div>
@@ -78,15 +78,15 @@ const PromissoryNote = ({ chit, user, chitAgreementData }) => {
           in
           <span className="inline-block border-b border-black w-32 mx-2 text-center">{chit?.GroupCode}</span>
           series, in Monthly Installment of Rs.
-          <span className="inline-block border-b border-black w-24 mx-2 text-center ">{chitAgreementData?.installment_amount}</span>
+          <span className="inline-block border-b border-black w-24 mx-2 text-center ">{chitAgreement?.installment_amount}</span>
         </div>
 
         <div className="mt-1">
           ( Rupees
           <span className="inline-block border-b border-black w-64 mx-2"></span>
           only ) for
-          <span className="inline-block border-b border-black w-16 mx-2 text-center">{chit?.Duration}</span>
-          {chit?.DurationCategory}
+          <span className="inline-block border-b border-black w-16 mx-2 text-center">{bidAgreement?.totalMemberofGroup}</span>
+          Months
 
           <span className="inline-block border-b border-black w-64 mx-2"></span>
         </div>
@@ -114,7 +114,7 @@ const PromissoryNote = ({ chit, user, chitAgreementData }) => {
         <div className="flex justify-between items-end">
           <div className="w-[400px] flex flex-col items-center justify-center">
             <div className="border-b border-black w-full text-center">
-                <span className="text-center w-full">{`${user?.nominees[0]?.firstname} ${user?.nominees[0]?.middlename} ${user?.nominees[0]?.lastname} `}</span>
+                <span className="text-center w-full">{`${gurantor?.firstname} ${gurantor?.middlename} ${gurantor?.lastname} `}</span>
             </div>
             <p className="text-sm mt-1 text-center">Name Of Guarantor 01</p>
           </div>
