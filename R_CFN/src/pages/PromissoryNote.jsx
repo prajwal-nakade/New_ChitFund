@@ -31,9 +31,6 @@ const PromissoryNote = ({ chit, user, chitAgreementData }) => {
         <input
           className="border-b border-black w-48 outline-none bg-transparent text-center"
           disabled
-          value={
-            chit?.BylawsDate ? dayjs(chit.BylawsDate).format("DD MMM YYYY") : ""
-          }
         />
       </div>
 
@@ -44,7 +41,7 @@ const PromissoryNote = ({ chit, user, chitAgreementData }) => {
           <input
             className="border-b border-black w-64 outline-none bg-transparent text-center "
             disabled
-            value={chit?.GroupCode}
+            value={`${chit.GroupCode} / ${chit.TicketNmber}`}
           />
         </div>
 
@@ -100,9 +97,9 @@ const PromissoryNote = ({ chit, user, chitAgreementData }) => {
           <span className="inline-block border-b border-black w-64 mx-2"></span>
           only ) for
           <span className="inline-block border-b border-black w-16 mx-2 text-center">
-            {chit?.Duration}
+           
           </span>
-          {chit?.DurationCategory}
+          Months
           <span className="inline-block border-b border-black w-64 mx-2"></span>
         </div>
       </div>
@@ -128,7 +125,7 @@ const PromissoryNote = ({ chit, user, chitAgreementData }) => {
         <div className="flex justify-between items-end">
           <div className="w-100 flex flex-col items-center justify-center">
             <div className="border-b border-black w-full text-center">
-              <span className="text-center w-full">{`${user?.nominees[0]?.firstname} ${user?.nominees[0]?.middlename} ${user?.nominees[0]?.lastname} `}</span>
+              <span className="text-center w-full"></span>
             </div>
             <p className="text-sm mt-1 text-center">Name Of Guarantor 01</p>
           </div>
@@ -141,7 +138,7 @@ const PromissoryNote = ({ chit, user, chitAgreementData }) => {
 
         {/* Guarantor 02 */}
         <div className="flex justify-between items-end ">
-          <div className="w-[400px] flex flex-col items-center justify-center">
+          <div className="w-100 flex flex-col items-center justify-center">
             <div className="border-b border-black w-full"></div>
             <p className="text-sm text-center mt-1">Name Of Guarantor 02</p>
           </div>

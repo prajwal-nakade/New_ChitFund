@@ -44,6 +44,7 @@ const Navbar = () => {
     { title: "View Chit Agreement", icon: <ClipboardList size={16} />, path: "/ViewChitAgreement" },
     
     
+    
   ];
 
   const masterSubMenus = [

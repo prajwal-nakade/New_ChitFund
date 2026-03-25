@@ -1,7 +1,16 @@
 import React from "react";
 import Layout from "../components/layout";
+import { useNavigate } from "react-router-dom"; // 1. Added this import
 
 const BidAgreementDetails = () => {
+  const navigate = useNavigate(); // 2. Initialized the navigate hook
+
+  // 3. Added the submit handler
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    navigate("/authenticationform/3");
+  };
+
   const tableRowClass =
     "border-b border-neutral-200 last:border-none hover:bg-gray-50 transition-colors";
   const labelCellClass =
@@ -19,7 +28,8 @@ const BidAgreementDetails = () => {
           Bid Agreement Details
         </h1>
 
-        <form className="bg-white shadow-lg rounded-b-md border border-neutral-300 overflow-hidden">
+        {/* 4. Added onSubmit={handleSubmit} to the form */}
+        <form onSubmit={handleSubmit} className="bg-white shadow-lg rounded-b-md border border-neutral-300 overflow-hidden">
           <table className="w-full border-collapse">
             <tbody>
               {/* --- Basic Details --- */}
@@ -50,6 +60,7 @@ const BidAgreementDetails = () => {
                 </td>
                 <td className={inputCellClass}>
                   <input
+                    type="number"
                     placeholder="Total Bid Amount"
                     className={inputClass}
                     required
@@ -74,6 +85,7 @@ const BidAgreementDetails = () => {
                 </td>
                 <td className={inputCellClass}>
                   <input
+                    type="number"
                     placeholder="Prized Amount"
                     className={inputClass}
                     required
@@ -86,6 +98,7 @@ const BidAgreementDetails = () => {
                 </td>
                 <td className={inputCellClass}>
                   <input
+                    type="number"
                     placeholder="Dividend"
                     className={inputClass}
                     required
@@ -98,6 +111,7 @@ const BidAgreementDetails = () => {
                 </td>
                 <td className={inputCellClass}>
                   <input
+                    type="number"
                     placeholder="Total Members of Group"
                     className={inputClass}
                     required
@@ -110,11 +124,7 @@ const BidAgreementDetails = () => {
                   <span className="text-red-500">*</span>
                 </td>
                 <td className={inputCellClass}>
-                  <input
-                    placeholder="Surety Papers Received From p/s On"
-                    className={inputClass}
-                    required
-                  />
+                  <input type="date" className={inputClass} required />
                 </td>
               </tr>
               <tr className={tableRowClass}>
@@ -314,14 +324,14 @@ const BidAgreementDetails = () => {
                     <input
                       placeholder="First"
                       className={inputClass}
-                      required
+                      
                     />
                     <input
                       placeholder="Middle"
                       className={inputClass}
-                      required
+                      
                     />
-                    <input placeholder="Last" className={inputClass} required />
+                    <input placeholder="Last" className={inputClass} />
                   </div>
                 </td>
               </tr>
@@ -330,7 +340,7 @@ const BidAgreementDetails = () => {
                   Date of Birth <span className="text-red-500">*</span>
                 </td>
                 <td className={inputCellClass}>
-                  <input type="date" className={inputClass} required />
+                  <input type="date" className={inputClass}  />
                 </td>
               </tr>
               <tr className={tableRowClass}>
@@ -341,7 +351,7 @@ const BidAgreementDetails = () => {
                   <input
                     placeholder="Mobile Number"
                     className={inputClass}
-                    required
+                    
                   />
                 </td>
               </tr>
@@ -354,7 +364,7 @@ const BidAgreementDetails = () => {
                     <input
                       placeholder="PAN"
                       className={`${inputClass} uppercase`}
-                      required
+                      
                     />
                     <label className={fileBtnClass}>
                       PAN Front
@@ -378,7 +388,7 @@ const BidAgreementDetails = () => {
                       name="aadhar"
                       placeholder="Enter your 12 digit Aadhar number"
                       className={inputClass}
-                      required
+                      
                     />
                     <div className="flex gap-2">
                       <label className={fileBtnClass}>

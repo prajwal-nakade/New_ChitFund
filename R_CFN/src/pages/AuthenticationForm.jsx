@@ -32,8 +32,7 @@ const AuthenticationForm = () => {
     cashVoucher: false,
     noClaim: false,
     noc: false
-
-  })
+  });
 
   const { id } = useParams();
   const [chitAgreementData, setChitAgreementData] = useState(null);
@@ -46,9 +45,22 @@ const AuthenticationForm = () => {
 
   useEffect(() => {
     fetchChitAgreementData();
-
   }, []);
-    const isAnySelected = Object.values(selectedForm).some(value => value === true)
+
+  const isAnySelected = Object.values(selectedForm).some(value => value === true);
+  
+  // 1. ADDED: Check if all forms are selected
+  const isAllSelected = Object.values(selectedForm).every(value => value === true);
+
+  // 2. ADDED: Function to handle Select All / Deselect All
+  const handleSelectAll = (e) => {
+    const isChecked = e.target.checked;
+    const updatedForms = Object.keys(selectedForm).reduce((acc, key) => {
+      acc[key] = isChecked;
+      return acc;
+    }, {});
+    setSelectedForms(updatedForms);
+  };
 
   const ref = useRef();
   const handleDownload = useReactToPrint({
@@ -96,7 +108,6 @@ const AuthenticationForm = () => {
     `,
   });
 
-
   if (!chitAgreementData) {
     return (
       <Layout>
@@ -121,42 +132,55 @@ const AuthenticationForm = () => {
       case 2: return `${day}nd`;
       case 3: return `${day}rd`;
       default: return `${day}th`;
-
-
     }
   };
+
   return (
     <Layout>
-
       <div className="max-w-4xl mx-5 lg:mx-auto mt-4" >
         <div className="w-full flex flex-col items-start justify-start gap-1 ">
-        <h1 className="w-full font-semibold text-neutral-800 tracking-tight text-2xl flex items-center gap-1"><File size={22} className="text-neutral-800"/>Select Forms</h1>
-        <span className="text-sm text-neutral-500 tracking-tight leading-3">Choose the forms you need to process.</span>
+          <h1 className="w-full font-semibold text-neutral-800 tracking-tight text-2xl flex items-center gap-1"><File size={22} className="text-neutral-800"/>Select Forms</h1>
+          <span className="text-sm text-neutral-500 tracking-tight leading-3">Choose the forms you need to process.</span>
+        </div>
+        
+        {/* 3. ADDED: Select All Checkbox UI */}
+        <div className="mt-4 flex justify-end">
+          <label className="px-4 py-1 text-xs mx-8 bg-neutral-100 border border-neutral-300 flex items-center justify-start gap-1 rounded-sm shadow hover:bg-neutral-200 cursor-pointer transition-all">
+            <input 
+              type="checkbox" 
+              checked={isAllSelected} 
+              onChange={handleSelectAll} 
+              className="cursor-pointer w-4 h-4"
+            /> 
+            Select All Forms
+          </label>
         </div>
       </div>
-      <div className="grid grid-col-1 lg:grid-cols-2 space-x-7 mb-6 max-w-4xl mx-4 lg:mx-auto my-7 space-y-3 w-full">
-        <label className="px-3 py-1 text-sm border border-neutral-300 flex items-center justify-start gap-3 rounded-lg shadow hover:bg-gray-100 cursor-pointer hover:scale-102 transition-all du"><input type="checkbox" onChange={(e) => setSelectedForms(prev => ({ ...prev, authenticationForm: e.target.checked }))} />Authentication Form</label>
-        <label className="px-3 py-1 text-sm border border-neutral-300 flex items-center justify-start gap-3 rounded-lg shadow hover:bg-gray-100 cursor-pointer hover:scale-102 transition-all du"><input type="checkbox" onChange={(e) => setSelectedForms(prev => ({ ...prev, meetingMinutes: e.target.checked }))} /> Meeting Minutes</label>
 
-        <label className="px-3 py-1 text-sm border border-neutral-300 flex items-center justify-start gap-3 rounded-lg shadow hover:bg-gray-100 cursor-pointer hover:scale-102 transition-all du"><input type="checkbox" onChange={(e) => setSelectedForms(prev => ({ ...prev, promissoryNote: e.target.checked }))} /> Promissory Note</label>
+      <div className="grid grid-col-1 lg:grid-cols-2 space-x-7 mb-6 max-w-4xl mx-4 lg:mx-auto my-5 space-y-3 w-full">
+        {/* ADDED checked={...} to all inputs below to reflect the state visually */}
+        <label className="px-3 py-1 text-sm border border-neutral-300 flex items-center justify-start gap-3 rounded-lg shadow hover:bg-gray-100 cursor-pointer hover:scale-102 transition-all du"><input type="checkbox" checked={selectedForm.authenticationForm} onChange={(e) => setSelectedForms(prev => ({ ...prev, authenticationForm: e.target.checked }))} />Authentication Form</label>
+        <label className="px-3 py-1 text-sm border border-neutral-300 flex items-center justify-start gap-3 rounded-lg shadow hover:bg-gray-100 cursor-pointer hover:scale-102 transition-all du"><input type="checkbox" checked={selectedForm.meetingMinutes} onChange={(e) => setSelectedForms(prev => ({ ...prev, meetingMinutes: e.target.checked }))} /> Meeting Minutes</label>
 
-        <label className="px-3 py-1 text-sm border border-neutral-300 flex items-center justify-start gap-3 rounded-lg shadow hover:bg-gray-100 cursor-pointer hover:scale-102 transition-all du"><input type="checkbox" onChange={(e) => setSelectedForms(prev => ({ ...prev, demandPromissoryNote: e.target.checked }))} /> Demand Promissory Note</label>
+        <label className="px-3 py-1 text-sm border border-neutral-300 flex items-center justify-start gap-3 rounded-lg shadow hover:bg-gray-100 cursor-pointer hover:scale-102 transition-all du"><input type="checkbox" checked={selectedForm.promissoryNote} onChange={(e) => setSelectedForms(prev => ({ ...prev, promissoryNote: e.target.checked }))} /> Promissory Note</label>
 
-        <label className="px-3 py-1 text-sm border border-neutral-300 flex items-center justify-start gap-3 rounded-lg shadow hover:bg-gray-100 cursor-pointer hover:scale-102 transition-all du"><input type="checkbox" onChange={(e) => setSelectedForms(prev => ({ ...prev, guaranteeAgreement: e.target.checked }))} /> Guarantee Agreement</label>
+        <label className="px-3 py-1 text-sm border border-neutral-300 flex items-center justify-start gap-3 rounded-lg shadow hover:bg-gray-100 cursor-pointer hover:scale-102 transition-all du"><input type="checkbox" checked={selectedForm.demandPromissoryNote} onChange={(e) => setSelectedForms(prev => ({ ...prev, demandPromissoryNote: e.target.checked }))} /> Demand Promissory Note</label>
 
-        <label className="px-3 py-1 text-sm border border-neutral-300 flex items-center justify-start gap-3 rounded-lg shadow hover:bg-gray-100 cursor-pointer hover:scale-102 transition-all du"><input type="checkbox" onChange={(e) => setSelectedForms(prev => ({ ...prev, receiptForAuction: e.target.checked }))} /> Receipt For Auction</label>
+        <label className="px-3 py-1 text-sm border border-neutral-300 flex items-center justify-start gap-3 rounded-lg shadow hover:bg-gray-100 cursor-pointer hover:scale-102 transition-all du"><input type="checkbox" checked={selectedForm.guaranteeAgreement} onChange={(e) => setSelectedForms(prev => ({ ...prev, guaranteeAgreement: e.target.checked }))} /> Guarantee Agreement</label>
 
-        <label className="px-3 py-1 text-sm border border-neutral-300 flex items-center justify-start gap-3 rounded-lg shadow hover:bg-gray-100 cursor-pointer hover:scale-102 transition-all du"><input type="checkbox" onChange={(e) => setSelectedForms(prev => ({ ...prev, receipt: e.target.checked }))} /> Receipt</label>
+        <label className="px-3 py-1 text-sm border border-neutral-300 flex items-center justify-start gap-3 rounded-lg shadow hover:bg-gray-100 cursor-pointer hover:scale-102 transition-all du"><input type="checkbox" checked={selectedForm.receiptForAuction} onChange={(e) => setSelectedForms(prev => ({ ...prev, receiptForAuction: e.target.checked }))} /> Receipt For Auction</label>
 
-        <label className="px-3 py-1 text-sm border border-neutral-300 flex items-center justify-start gap-3 rounded-lg shadow hover:bg-gray-100 cursor-pointer hover:scale-102 transition-all du"><input type="checkbox" onChange={(e) => setSelectedForms(prev => ({ ...prev, bidPayableMemo: e.target.checked }))} /> Bid Payable Memo</label>
+        <label className="px-3 py-1 text-sm border border-neutral-300 flex items-center justify-start gap-3 rounded-lg shadow hover:bg-gray-100 cursor-pointer hover:scale-102 transition-all du"><input type="checkbox" checked={selectedForm.receipt} onChange={(e) => setSelectedForms(prev => ({ ...prev, receipt: e.target.checked }))} /> Receipt</label>
 
-        <label className="px-3 py-1 text-sm border border-neutral-300 flex items-center justify-start gap-3 rounded-lg shadow hover:bg-gray-100 cursor-pointer hover:scale-102 transition-all du"><input type="checkbox" onChange={(e) => setSelectedForms(prev => ({ ...prev, debitParticulars: e.target.checked }))} /> Debit Particulars</label>
+        <label className="px-3 py-1 text-sm border border-neutral-300 flex items-center justify-start gap-3 rounded-lg shadow hover:bg-gray-100 cursor-pointer hover:scale-102 transition-all du"><input type="checkbox" checked={selectedForm.bidPayableMemo} onChange={(e) => setSelectedForms(prev => ({ ...prev, bidPayableMemo: e.target.checked }))} /> Bid Payable Memo</label>
 
-        <label className="px-3 py-1 text-sm border border-neutral-300 flex items-center justify-start gap-3 rounded-lg shadow hover:bg-gray-100 cursor-pointer hover:scale-102 transition-all du"><input type="checkbox" onChange={(e) => setSelectedForms(prev => ({ ...prev, cashVoucher: e.target.checked }))} /> Cash Voucher</label>
+        <label className="px-3 py-1 text-sm border border-neutral-300 flex items-center justify-start gap-3 rounded-lg shadow hover:bg-gray-100 cursor-pointer hover:scale-102 transition-all du"><input type="checkbox" checked={selectedForm.debitParticulars} onChange={(e) => setSelectedForms(prev => ({ ...prev, debitParticulars: e.target.checked }))} /> Debit Particulars</label>
 
-        <label className="px-3 py-1 text-sm border border-neutral-300 flex items-center justify-start gap-3 rounded-lg shadow hover:bg-gray-100 cursor-pointer hover:scale-102 transition-all du"><input type="checkbox" onChange={(e) => setSelectedForms(prev => ({ ...prev, noClaim: e.target.checked }))} /> No Claim</label>
+        <label className="px-3 py-1 text-sm border border-neutral-300 flex items-center justify-start gap-3 rounded-lg shadow hover:bg-gray-100 cursor-pointer hover:scale-102 transition-all du"><input type="checkbox" checked={selectedForm.cashVoucher} onChange={(e) => setSelectedForms(prev => ({ ...prev, cashVoucher: e.target.checked }))} /> Cash Voucher</label>
 
-        <label className="px-3 py-1 text-sm border border-neutral-300 flex items-center justify-start gap-3 rounded-lg shadow hover:bg-gray-100 cursor-pointer hover:scale-102 transition-all du"><input type="checkbox" onChange={(e) => setSelectedForms(prev => ({ ...prev, noc: e.target.checked }))} /> NOC</label>
+        <label className="px-3 py-1 text-sm border border-neutral-300 flex items-center justify-start gap-3 rounded-lg shadow hover:bg-gray-100 cursor-pointer hover:scale-102 transition-all du"><input type="checkbox" checked={selectedForm.noClaim} onChange={(e) => setSelectedForms(prev => ({ ...prev, noClaim: e.target.checked }))} /> No Claim</label>
+
+        <label className="px-3 py-1 text-sm border border-neutral-300 flex items-center justify-start gap-3 rounded-lg shadow hover:bg-gray-100 cursor-pointer hover:scale-102 transition-all du"><input type="checkbox" checked={selectedForm.noc} onChange={(e) => setSelectedForms(prev => ({ ...prev, noc: e.target.checked }))} /> NOC</label>
         <span></span>
       </div>
 
