@@ -43,12 +43,18 @@ const MeetingMinutesForm = ({ chit, user, chitAgreementData }) => {
 
           <p className="flex flex-wrap items-center">
             <span className="">Office Where the Bye –Laws are Registered</span>
-            <input className="border-b border-black mx-2 w-90 outline-none bg-transparent" />
+            <input
+              className="border-b border-black mx-2 w-90 outline-none bg-transparent text-center"
+              disabled
+              value={"Joint Registrar of Chit Chh. Sambhajinagar"}
+            />
             <p className="flex mt-3">
               <span>Registration No.</span>
-              <input disabled value={chitAgreementData.
-                company_reg_number
-              } className="border-b border-black mx-2 w-55 outline-none bg-transparent text-sm text-center" />
+              <input
+                disabled
+                value={chit.ByLawsNumber}
+                className="border-b border-black mx-2 w-55 outline-none bg-transparent text-sm text-center"
+              />
             </p>
             Office of the Registration in case where the chits are Conducted by
             filing the certified copy of Bye-Laws.
@@ -57,31 +63,63 @@ const MeetingMinutesForm = ({ chit, user, chitAgreementData }) => {
           <p className="flex flex-wrap items-center">
             MINUTES OF proceeding (under section 17 of the chit funds act 1982)
             of Drawing Rs.
-            <input className="border-b border-black mx-2 w-24 outline-none bg-transparent text-center" disabled value={chit.ChitValue} />
+            <input
+              className="border-b border-black mx-2 w-24 outline-none bg-transparent text-center"
+              disabled
+              value={chit.ChitValue}
+            />
             The proceeding began on
-            <input className="border-b border-black mx-2 w-28 outline-none bg-transparent text-center" disabled value={dayjs(chit.BylawsDate).format('DD MMM YYYY')} />
+            <input
+              className="border-b border-black mx-2 w-28 outline-none bg-transparent text-center"
+              disabled
+              value={dayjs(chit.BylawsDate).format("DD MMM YYYY")}
+            />
             at
-            <input className="border-b border-black mx-2 w-16 outline-none bg-transparent text-center" />
+            <input
+              className="border-b border-black mx-2 w-30 outline-none bg-transparent text-center"
+              disabled
+              value={"Head Office"}
+            />
             hours
-            <input className="border-b border-black mx-2 outline-none bg-transparent text-center" readOnly type="time" value={chitAgreementData.auction_session_start} />
+            <input
+              className="border-b border-black mx-2 outline-none bg-transparent text-center"
+              readOnly
+              value={"9.00 PM"}
+            />
             and terminated at
-            <input className="border-b border-black mx-2 outline-none bg-transparent text-center" readOnly type="time" value={chitAgreementData.auction_session_end} />
+            <input
+              className="border-b border-black mx-2 outline-none bg-transparent text-center"
+              readOnly
+              value={"9.30 PM"}
+            />
             hours.
           </p>
 
           <p className="flex flex-wrap items-center">
             1. Drawing Where held at
-            <input className="border-b border-black mx-2 w-44 outline-none bg-transparent" />
+            <input
+              className="border-b border-black mx-2 w-44 outline-none bg-transparent text-center"
+              disabled
+              value={"Head Office"}
+            />
             (s.17(2a))
           </p>
 
           <p className="flex flex-wrap items-center">
             2. Chit Group No.
-            <input className="border-b border-black mx-2 w-40 outline-none bg-transparent text-center" disabled value={chit.GroupCode} />
+            <input
+              className="border-b border-black mx-2 w-40 outline-none bg-transparent text-center"
+              disabled
+              value={`${chit.GroupCode} / ${chit.TicketNmber}`}
+            />
             Installment No.
-            <input className="border-b border-black mx-2 w-20 outline-none bg-transparent text-center" disabled value={chitAgreementData.number_of_installments} />
+            <input className="border-b border-black mx-2 w-20 outline-none bg-transparent text-center" />
             Total Amount of the Chits
-            <input className="border-b border-black mx-2 w-32 outline-none bg-transparent text-center" disabled value={chit.ChitValue} />
+            <input
+              className="border-b border-black mx-2 w-32 outline-none bg-transparent text-center"
+              disabled
+              value={chit.ChitValue}
+            />
           </p>
         </div>
 
@@ -111,16 +149,28 @@ const MeetingMinutesForm = ({ chit, user, chitAgreementData }) => {
                   />
                 </td>
                 <td className="border-r border-black">
-                  <input className="w-full text-center outline-none bg-transparent" disabled value={chit.GroupCode}  />
+                  <input
+                    className="w-full text-center outline-none bg-transparent"
+                    disabled
+                    value={chit.GroupCode}
+                  />
                 </td>
                 <td className="border-r border-black">
-                  <input className="w-full text-center outline-none bg-transparent" disabled value={chit.TicketNmber}/>
+                  <input
+                    className="w-full text-center outline-none bg-transparent"
+                    disabled
+                    value={chit.TicketNmber}
+                  />
                 </td>
                 <td className="border-r border-black">
                   <input className="w-full text-center outline-none bg-transparent" />
                 </td>
                 <td>
-                  <input className="w-full text-center outline-none bg-transparent" />
+                  <input
+                    className="w-full text-center outline-none bg-transparent"
+                    disabled
+                    value={"Prized"}
+                  />
                 </td>
               </tr>
             </tbody>
@@ -133,12 +183,23 @@ const MeetingMinutesForm = ({ chit, user, chitAgreementData }) => {
             4. Subscriber entitled in Drawing
             <input className="border-b border-black mx-2 w-48 outline-none bg-transparent" />
             Date :
-            <input className="border-b border-black mx-2 w-32 outline-none bg-transparent text-center" disabled value={dayjs(chit.BylawsDate).format('DD MMM YYYY')} />
+            <input
+              className="border-b border-black mx-2 w-32 outline-none bg-transparent text-center"
+              disabled
+              value={dayjs(chit.BylawsDate).format("DD MMM YYYY")}
+            />
             In Chit No.
-            <input className="border-b border-black mx-2 w-32 outline-none bg-transparent text-center" disabled value={chit.GroupCode}/>
+            <input
+              className="border-b border-black mx-2 w-32 outline-none bg-transparent text-center"
+              disabled
+              value={chit.GroupCode}
+            />
             is Shri.
-            <input className="border-b border-black mx-2 w-80 outline-none bg-transparent text-center" disabled
-                    value={`${user.firstname} ${user.middlename} ${user.lastname}`}/>
+            <input
+              className="border-b border-black mx-2 w-80 outline-none bg-transparent text-center"
+              disabled
+              value={`${user.firstname} ${user.middlename} ${user.lastname}`}
+            />
           </p>
 
           <p className="flex items-center mt-4">
@@ -146,8 +207,11 @@ const MeetingMinutesForm = ({ chit, user, chitAgreementData }) => {
           </p>
           <p className=" flex-wrap items-center">
             Shri.
-            <input className="border-b border-black w-74 outline-none bg-transparent text-center" disabled
-                    value={`${user.firstname} ${user.middlename} ${user.lastname}`}/>
+            <input
+              className="border-b border-black w-74 outline-none bg-transparent text-center"
+              disabled
+              value={`${user.firstname} ${user.middlename} ${user.lastname}`}
+            />
             Prized Amount Rs.
             <input className="border-b border-black mx-2 w-32 outline-none bg-transparent" />
             Signature Whose bid Discount was the highest, and Prized Amount is
@@ -170,14 +234,26 @@ const MeetingMinutesForm = ({ chit, user, chitAgreementData }) => {
             6. 17-2 (f) The Prized Amount in respect of the proceedings No.
             <input className="border-b border-black mx-2 w-28 outline-none bg-transparent" />
             installment of Rs.
-            <input className="border-b border-black mx-2 w-28 outline-none bg-transparent" />
+            <input
+              className="border-b border-black mx-2 w-28 outline-none bg-transparent text-center"
+              value={chitAgreementData.installment_amount}
+            />
             was paid to Shri
-            <input className="border-b border-black mx-2 w-74 outline-none bg-transparent" disabled
-                    value={`${user.firstname} ${user.middlename} ${user.lastname}`} />
+            <input
+              className="border-b border-black mx-2 w-74 outline-none bg-transparent"
+              disabled
+              value={`${user.firstname} ${user.middlename} ${user.lastname}`}
+            />
             after taking proper
-            <input className="border-b border-black mx-2 w-48 outline-none bg-transparent" />
+            <input
+              className="border-b border-black mx-2 w-48 outline-none bg-transparent text-center"
+              value={"Surety Document"}
+            />
             for the installments as security
-            <input className="border-b border-black mx-2 w-48 outline-none bg-transparent" />
+            <input
+              className="border-b border-black mx-2 w-48 outline-none bg-transparent text-center"
+              value={"As per Chit Rules"}
+            />
           </p>
         </div>
 
@@ -203,9 +279,16 @@ const MeetingMinutesForm = ({ chit, user, chitAgreementData }) => {
 
           <p>
             b) Future Subscription of Prized Subscriber in No.
-            <input className="border-b border-black mx-2 w-32 outline-none bg-transparent text-center" disabled value={chit.GroupCode} />
+            <input
+              className="border-b border-black mx-2 w-32 outline-none bg-transparent text-center"
+              disabled
+              value={`${chit.GroupCode} / ${chit.TicketNmber}`}
+            />
             On
-            <input className="border-b border-black mx-2 w-28 outline-none bg-transparent text-center" disabled value={dayjs(chit.BylawsDate).format('DD MMM YYYY')}  />
+            <input
+              className="border-b border-black mx-2 w-28 outline-none bg-transparent text-center"
+              disabled
+            />
             Withdrawals, if any.
           </p>
 
@@ -236,7 +319,10 @@ const MeetingMinutesForm = ({ chit, user, chitAgreementData }) => {
           </p>
           <p className="flex flex-wrap items-center">
             1. Date Of Auction :
-            <input className="border-b border-black mx-2 w-36 outline-none bg-transparent text-center" disabled value={dayjs(chit.BylawsDate).format('DD MMM YYYY')}  />
+            <input
+              className="border-b border-black mx-2 w-36 outline-none bg-transparent text-center"
+              disabled
+            />
           </p>
 
           <p className="flex flex-wrap items-center">
@@ -265,11 +351,22 @@ const MeetingMinutesForm = ({ chit, user, chitAgreementData }) => {
 
           <p className="flex flex-wrap items-center">
             Bye-Law No :
-            <input className="border-b border-black mx-2 w-24 outline-none bg-transparent text-center" disabled value={chit.ByLawsNumber}/>
+            <input
+              className="border-b border-black mx-2 w-24 outline-none bg-transparent text-center"
+              disabled
+              value={chit.ByLawsNumber}
+            />
             Date :
-            <input className="border-b border-black mx-2 w-28 outline-none bg-transparent" />
+            <input
+              className="border-b border-black mx-2 w-28 outline-none bg-transparent text-center"
+              value={chit.BylawsDate}
+            />
             Ticket No :
-            <input className="border-b border-black mx-2 w-24 outline-none bg-transparent text-center" disabled value={chit.TicketNmber} />
+            <input
+              className="border-b border-black mx-2 w-24 outline-none bg-transparent text-center"
+              disabled
+              value={chit.TicketNmber}
+            />
           </p>
         </div>
 
