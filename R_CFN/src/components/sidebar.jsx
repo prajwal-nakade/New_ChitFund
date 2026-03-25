@@ -12,7 +12,7 @@ const Sidebar = () => {
 
     { title: "View Chit Agreement", icon: <ClipboardList size={16} />, path: "/ViewChitAgreement" },
     { title: "Bid Agreement", icon: <BookOpenCheck size={16} />, path: "/viewauthenticationform" },
-    // { title: "Menu 2", icon: <LayoutDashboard size={16} />, path: "/menu2" },
+    { title: "View Bid Agreements", icon: <LayoutDashboard size={16} />, path: "/viewbidAgreements" },
   ];
 
   const masterSubMenus = [

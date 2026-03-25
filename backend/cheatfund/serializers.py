@@ -232,3 +232,39 @@ class ChitAgreementDetailsSerializer(serializers.ModelSerializer):
          'prize_collection',
          'jurisdiction_place','created_at', 'updated_at',]
         
+class CreateGurantorSerializer(serializers.ModelSerializer):
+    # ✅ FIX: Use PrimaryKeyRelatedField.
+    # Thhe ID (3) fris tells DRF: "Take tom the input, fetch the Users instance, 
+    # and assign that instance to the field."
+    user = serializers.PrimaryKeyRelatedField(queryset=Users.objects.all())
+
+    class Meta:
+        model = Gurantor
+        fields = [
+            'id', 'user', 'firstname', 'middlename', 'lastname', 'pancard_no', 
+            'aadharcard_no', 'pan_image', 'aadhar_image', 'aadhar_image_back', 
+            'dob', 'mobile_no', 'created_at'
+        ]
+
+class CreateBidAgreementDetailsSerializers(serializers.ModelSerializer):
+    
+    class Meta:
+        model = BidAgreementDetails
+        fields = '__all__'
+        extra_kwargs = {
+            'gurantor': {'read_only': True}
+        }
+        
+class GurantorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Gurantor
+        fields = '__all__'
+
+class BidAgreementDetailsReadSerializer(serializers.ModelSerializer):
+    
+    gurantor = GurantorSerializer(many=True, read_only=True)
+    chitAgreement = ChitAgreementDetailsSerializer(read_only=True)
+
+    class Meta:
+        model = BidAgreementDetails
+        fields = '__all__'

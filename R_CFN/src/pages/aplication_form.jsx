@@ -428,7 +428,7 @@ const ApplicationForm = () => {
                       />
                     </label>
 
-                    <label className="px-3 py-1 border border-neutral-300 bg-gray-200 rounded-md cursor-pointer hover:bg-gray-300 shadow-inner text-xs whitespace-nowrap">
+                    {/* <label className="px-3 py-1 border border-neutral-300 bg-gray-200 rounded-md cursor-pointer hover:bg-gray-300 shadow-inner text-xs whitespace-nowrap">
                       PAN Back
                       <input
                         type="file"
@@ -437,7 +437,7 @@ const ApplicationForm = () => {
                         accept=".png,.jpg,.jpeg"
                         onChange={handleImageChange}
                       />
-                    </label>
+                    </label> */}
                   </div>
                 </div>
                 {errors.pan && (

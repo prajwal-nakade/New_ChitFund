@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Layout from "../components/layout";
 import { useParams } from "react-router";
-import { getChitAgreementbyID } from "../api/endpoint";
+import { getBidAgreementbyID } from "../api/endpoint";
 import { File, Receipt, ShipWheel } from "lucide-react";
 import MeetingMinutesForm from "./MeetingMinutesForm";
 import dayjs from "dayjs";
@@ -35,17 +35,17 @@ const AuthenticationForm = () => {
   });
 
   const { id } = useParams();
-  const [chitAgreementData, setChitAgreementData] = useState(null);
+  const [bidAgreementData, setBidAgreementData] = useState(null);
 
-  const fetchChitAgreementData = async () => {
-    const data = await getChitAgreementbyID(id);
-    setChitAgreementData(data);
+  const fetchBidAgreementData = async (id) => {
+    const data = await getBidAgreementbyID(id);
+    setBidAgreementData(data);
     console.log(data);
   };
 
   useEffect(() => {
-    fetchChitAgreementData();
-  }, []);
+    fetchBidAgreementData(id);
+  }, [id]);
 
   const isAnySelected = Object.values(selectedForm).some(value => value === true);
   
@@ -108,23 +108,24 @@ const AuthenticationForm = () => {
     `,
   });
 
-  if (!chitAgreementData) {
+  if (!bidAgreementData) {
     return (
       <Layout>
         <div className="max-w-7xl mx-auto print-container">
           <div className="min-h-screen flex items-center justify-center">
             <div className="flex items-center gap-2 text-neutral-500">
               <ShipWheel size={18} className="animate-spin" />{" "}
-              <span>Loading chit details...</span>
+              <span>Loading Bid details...</span>
             </div>
           </div>
         </div>
       </Layout>
     );
   }
-
-  const chit = chitAgreementData?.chit;
-  const user = chitAgreementData.chit.user;
+ const chitAgreement = bidAgreementData?.chitAgreement ?? null;
+const chit = chitAgreement?.chit ?? null;
+const user = chit?.user ?? null;
+const gurantor = bidAgreementData?.gurantor ?? [];
   const getOrdinal = (day) => {
     if (day > 3 && day < 21) return `${day}th`; // 11th–19th
     switch (day % 10) {

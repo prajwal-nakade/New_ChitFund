@@ -25,6 +25,7 @@ import CashVoucher from "./pages/CashVoucher";
 import NoClaim from "./pages/NoClaim";
 import NOC from "./pages/NOC";
 import BidAgreementDetails from "./pages/BidAgreementDetails";
+import ViewBidAgreement from "./pages/ViewBidAgreement";
 
 function App() {
   return (
@@ -71,8 +72,10 @@ function App() {
           <Route path="/CashVoucher" element={<CashVoucher />} />
           <Route path="/NoClaim" element={<NoClaim />} />
           <Route path="/NOC" element={<NOC/>}/>
-          <Route path="/BidAgreementDetails" element={<BidAgreementDetails/>} />
-
+          <Route path="/BidAgreementDetails/:id" element={<BidAgreementDetails />}/>
+          <Route path="/authenticationform/:id" element={<AuthenticationForm />}/>
+          <Route path="/viewbidAgreements/" element={<ViewBidAgreement />}/>
+          
         </Routes>
       </Router>
       <ToastContainer />
