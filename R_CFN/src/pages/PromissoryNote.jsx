@@ -21,7 +21,7 @@ const PromissoryNote = ({ chit, user, chitAgreementData }) => {
       </div>
 
       {/* TITLE BAR */}
-      <div className="bg-black text-white text-center text-[13px] font-bold py-[3px] mt-2">
+      <div className="bg-black text-white text-center text-[13px] font-bold py-0.75 mt-2">
         PROMISSORY NOTE
       </div>
 
@@ -111,7 +111,7 @@ const PromissoryNote = ({ chit, user, chitAgreementData }) => {
       <div className="mt-10 space-y-15 max-w-3xl mx-auto">
         {/* Subscriber */}
         <div className="flex justify-between items-end">
-          <div className="w-[400px] flex flex-col items-center justify-center ">
+          <div className="w-100 flex flex-col items-center justify-center ">
             <div className="border-b border-black w-full text-center">
               <span className="text-center w-full">{`${user?.firstname} ${user?.middlename} ${user?.lastname} `}</span>
             </div>
@@ -126,7 +126,7 @@ const PromissoryNote = ({ chit, user, chitAgreementData }) => {
 
         {/* Guarantor 01 */}
         <div className="flex justify-between items-end">
-          <div className="w-[400px] flex flex-col items-center justify-center">
+          <div className="w-100 flex flex-col items-center justify-center">
             <div className="border-b border-black w-full text-center">
               <span className="text-center w-full">{`${user?.nominees[0]?.firstname} ${user?.nominees[0]?.middlename} ${user?.nominees[0]?.lastname} `}</span>
             </div>

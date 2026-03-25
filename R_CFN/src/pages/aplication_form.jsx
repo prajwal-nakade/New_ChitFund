@@ -258,7 +258,7 @@ const ApplicationForm = () => {
   }, []);
   console.log(localStorage.getItem('username'))
   return (
-    <Layout>
+   <Layout>
       <div className="max-w-7xl mx-auto rounded-md p-6">
         <h1 className="text-lg font-medium  w-full text-start px-5 py-1 rounded-t-md bg-[#004f9e]   text-white tracking-tight">
           Customer Master Form
@@ -681,7 +681,7 @@ const ApplicationForm = () => {
           setUserEntriesData={setUserEntriesData}
         />
       </div>
-    </Layout>
+    </Layout> 
   );
 };
 
