@@ -201,8 +201,8 @@ const ApplicationForm = () => {
   useEffect(() => { fetchUserEntriesData(); }, []);
 
   // Utility class for table cells
-  const tdLabel = "p-3 border border-neutral-300 bg-gray-50 font-medium text-sm w-1/3";
-  const tdInput = "p-3 border border-neutral-300 w-2/3 ";
+  const tdLabel = "px-3 py-1 border border-neutral-300 bg-gray-50 font-medium text-sm w-1/3";
+  const tdInput = "px-3 py-1 border border-neutral-300 w-2/3 text-sm";
 
   return (
     <Layout>
@@ -219,7 +219,7 @@ const ApplicationForm = () => {
               
               <tr>
                 <td className={tdLabel}>Full Name <span className="text-red-500">*</span></td>
-                <td className="flex gap-2 p-3">
+                <td className="flex gap-2 px-3 py-1">
                   <input className="w-full px-3 py-1 border border-neutral-300 rounded-md" placeholder="First Name" name="firstName" value={formData.firstName} onChange={handleChange} required />
 
                   <input className="w-full px-3 py-1 border border-neutral-300 rounded-md" placeholder="Middle Name" name="middleName" value={formData.middleName} onChange={handleChange} required />
