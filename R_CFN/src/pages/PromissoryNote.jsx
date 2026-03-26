@@ -1,24 +1,31 @@
+
+
 import dayjs from "dayjs";
 import React from "react";
+import { convertToWords, toOrdinal } from 'react-number-to-words';
+import { numberToWords } from "amount-to-words";
 
-const PromissoryNote = ({ chit, user, chitAgreementData }) => {
+
+const PromissoryNote = ({ chit, user, chitAgreement, bidAgreement, gurantor, gurantor2 }) => {
+  const inWords = numberToWords(chit?.ChitValue)
   return (
-    <div className="max-w-4xl mx-auto bg-white border border-black px-8 py-6 text-[16px] leading-6 ">
+    <div className="max-w-4xl mx-auto bg-white border border-black px-8 py-6 text-[14px] leading-6 print-page">
+
       {/* TOP RIGHT CIN */}
       <div className="text-end text-xs">CIN NO.U64990MH2023PTC400938</div>
 
-      {/* HEADER */}
-      <div className="flex items-center mt-2">
-        <img src="/Logo2.png" alt="" className="w-20" />
+        {/* HEADER */}
+        <div className="flex items-center mt-2">
+          <img src="/Logo2.png" alt="" className="w-20" />
 
-        <div className="mx-auto text-center w-full flex flex-col items-center">
-          <img src="/Logo.png" alt="" className="w-72" />
-          <p className="text-xs mt-1">
-            Plot No.7, Gut No.216, Satara Road, Near Ahilyabai Holkar Chauk,
-            Satara Parisar, Chh. Sambhajinagar.
-          </p>
+          <div className="mx-auto text-center w-full flex flex-col items-center">
+            <img src="/Logo.png" alt="" className="w-72" />
+            <p className="text-xs mt-1">
+              Plot No.7, Gut No.216, Satara Road, Near Ahilyabai Holkar Chauk,
+              Satara Parisar, Chh. Sambhajinagar.
+            </p>
+          </div>
         </div>
-      </div>
 
       {/* TITLE BAR */}
       <div className="bg-black text-white text-center text-[13px] font-bold py-[3px] mt-2">
@@ -28,33 +35,22 @@ const PromissoryNote = ({ chit, user, chitAgreementData }) => {
       {/* DATE */}
       <div className="flex justify-end mt-3">
         <span className="mr-2">Date :</span>
-        <input
-          className="border-b border-black w-48 outline-none bg-transparent text-center"
-          disabled
-          value={
-            chit?.BylawsDate ? dayjs(chit.BylawsDate).format("DD MMM YYYY") : ""
-          }
-        />
+        <input className="border-b border-black w-48 outline-none bg-transparent text-center" disabled value={chit?.BylawsDate ? dayjs(bidAgreement?.dateofAuction).format("DD MMM YYYY") : ""}/>
       </div>
 
       {/* REF + AMOUNT */}
       <div className="mt-3">
         <div className="flex items-center">
           <span className="mr-2">CHIT REF :</span>
-          <input
-            className="border-b border-black w-64 outline-none bg-transparent text-center "
-            disabled
-            value={chit?.GroupCode}
-          />
+          <input className="border-b border-black w-64 outline-none bg-transparent text-center " disabled value={`${chit?.GroupCode}/${chit?.TicketNmber}`} />
+
+
         </div>
 
         <div className="flex items-center mt-1">
           <span className="mr-2">Amount Rs:</span>
-          <input
-            className="border-b border-black w-40 outline-none bg-transparent text-center"
-            disabled
-            value={chit?.ChitValue}
-          />
+          <input className="border-b border-black w-40 outline-none bg-transparent text-center" disabled value={chit?.ChitValue} />
+
         </div>
       </div>
 
@@ -62,58 +58,51 @@ const PromissoryNote = ({ chit, user, chitAgreementData }) => {
       <div className="mt-4 ">
         ON DEMAND I/WE Jointly and Severally do hereby promise to pay KARDE
         KRISHNA CHITS PRIVATE LTD. Of Order the Sum of ( Rupees
-        <span className="inline-block border-b border-black w-130 mx-2"></span>
+        <span className="inline-block border-b border-black w-130 mx-2 text-center">{inWords} Rupees</span>
         only )
       </div>
 
       <div className="mt-3">
         Repayable with interest at
-        <input
-          className="inline-block border-b border-black w-20 mx-2 text-center"
-          value={"18%"}
-        ></input>
+        <span className="inline-block border-b border-black w-20 mx-2">18%</span>
         Percent per annum being the amount of the future installment due to
         Messrs.
       </div>
 
       {/* COMPANY SECTION */}
       <div className="mt-4">
-        <div className="font-bold">KARDE KRISHNA CHITS PRIVATE LIMITED</div>
+        <div className="font-bold">
+          KARDE KRISHNA CHITS PRIVATE LIMITED
+        </div>
 
         <div className="mt-2">
           In respect of Ticket No.
-          <span className="inline-block border-b border-black w-20 mx-2 text-center">
-            {chit?.TicketNmber}
-          </span>
+          <span className="inline-block border-b border-black w-20 mx-2 text-center">{chit?.TicketNmber}</span>
           in
-          <span className="inline-block border-b border-black w-32 mx-2 text-center">
-            {chit?.GroupCode}
-          </span>
+          <span className="inline-block border-b border-black w-32 mx-2 text-center">{chit?.GroupCode}</span>
           series, in Monthly Installment of Rs.
-          <span className="inline-block border-b border-black w-24 mx-2 text-center ">
-            {chitAgreementData?.installment_amount}
-          </span>
+          <span className="inline-block border-b border-black w-24 mx-2 text-center ">{chitAgreement?.installment_amount}</span>
         </div>
 
         <div className="mt-1">
           ( Rupees
-          <span className="inline-block border-b border-black w-64 mx-2"></span>
+          <span className="inline-block border-b border-black w-64 mx-2">{numberToWords(chitAgreement?.installment_amount)}</span>
           only ) for
-          <span className="inline-block border-b border-black w-16 mx-2 text-center">
-            {chit?.Duration}
-          </span>
-          {chit?.DurationCategory}
+          <span className="inline-block border-b border-black w-16 mx-2 text-center">{bidAgreement?.totalMemberofGroup}</span>
+          Months
+
           <span className="inline-block border-b border-black w-64 mx-2"></span>
         </div>
       </div>
 
       {/* SIGNATURE AREA */}
       <div className="mt-10 space-y-15 max-w-3xl mx-auto">
+
         {/* Subscriber */}
         <div className="flex justify-between items-end">
           <div className="w-[400px] flex flex-col items-center justify-center ">
             <div className="border-b border-black w-full text-center">
-              <span className="text-center w-full">{`${user?.firstname} ${user?.middlename} ${user?.lastname} `}</span>
+                <span className="text-center w-full">{`${user?.firstname} ${user?.middlename} ${user?.lastname} `}</span>
             </div>
             <p className="text-sm mt-1 text-center">Name Of Subscriber</p>
           </div>
@@ -128,7 +117,7 @@ const PromissoryNote = ({ chit, user, chitAgreementData }) => {
         <div className="flex justify-between items-end">
           <div className="w-[400px] flex flex-col items-center justify-center">
             <div className="border-b border-black w-full text-center">
-              <span className="text-center w-full">{`${user?.nominees[0]?.firstname} ${user?.nominees[0]?.middlename} ${user?.nominees[0]?.lastname} `}</span>
+                <span className="text-center w-full">{`${gurantor?.firstname} ${gurantor?.middlename} ${gurantor?.lastname} `}</span>
             </div>
             <p className="text-sm mt-1 text-center">Name Of Guarantor 01</p>
           </div>
@@ -142,6 +131,7 @@ const PromissoryNote = ({ chit, user, chitAgreementData }) => {
         {/* Guarantor 02 */}
         <div className="flex justify-between items-end ">
           <div className="w-[400px] flex flex-col items-center justify-center">
+            {gurantor2 && <span className="text-center w-full">{`${gurantor2?.firstname || ""} ${gurantor2?.middlename || ""} ${gurantor2?.lastname || ""} `}</span>}
             <div className="border-b border-black w-full"></div>
             <p className="text-sm text-center mt-1">Name Of Guarantor 02</p>
           </div>
@@ -151,6 +141,7 @@ const PromissoryNote = ({ chit, user, chitAgreementData }) => {
             <div className="w-14 h-16 border border-black"></div>
           </div>
         </div>
+
       </div>
     </div>
   );

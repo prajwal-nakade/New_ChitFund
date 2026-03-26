@@ -15,7 +15,7 @@ class UserWithNomineeSerializer(serializers.ModelSerializer):
             'id', 'firstname','middlename', 'lastname', 'mobile_no', 'dob', 'email',
             'permanent_address', 'pincode',
             'pancard_no', 'aadharcard_no',
-            'pan_image', 'aadhar_image', 'pan_image_back', 'aadhar_image_back', 'created_at', 
+            'pan_image', 'aadhar_image', 'aadhar_image_back', 'created_at', 
             'nominee_firstname', 'nominee_middlename', 'nominee_lastname', 'nominee_mobile',
             'nominee_dob', 'relationship'
         ]
@@ -51,7 +51,7 @@ class GetAllEntriesSerializer(serializers.ModelSerializer):
         fields = ['id', 'firstname', 'middlename', 'lastname', 'mobile_no', 'dob', 'email',
             'permanent_address', 'pincode','created_at',
             'pancard_no', 'aadharcard_no',
-            'pan_image', 'aadhar_image', 'pan_image_back', 'aadhar_image_back', 'nominees', 'status', 'CustomerID']
+            'pan_image', 'aadhar_image', 'aadhar_image_back', 'nominees', 'status', 'CustomerID']
 
 class UserSerializer(serializers.ModelSerializer):
     nominees = NomineeSerializer(many = True,read_only=True)
@@ -60,7 +60,7 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ['id', 'firstname', 'middlename', 'lastname', 'mobile_no', 'dob', 'email',
             'permanent_address', 'pincode','created_at',
             'pancard_no', 'aadharcard_no',
-            'pan_image', 'aadhar_image', 'pan_image_back', 'aadhar_image_back', 'status', 'nominees']
+            'pan_image', 'aadhar_image', 'aadhar_image_back', 'status', 'nominees']
         
 
 class UpdateUserSerializer(serializers.Serializer):
@@ -77,7 +77,6 @@ class UpdateUserSerializer(serializers.Serializer):
     aadharcard_no = serializers.CharField(required=False)
     pan_image = serializers.ImageField(required=False)
     aadhar_image = serializers.ImageField(required=False)
-    pan_image_back = serializers.ImageField(required=False)
     aadhar_image_back = serializers.ImageField(required=False)
     
     #Nominee Fields
@@ -93,7 +92,7 @@ class UpdateUserSerializer(serializers.Serializer):
             'firstname', 'middlename', 'lastname', 'mobile_no', 'dob',
             'email', 'permanent_address', 'pincode',
             'pancard_no', 'aadharcard_no',
-            'pan_image', 'aadhar_image' , 'pan_image_back', 'aadhar_image_back',
+            'pan_image', 'aadhar_image', 'aadhar_image_back',
         ]
         for field in user_field:
             if field in validated_data:
@@ -204,31 +203,77 @@ class ChitAgreementCreateSerializer(serializers.ModelSerializer):
         
         
 class ChitAgreementDetailsSerializer(serializers.ModelSerializer):
-    chit = ChitDetailSerializer(read_only = True)
+    chit = ChitDetailSerializer(read_only=True)
     branchName = serializers.CharField(source='branch.branchName', read_only=True)
-    
+
+    # 🔥 ADD THIS LINE
+    has_bid = serializers.BooleanField(read_only=True)
+
     class Meta:
         model = ChitAgreementDetails
-        fields = ['id', 'user', 'branch', 'chit', 'conducts_of_chits', 'branchName',
-        'number_of_tickets',
-        'number_of_installments',
-        'installment_amount',
-        'scheduled_auction_time',
-        'scheduled_auction_day',
-        'scheduled_last_date_of_payment',
-        'date_of_commencement',
-        'date_of_termination',
-        'first_auction_date',
-        'auction_frequency' ,
-        'auction_session_start',
-        'auction_session_end',
-        'register_bank_branch',
-        'foreman_name',
-        'company_reg_number',
-        'deposit_bank_name',
-        'deposit_receipt_no',
-        'deposit_date', 
-         'term_month',
-         'prize_collection',
-         'jurisdiction_place','created_at', 'updated_at',]
+        fields = [
+            'id', 'user', 'branch', 'chit', 'conducts_of_chits', 'branchName',
+            'number_of_tickets',
+            'number_of_installments',
+            'installment_amount',
+            'scheduled_auction_time',
+            'scheduled_auction_day',
+            'scheduled_last_date_of_payment',
+            'date_of_commencement',
+            'date_of_termination',
+            'first_auction_date',
+            'auction_frequency',
+            'auction_session_start',
+            'auction_session_end',
+            'register_bank_branch',
+            'foreman_name',
+            'company_reg_number',
+            'deposit_bank_name',
+            'deposit_receipt_no',
+            'deposit_date',
+            'term_month',
+            'prize_collection',
+            'jurisdiction_place',
+            'created_at',
+            'updated_at',
+
+            # 🔥 ALSO ADD HERE
+            'has_bid',
+        ]
         
+class CreateGurantorSerializer(serializers.ModelSerializer):
+    # ✅ FIX: Use PrimaryKeyRelatedField.
+    # Thhe ID (3) fris tells DRF: "Take tom the input, fetch the Users instance, 
+    # and assign that instance to the field."
+    user = serializers.PrimaryKeyRelatedField(queryset=Users.objects.all())
+
+    class Meta:
+        model = Gurantor
+        fields = [
+            'id', 'user', 'firstname', 'middlename', 'lastname', 'pancard_no', 
+            'aadharcard_no', 'pan_image', 'aadhar_image', 'aadhar_image_back', 
+            'dob', 'mobile_no', 'created_at'
+        ]
+
+class CreateBidAgreementDetailsSerializers(serializers.ModelSerializer):
+    
+    class Meta:
+        model = BidAgreementDetails
+        fields = '__all__'
+        extra_kwargs = {
+            'gurantor': {'read_only': True}
+        }
+        
+class GurantorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Gurantor
+        fields = '__all__'
+
+class BidAgreementDetailsReadSerializer(serializers.ModelSerializer):
+    
+    gurantor = GurantorSerializer(many=True, read_only=True)
+    chitAgreement = ChitAgreementDetailsSerializer(read_only=True)
+
+    class Meta:
+        model = BidAgreementDetails
+        fields = '__all__'

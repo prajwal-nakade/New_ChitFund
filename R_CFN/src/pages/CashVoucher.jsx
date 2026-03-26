@@ -1,9 +1,9 @@
 import React from "react";
 
-const CashVoucher = ({ chit, user, chitAgreementData }) => {
+const CashVoucher = ({ chit, user, chitAgreement, bidAgreement, gurantor }) => {
   return (
     <>
-      <div className="max-w-4xl mx-auto bg-white border border-black px-8 py-6 text-[15px] leading-8 text-justify">
+      <div className="max-w-4xl mx-auto bg-white border border-black px-8 py-6 text-[15px] leading-8 text-justify print-page">
         {/* CIN */}
         <div className="text-end text-xs">CIN NO.U64990MH2023PTC400938</div>
 
@@ -38,11 +38,11 @@ const CashVoucher = ({ chit, user, chitAgreementData }) => {
           </div>
           <div className="flex">
             <p>being.</p>
-            <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1" />
+            <span className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1">Bid Payable Amount Paid towards prized chit <span className="uppercase">{`(${chit?.GroupCode})`}</span></span>
           </div>
           <div className="flex">
             <p>and debit </p>
-            <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1" />
+            <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1" value={bidAgreement?.debitBankName} />
           </div>
         </div>
         <div className=" mt-10 flex ">

@@ -19,4 +19,7 @@ urlpatterns = [
     path('createChitAgreement/' ,create_chitAgreement, name='create_chitAgreement'),
     path('getChitAgreement/<int:agreement_id>/', get_ChitAgreementDetails, name='get_ChitAgreementDetails'),
     path('getAllChitsAgreement/', get_All_ChitAgreementDetails, name='get_All_ChitAgreementDetails'),
+    path('createBidagreement/', createBidAgreement, name='createBidAgreement'),
+    path('getBidagreement/<int:chit_id>/', getBidByChitAgreement, name='getBidByChitAgreement'),
+    path('getAllBidAgreement/', getAllBidAgreement, name='getAllBidAgreement'),
 ]

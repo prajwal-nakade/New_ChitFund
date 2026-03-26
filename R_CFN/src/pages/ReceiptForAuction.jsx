@@ -1,9 +1,11 @@
+import dayjs, { Dayjs } from "dayjs";
 import React from "react";
+import { numberToWords } from "amount-to-words";
 
-const ReceiptForAuction = () => {
+const ReceiptForAuction = ({chit, user, chitAgreement, bidAgreement, gurantor, gurantor2}) => {
   return (
     <>
-      <div className="max-w-4xl mx-auto bg-white border border-black px-8 py-6 text-[15px] leading-5.5 text-justify">
+      <div className="max-w-4xl mx-auto bg-white border border-black px-8 py-6 text-[14px] leading-5.5 text-justify print-page">
         {/* CIN */}
         <div className="text-end text-xs">CIN NO.U64990MH2023PTC400938</div>
 
@@ -26,19 +28,21 @@ const ReceiptForAuction = () => {
         <div className="mt-4">
           <div className="flex ">
             <p>01) This receipt executed by-</p>
-            <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1" />
+            <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1" disabled value={`${user?.firstname} ${user?.middlename} ${user?.lastname} `}/>
           </div>
           <div className="flex mt-2">
             <p>02) C/O-</p>
-            <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1" />
+            <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1" value={`${user?.middlename} ${user?.lastname} `}/>
           </div>
           <div className="flex mt-2">
             <p>03)Collection Add-</p>
-            <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1" />
+            <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1" value={user?.permanent_address}/>
           </div>
           <div className="flex flex-col mt-2">
             <div className="flex">
-              <p>04) (Hereinaftercalled the Payee) Rs. 3,14,460 (Rupees </p>
+              <p>04) (Hereinaftercalled the Payee)  
+                <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1" />
+                (Rupees </p>
               <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1" />
             </div>
             <p>
@@ -54,19 +58,19 @@ const ReceiptForAuction = () => {
         <div className="mt-2">
           <p>
             WHEREAS the foreman is conducting a daily Chit of Chit Value of Rs.
-            <input className="border-b border-black w-50 outline-none bg-transparent mx-2 flex-1" />
+            <input className="border-b border-black w-50 outline-none bg-transparent mx-2 flex-1 text-center" value={chit?.ChitValue}/>
             Duration{" "}
-            <input className="border-b border-black w-30 outline-none bg-transparent mx-2 flex-1" />{" "}
+            <input className="border-b border-black w-30 outline-none bg-transparent mx-2 flex-1 text-center" value={bidAgreement?.totalMemberofGroup}/>{" "}
             months, having{" "}
-            <input className="border-b border-black w-30 outline-none bg-transparent mx-2 flex-1" />{" "}
+            <input className="border-b border-black w-30 outline-none bg-transparent mx-2 flex-1 text-center" value={bidAgreement?.totalMemberofGroup} />{" "}
             Subscribers Rs.{" "}
-            <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1" />
+            <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1 text-center" value={chitAgreement?.installment_amount}/>
             Per Ticket/subscriber, and the Chits Agreement and bye-law relating
             to its conduct registered with Register of Chits Aurangabad under
             Registration No:{" "}
-            <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1" />{" "}
+            <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1 text-center" value={chit?.ByLawsNumber}/>{" "}
             With auction/draw commencing From{" "}
-            <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1" />
+            <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1 text-center" value={dayjs(chitAgreement?.date_of_commencement).format("DD MMM YYYY")}/>
             and conducted every Week at the date and time fixed in according
             with the chits Agreement for the determination of prized amount due
             to the subscribers.
@@ -76,16 +80,16 @@ const ReceiptForAuction = () => {
         <div className="mt-2">
           <p>
             WHERE AS the payee is a subscriber of one ticket Chit Group -
-            <input className="border-b border-black w-50 outline-none bg-transparent mx-2 flex-1" />{" "}
+            <input className="border-b border-black w-50 outline-none bg-transparent mx-2 flex-1 text-center uppercase" value={chit?.GroupCode}/>{" "}
             under Ticket No-
-            <input className="border-b border-black w-30 outline-none bg-transparent mx-2 flex-1" />
-            of thevalue of Rs{" "}
-            <input className="border-b border-black w-50 outline-none bg-transparent mx-2 flex-1" />{" "}
+            <input className="border-b border-black w-30 outline-none bg-transparent mx-2 flex-1 text-center" value={chit?.TicketNmber}/>
+            of the value of Rs{" "}
+            <input className="border-b border-black w-50 outline-none bg-transparent mx-2 flex-1 text-center" value={chit?.ChitValue} />{" "}
             (Rupee{" "}
-            <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1" />
-            ) which was auctioned /draw on 05/01 /26and the amount including the
+            <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1 text-center" value={`${numberToWords(chit?.ChitValue)} Rupees`}/>
+            ) which was auctioned / draw on <span>{dayjs(bidAgreement?.dateofAuction).format('DD/MM/YYYY')}</span> and the amount including the
             Foreman's Commission viz Rs.{" "}
-            <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1" />{" "}
+            <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1 text-center" value={bidAgreement?.foremanCommision } />{" "}
             by way of foreman's commission and auction discount to be
             distributed among the chit. as per Chit Agreement.
           </p>
@@ -111,16 +115,37 @@ const ReceiptForAuction = () => {
           <b>Signed By Shri- </b>
         </div>
 
-        <div className="space-y-2 mx-10">
+        <div className="space-y-2">
           <div className="flex items-center">
-            <input className="border-b border-black w-100 outline-none bg-transparent" />
-            <div className="w-20 h-24 border border-black ml-10"></div>
+            <input
+              className="border-b text-xs border-black w-70 outline-none bg-transparent text-center"
+              value={`${user?.firstname} ${user?.middlename} ${user?.lastname} `}
+            />
+            <div className="w-12 h-16 border border-black ml-10"></div>
           </div>
 
-          <div className="flex items-center">
-            <input className="border-b border-black w-100 outline-none bg-transparent" />
-            <div className="w-20 h-24 border border-black ml-10"></div>
+          
+           <div className="flex w-full  justify-between mt-5">
+            <div className="flex items-center">
+             <input
+              className="border-b border-black w-70 outline-none bg-transparent text-center"
+              value={`${gurantor?.firstname} ${gurantor?.middlename} ${gurantor?.lastname} `}
+            />
+            <div className="w-12 h-16 border border-black ml-10"></div>
           </div>
+
+          <div className="flex items-center ">
+            <input
+              className="border-b border-black w-70 outline-none bg-transparent text-center"
+              value={
+                gurantor2
+                  ? `${gurantor2?.firstname || ""} ${gurantor2?.middlename || ""} ${gurantor2?.lastname || ""}`
+                  : ""
+              }
+            />
+            <div className="w-12 h-16 border border-black ml-10"></div>
+          </div>
+           </div>
         </div>
       </div>
     </>

@@ -47,11 +47,7 @@ class Users(models.Model):
         blank=True,
         null=True
     )
-    pan_image_back = models.ImageField(
-        upload_to="user_documents/pan/",
-        blank=True,
-        null=True
-    )
+
     aadhar_image = models.ImageField(
         upload_to="user_documents/aadhar/",
         blank=True,
@@ -152,7 +148,7 @@ class ChitAgreementDetails(models.Model):
     date_of_commencement = models.DateField(null=True)
     date_of_termination = models.DateField(null=True)
     first_auction_date = models.DateField()
-    auction_frequency = models.DateField()
+    auction_frequency = models.IntegerField()
     auction_session_start = models.TimeField()
     auction_session_end = models.TimeField()
     register_bank_branch = models.CharField(max_length=200)
@@ -167,3 +163,48 @@ class ChitAgreementDetails(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
+class Gurantor(models.Model):
+    user = models.ForeignKey(Users, on_delete=models.CASCADE)
+    firstname = models.CharField(max_length=50)
+    middlename = models.CharField(max_length=50)
+    lastname = models.CharField(max_length=50)
+    pancard_no = models.CharField(max_length=50, unique=True)
+    aadharcard_no = models.CharField(max_length=12, unique=True)
+    pan_image = models.ImageField(
+        upload_to="user_documents/pan/",
+        blank=True,
+        null=True
+    )
+    aadhar_image = models.ImageField(
+        upload_to="user_documents/aadhar/",
+        blank=True,
+        null=True
+    )
+    aadhar_image_back = models.ImageField(
+        upload_to="user_documents/aadhar/",
+        blank=True,
+        null=True
+    )
+    dob = models.DateField()
+    mobile_no = models.CharField(max_length=15, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+class BidAgreementDetails(models.Model):
+    user = models.ForeignKey(Users, on_delete=models.CASCADE, null=True)
+    gurantor = models.ManyToManyField(Gurantor)
+    chitAgreement = models.ForeignKey(ChitAgreementDetails, on_delete=models.CASCADE)
+    dateofAuction = models.DateField()
+    totalBidAmount = models.CharField(max_length=100)
+    auctionNumber = models.CharField(max_length=50)
+    prizedAmount = models.CharField(max_length=50, null=True)
+    dividend = models.IntegerField()
+    totalMemberofGroup = models.IntegerField()
+    suretyReceived = models.CharField(max_length=100)
+    suretiesVerified = models.CharField(max_length=100, null=True)
+    dateOfPayment = models.DateField()
+    chequeNo = models.CharField(max_length=100)
+    cheqDate = models.DateField()
+    cheqBank = models.CharField(max_length=200)
+    foremanCommision = models.CharField(max_length=100)
+    debitBankName = models.CharField(200)
+    created_at = models.DateTimeField(auto_now_add=True)

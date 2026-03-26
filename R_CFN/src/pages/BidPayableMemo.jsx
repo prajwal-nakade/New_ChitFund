@@ -1,9 +1,11 @@
+import dayjs from "dayjs";
 import React from "react";
+import { numberToWords } from "amount-to-words";
 
-const BidPayableMemo = ({ chit, user, chitAgreementData }) => {
+const BidPayableMemo = ({ chit, user, chitAgreement, bidAgreement, gurantor }) => {
   return (
     <>
-      <div className="max-w-4xl mx-auto bg-white border border-black px-8 py-6 text-[15px] leading-8 text-justify">
+      <div className="max-w-4xl mx-auto bg-white border border-black px-8 py-6 text-[15px] leading-8 text-justify print-page">
         {/* CIN */}
         <div className="text-end text-xs">CIN NO.U64990MH2023PTC400938</div>
 
@@ -30,35 +32,35 @@ const BidPayableMemo = ({ chit, user, chitAgreementData }) => {
           </div>
           <div className="flex">
             <p>Chit Ref -</p>
-            <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1 text-center" value={chit.GroupCode} />
+            <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1 text-center uppercase" value={`${chit?.GroupCode} / ${chit?.TicketNmber}`} />
 
             <p>Date of Auction-</p>
-            <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1" />
+            <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1 text-center" value={dayjs(bidAgreement?.dateofAuction).format("DD MMM YYYY")}/>
           </div>
           <div className="flex">
             <p>Chit Value Rs. -</p>
-            <input className="border-b border-black w-40 outline-none bg-transparent mx-2 text-center" disabled value={chit.ChitValue} />
-            <p>Rs. -</p>
-            <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1" />
+            <input className="border-b border-black w-40 outline-none bg-transparent mx-2 text-center" disabled value={chit?.ChitValue} />
+            <p>Rs. (In words)-</p>
+            <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1 text-center" value={`${numberToWords(chit?.ChitValue)} Rupees`}/>
           </div>
           <div className="flex">
             <p>Less Bid Rs. -</p>
-            <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1" />
+            <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1" value={bidAgreement?.totalBidAmount} />
           </div>
           <div className="flex">
             <p>Foreman's Commission Rs.-</p>
-            <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1" />
+            <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1" value={bidAgreement?.foremanCommision}/>
           </div>
           <div className="flex">
             <p>Dividend to Members Rs. -</p>
-            <input className="border-b border-black w-40 outline-none bg-transparent mx-2 " />
-            <p>Rs. -</p>
-            <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1" />
+            <input className="border-b border-black w-40 outline-none bg-transparent mx-2 text-center " value={bidAgreement?.dividend} />
+            <p>Rs. (In words)-</p>
+            <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1" value={`${numberToWords(bidAgreement?.dividend)}`}/>
           </div>
           <div className="flex">
             <p>Payable Amount-</p>
             <input className="border-b border-black w-40 outline-none bg-transparent mx-2 " />
-            <p>Rs. -</p>
+            <p>Rs. (In words)-</p>
             <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1" />
           </div>
         </div>

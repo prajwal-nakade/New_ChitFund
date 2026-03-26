@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Layout from "../components/layout";
 import { useParams } from "react-router";
-import { getChitAgreementbyID } from "../api/endpoint";
+import { getBidAgreementbyID } from "../api/endpoint";
 import { File, Receipt, ShipWheel } from "lucide-react";
 import MeetingMinutesForm from "./MeetingMinutesForm";
 import dayjs from "dayjs";
@@ -32,23 +32,35 @@ const AuthenticationForm = () => {
     cashVoucher: false,
     noClaim: false,
     noc: false
-
-  })
+  });
 
   const { id } = useParams();
-  const [chitAgreementData, setChitAgreementData] = useState(null);
+  const [bidAgreementData, setBidAgreementData] = useState(null);
 
-  const fetchChitAgreementData = async () => {
-    const data = await getChitAgreementbyID(id);
-    setChitAgreementData(data);
+  const fetchBidAgreementData = async (id) => {
+    const data = await getBidAgreementbyID(id);
+    setBidAgreementData(data);
     console.log(data);
   };
 
   useEffect(() => {
-    fetchChitAgreementData();
+    fetchBidAgreementData(id);
+  }, [id]);
 
-  }, []);
-    const isAnySelected = Object.values(selectedForm).some(value => value === true)
+  const isAnySelected = Object.values(selectedForm).some(value => value === true);
+  
+  // 1. ADDED: Check if all forms are selected
+  const isAllSelected = Object.values(selectedForm).every(value => value === true);
+
+  // 2. ADDED: Function to handle Select All / Deselect All
+  const handleSelectAll = (e) => {
+    const isChecked = e.target.checked;
+    const updatedForms = Object.keys(selectedForm).reduce((acc, key) => {
+      acc[key] = isChecked;
+      return acc;
+    }, {});
+    setSelectedForms(updatedForms);
+  };
 
   const ref = useRef();
   const handleDownload = useReactToPrint({
@@ -64,11 +76,10 @@ const AuthenticationForm = () => {
           -webkit-print-color-adjust: exact;
           color-adjust: exact;
           font-family: Arial, sans-serif;
-          font-size: 8px;
+          font-size: 7px;
         }
           .print-page {
-  width: 210mm;
-  min-height: 297mm;
+  width: 220mm;
   page-break-after: always;
   break-after: page;
   box-sizing: border-box;
@@ -77,6 +88,8 @@ const AuthenticationForm = () => {
   .print-page {
   page-break-after: always;
   break-after: page;
+  min-height: 297mm;
+
 }
 
 .print-page:last-child {
@@ -90,30 +103,32 @@ const AuthenticationForm = () => {
         /* ✅ FORCE NEW PAGE */
         .print-page-break {
           break-before: page;
-          page-break-before: always; /* fallback for older browsers */
+          page-break-before: always; 
         }
       }
     `,
   });
 
-
-  if (!chitAgreementData) {
+  if (!bidAgreementData) {
     return (
       <Layout>
         <div className="max-w-7xl mx-auto print-container">
           <div className="min-h-screen flex items-center justify-center">
             <div className="flex items-center gap-2 text-neutral-500">
               <ShipWheel size={18} className="animate-spin" />{" "}
-              <span>Loading chit details...</span>
+              <span>Loading Bid details...</span>
             </div>
           </div>
         </div>
       </Layout>
     );
   }
-
-  const chit = chitAgreementData?.chit;
-  const user = chitAgreementData.chit.user;
+  const bidAgreement =  bidAgreementData[0]
+const chitAgreement = bidAgreementData[0]?.chitAgreement;
+const chit = chitAgreement?.chit;
+const user = chit?.user;
+const gurantor = bidAgreementData[0]?.gurantor[0] ?? [];
+const gurantor2 = bidAgreementData[0]?.gurantor[1] ?? [];
   const getOrdinal = (day) => {
     if (day > 3 && day < 21) return `${day}th`; // 11th–19th
     switch (day % 10) {
@@ -121,49 +136,62 @@ const AuthenticationForm = () => {
       case 2: return `${day}nd`;
       case 3: return `${day}rd`;
       default: return `${day}th`;
-
-
     }
   };
+
   return (
     <Layout>
-
-      <div className="max-w-4xl mx-5 lg:mx-auto mt-4" >
+      <div className="max-w-4xl mx-5 lg:mx-auto mt-4 " >
         <div className="w-full flex flex-col items-start justify-start gap-1 ">
-        <h1 className="w-full font-semibold text-neutral-800 tracking-tight text-2xl flex items-center gap-1"><File size={22} className="text-neutral-800"/>Select Forms</h1>
-        <span className="text-sm text-neutral-500 tracking-tight leading-3">Choose the forms you need to process.</span>
+          <h1 className="w-full font-semibold text-neutral-800 tracking-tight text-2xl flex items-center gap-1"><File size={22} className="text-neutral-800"/>Select Forms</h1>
+          <span className="text-sm text-neutral-500 tracking-tight leading-3">Choose the forms you need to process.</span>
+        </div>
+        
+        {/* 3. ADDED: Select All Checkbox UI */}
+        <div className="mt-4 flex justify-end">
+          <label className="px-4 py-1 text-xs mx-8 bg-neutral-100 border border-neutral-300 flex items-center justify-start gap-1 rounded-sm shadow hover:bg-neutral-200 cursor-pointer transition-all">
+            <input 
+              type="checkbox" 
+              checked={isAllSelected} 
+              onChange={handleSelectAll} 
+              className="cursor-pointer w-4 h-4"
+            /> 
+            Select All Forms
+          </label>
         </div>
       </div>
-      <div className="grid grid-col-1 lg:grid-cols-2 space-x-7 mb-6 max-w-4xl mx-4 lg:mx-auto my-7 space-y-3 w-full">
-        <label className="px-3 py-1 text-sm border border-neutral-300 flex items-center justify-start gap-3 rounded-lg shadow hover:bg-gray-100 cursor-pointer hover:scale-102 transition-all du"><input type="checkbox" onChange={(e) => setSelectedForms(prev => ({ ...prev, authenticationForm: e.target.checked }))} />Authentication Form</label>
-        <label className="px-3 py-1 text-sm border border-neutral-300 flex items-center justify-start gap-3 rounded-lg shadow hover:bg-gray-100 cursor-pointer hover:scale-102 transition-all du"><input type="checkbox" onChange={(e) => setSelectedForms(prev => ({ ...prev, meetingMinutes: e.target.checked }))} /> Meeting Minutes</label>
 
-        <label className="px-3 py-1 text-sm border border-neutral-300 flex items-center justify-start gap-3 rounded-lg shadow hover:bg-gray-100 cursor-pointer hover:scale-102 transition-all du"><input type="checkbox" onChange={(e) => setSelectedForms(prev => ({ ...prev, promissoryNote: e.target.checked }))} /> Promissory Note</label>
+      <div className="grid grid-col-1 lg:grid-cols-2 space-x-7 mb-6 max-w-4xl mx-4 lg:mx-auto my-5 space-y-3 w-full">
+        {/* ADDED checked={...} to all inputs below to reflect the state visually */}
+        <label className="px-3 py-1 text-sm border border-neutral-300 flex items-center justify-start gap-3 rounded-lg shadow hover:bg-gray-100 cursor-pointer hover:scale-102 transition-all du"><input type="checkbox" checked={selectedForm.authenticationForm} onChange={(e) => setSelectedForms(prev => ({ ...prev, authenticationForm: e.target.checked }))} />Authentication Form</label>
+        <label className="px-3 py-1 text-sm border border-neutral-300 flex items-center justify-start gap-3 rounded-lg shadow hover:bg-gray-100 cursor-pointer hover:scale-102 transition-all du"><input type="checkbox" checked={selectedForm.meetingMinutes} onChange={(e) => setSelectedForms(prev => ({ ...prev, meetingMinutes: e.target.checked }))} /> Meeting Minutes</label>
 
-        <label className="px-3 py-1 text-sm border border-neutral-300 flex items-center justify-start gap-3 rounded-lg shadow hover:bg-gray-100 cursor-pointer hover:scale-102 transition-all du"><input type="checkbox" onChange={(e) => setSelectedForms(prev => ({ ...prev, demandPromissoryNote: e.target.checked }))} /> Demand Promissory Note</label>
+        <label className="px-3 py-1 text-sm border border-neutral-300 flex items-center justify-start gap-3 rounded-lg shadow hover:bg-gray-100 cursor-pointer hover:scale-102 transition-all du"><input type="checkbox" checked={selectedForm.promissoryNote} onChange={(e) => setSelectedForms(prev => ({ ...prev, promissoryNote: e.target.checked }))} /> Promissory Note</label>
 
-        <label className="px-3 py-1 text-sm border border-neutral-300 flex items-center justify-start gap-3 rounded-lg shadow hover:bg-gray-100 cursor-pointer hover:scale-102 transition-all du"><input type="checkbox" onChange={(e) => setSelectedForms(prev => ({ ...prev, guaranteeAgreement: e.target.checked }))} /> Guarantee Agreement</label>
+        <label className="px-3 py-1 text-sm border border-neutral-300 flex items-center justify-start gap-3 rounded-lg shadow hover:bg-gray-100 cursor-pointer hover:scale-102 transition-all du"><input type="checkbox" checked={selectedForm.demandPromissoryNote} onChange={(e) => setSelectedForms(prev => ({ ...prev, demandPromissoryNote: e.target.checked }))} /> Demand Promissory Note</label>
 
-        <label className="px-3 py-1 text-sm border border-neutral-300 flex items-center justify-start gap-3 rounded-lg shadow hover:bg-gray-100 cursor-pointer hover:scale-102 transition-all du"><input type="checkbox" onChange={(e) => setSelectedForms(prev => ({ ...prev, receiptForAuction: e.target.checked }))} /> Receipt For Auction</label>
+        <label className="px-3 py-1 text-sm border border-neutral-300 flex items-center justify-start gap-3 rounded-lg shadow hover:bg-gray-100 cursor-pointer hover:scale-102 transition-all du"><input type="checkbox" checked={selectedForm.guaranteeAgreement} onChange={(e) => setSelectedForms(prev => ({ ...prev, guaranteeAgreement: e.target.checked }))} /> Guarantee Agreement</label>
 
-        <label className="px-3 py-1 text-sm border border-neutral-300 flex items-center justify-start gap-3 rounded-lg shadow hover:bg-gray-100 cursor-pointer hover:scale-102 transition-all du"><input type="checkbox" onChange={(e) => setSelectedForms(prev => ({ ...prev, receipt: e.target.checked }))} /> Receipt</label>
+        <label className="px-3 py-1 text-sm border border-neutral-300 flex items-center justify-start gap-3 rounded-lg shadow hover:bg-gray-100 cursor-pointer hover:scale-102 transition-all du"><input type="checkbox" checked={selectedForm.receiptForAuction} onChange={(e) => setSelectedForms(prev => ({ ...prev, receiptForAuction: e.target.checked }))} /> Receipt For Auction</label>
 
-        <label className="px-3 py-1 text-sm border border-neutral-300 flex items-center justify-start gap-3 rounded-lg shadow hover:bg-gray-100 cursor-pointer hover:scale-102 transition-all du"><input type="checkbox" onChange={(e) => setSelectedForms(prev => ({ ...prev, bidPayableMemo: e.target.checked }))} /> Bid Payable Memo</label>
+        <label className="px-3 py-1 text-sm border border-neutral-300 flex items-center justify-start gap-3 rounded-lg shadow hover:bg-gray-100 cursor-pointer hover:scale-102 transition-all du"><input type="checkbox" checked={selectedForm.receipt} onChange={(e) => setSelectedForms(prev => ({ ...prev, receipt: e.target.checked }))} /> Receipt</label>
 
-        <label className="px-3 py-1 text-sm border border-neutral-300 flex items-center justify-start gap-3 rounded-lg shadow hover:bg-gray-100 cursor-pointer hover:scale-102 transition-all du"><input type="checkbox" onChange={(e) => setSelectedForms(prev => ({ ...prev, debitParticulars: e.target.checked }))} /> Debit Particulars</label>
+        <label className="px-3 py-1 text-sm border border-neutral-300 flex items-center justify-start gap-3 rounded-lg shadow hover:bg-gray-100 cursor-pointer hover:scale-102 transition-all du"><input type="checkbox" checked={selectedForm.bidPayableMemo} onChange={(e) => setSelectedForms(prev => ({ ...prev, bidPayableMemo: e.target.checked }))} /> Bid Payable Memo</label>
 
-        <label className="px-3 py-1 text-sm border border-neutral-300 flex items-center justify-start gap-3 rounded-lg shadow hover:bg-gray-100 cursor-pointer hover:scale-102 transition-all du"><input type="checkbox" onChange={(e) => setSelectedForms(prev => ({ ...prev, cashVoucher: e.target.checked }))} /> Cash Voucher</label>
+        <label className="px-3 py-1 text-sm border border-neutral-300 flex items-center justify-start gap-3 rounded-lg shadow hover:bg-gray-100 cursor-pointer hover:scale-102 transition-all du"><input type="checkbox" checked={selectedForm.debitParticulars} onChange={(e) => setSelectedForms(prev => ({ ...prev, debitParticulars: e.target.checked }))} /> Debit Particulars</label>
 
-        <label className="px-3 py-1 text-sm border border-neutral-300 flex items-center justify-start gap-3 rounded-lg shadow hover:bg-gray-100 cursor-pointer hover:scale-102 transition-all du"><input type="checkbox" onChange={(e) => setSelectedForms(prev => ({ ...prev, noClaim: e.target.checked }))} /> No Claim</label>
+        <label className="px-3 py-1 text-sm border border-neutral-300 flex items-center justify-start gap-3 rounded-lg shadow hover:bg-gray-100 cursor-pointer hover:scale-102 transition-all du"><input type="checkbox" checked={selectedForm.cashVoucher} onChange={(e) => setSelectedForms(prev => ({ ...prev, cashVoucher: e.target.checked }))} /> Cash Voucher</label>
 
-        <label className="px-3 py-1 text-sm border border-neutral-300 flex items-center justify-start gap-3 rounded-lg shadow hover:bg-gray-100 cursor-pointer hover:scale-102 transition-all du"><input type="checkbox" onChange={(e) => setSelectedForms(prev => ({ ...prev, noc: e.target.checked }))} /> NOC</label>
+        <label className="px-3 py-1 text-sm border border-neutral-300 flex items-center justify-start gap-3 rounded-lg shadow hover:bg-gray-100 cursor-pointer hover:scale-102 transition-all du"><input type="checkbox" checked={selectedForm.noClaim} onChange={(e) => setSelectedForms(prev => ({ ...prev, noClaim: e.target.checked }))} /> No Claim</label>
+
+        <label className="px-3 py-1 text-sm border border-neutral-300 flex items-center justify-start gap-3 rounded-lg shadow hover:bg-gray-100 cursor-pointer hover:scale-102 transition-all du"><input type="checkbox" checked={selectedForm.noc} onChange={(e) => setSelectedForms(prev => ({ ...prev, noc: e.target.checked }))} /> NOC</label>
         <span></span>
       </div>
 
       <div ref={ref}>
         {selectedForm.authenticationForm && (
           <div className="print-page">
-            <div className="max-w-4xl mx-auto bg-white border border-black p-6 text-[16px] leading-5.5">
+            <div className="max-w-4xl mx-auto bg-white border border-black p-6 text-[14px] leading-5.5 print-page">
               {/* CIN */}
               <div className="text-end text-xs">CIN NO.U64990MH2023PTC400938</div>
 
@@ -191,7 +219,7 @@ const AuthenticationForm = () => {
                   <label className="mr-2">Date :</label>
                   <input
                     disabled
-                    value={dayjs(chit.BylawsDate).format('DD MMM YYYY')}
+                    value={dayjs(bidAgreementData.dateofAuction).format('DD MMM YYYY')}
 
 
                     type="text"
@@ -204,8 +232,12 @@ const AuthenticationForm = () => {
                   <input
                     disabled
                     type="text"
-                    className="border-b border-black w-48 outline-none text-center bg-transparent text-sm"
-                    value={chit.GroupCode}
+                    className="border-b border-black w-48 outline-none text-center bg-transparent text-sm uppercase"
+                    value={
+  chit
+    ? `${chit.GroupCode} / ${chit.TicketNmber}`
+    : ""
+}
                   />
                 </div>
               </div>
@@ -222,7 +254,7 @@ const AuthenticationForm = () => {
                   <label className="mr-2">Branch :</label>
                   <input
                     disabled
-                    value={chit.branchName}
+                    value={chit?.branchName}
                     type="text"
                     className="border-b border-black w-64 outline-none bg-transparent text-sm"
                   />
@@ -235,7 +267,7 @@ const AuthenticationForm = () => {
 
                 {/* POINT 1 */}
                 <div>
-                  <p className="font-semibold">
+                  <p className="">
                     • I wish to inform you that I would not be able to personally
                     attend and participate in the auction
 
@@ -244,14 +276,14 @@ const AuthenticationForm = () => {
                       <input
                         type="text"
                         disabled
-                        value={dayjs(chit.BylawsDate).format("DD MMM YYYY")}
+                        value={dayjs(bidAgreementData.dateofAuction).format("DD MMM YYYY")}
                         className="border-b border-black w-72 outline-none bg-transparent mt-1 text-center font-normal text-sm"
                       />
                     </p>
                   </p>
                 </div>
                 <div>
-                  <p className="font-semibold">
+                  <p className="">
                     • I therefore request you to please allow
 
                     <p className="lg:ms-2">
@@ -270,18 +302,18 @@ const AuthenticationForm = () => {
                 </div>
 
                 {/* POINT 2 */}
-                <div className="flex flex-wrap items-center font-semibold">
+                <div className="flex flex-wrap items-center ">
                   <span>
                     • I request you accept my bid offer in which I am ready to forego
                     up to Rs.
                   </span>
                   <span
                     className="border-b border-black w-28 mx-2 outline-none bg-transparent font-normal text-center text-sm"
-                  >{chit.ChitValue}/-</span>
+                  >{bidAgreementData[0]?.totalBidAmount}/-</span>
 
-                  <span className="border-b border-black w-28 mx-2 outline-none bg-transparent font-normal text-center text-sm">
+                  {/* <span className="border-b border-black w-28 mx-2 outline-none bg-transparent font-normal text-center text-sm">
                     {chit.ChitValue}/-
-                  </span>
+                  </span> */}
 
 
                   <span className="lg:ms-2">for the month of</span>
@@ -289,7 +321,7 @@ const AuthenticationForm = () => {
                   <input
 
                     disabled
-                    value={dayjs(chit.BylawsDate).format('MMMM YYYY')}
+                    value={dayjs(bidAgreementData.dateofAuction).format('MMMM')}
 
                     type="text"
                     className="border-b border-black w-40 ml-2 outline-none bg-transparent font-normal text-center text-sm"
@@ -319,7 +351,7 @@ const AuthenticationForm = () => {
                   <label className="mr-2">Name :</label>
                   <input
                     type="text"
-                    value={`${user.firstname} ${user.middlename} ${user.lastname}`}
+                    value={`${user?.firstname} ${user?.middlename} ${user?.lastname}`}
                     className="font-medium border-b border-black w-153 outline-none bg-transparent text-sm"
                     disabled
                   />
@@ -329,7 +361,7 @@ const AuthenticationForm = () => {
                   <label className="mr-2 w-24">Address :</label>
                   <textarea
                     disabled
-                    value={user.permanent_address}
+                    value={user?.permanent_address}
                     className="w-full border-b border-black outline-none bg-transparent resize-none overflow-hidden leading-tight text-sm"
                   />
                 </div>
@@ -370,58 +402,58 @@ const AuthenticationForm = () => {
 
         {selectedForm.meetingMinutes && (
           <div className="print-page">
-            <MeetingMinutesForm chit={chit} user={user} chitAgreementData={chitAgreementData} />
+            <MeetingMinutesForm chit={chit} user={user} chitAgreement={chitAgreement} bidAgreement={bidAgreement}/>
           </div>
         )}
 
         {selectedForm.promissoryNote && (
           <div className="print-page">
-            <PromissoryNote chit={chit} user={user} chitAgreementData={chitAgreementData} />
+            <PromissoryNote chit={chit} user={user} chitAgreement={chitAgreement} bidAgreement={bidAgreement} gurantor={gurantor} gurantor2={gurantor2}/>
           </div>
         )}
         {selectedForm.demandPromissoryNote && (
           <div className="print-page">
-            <DemandPromissoryNote chit={chit} user={user} chitAgreementData={chitAgreementData} />
+            <DemandPromissoryNote chit={chit} user={user} chitAgreement={chitAgreement} bidAgreement={bidAgreement} gurantor={gurantor} gurantor2={gurantor2}/>
           </div>
         )}
         {selectedForm.guaranteeAgreement && (
           <div className="print-page">
-            <GuaranteeAgreement chit={chit} user={user} chitAgreementData={chitAgreementData} />
+            <GuaranteeAgreement chit={chit} user={user} chitAgreement={chitAgreement} bidAgreement={bidAgreement} gurantor={gurantor} gurantor2={gurantor2}/>
           </div>
         )}
         {selectedForm.receiptForAuction && (
           <div className="print-page">
-            <ReceiptForAuction chit={chit} user={user} chitAgreementData={chitAgreementData} />
+            <ReceiptForAuction chit={chit} user={user} chitAgreement={chitAgreement} bidAgreement={bidAgreement} gurantor={gurantor} gurantor2={gurantor2}/>
           </div>
         )}
         {selectedForm.receipt && (
           <div className="print-page">
-            <Receiptform chit={chit} user={user} chitAgreementData={chitAgreementData} />
+            <Receiptform chit={chit} user={user} chitAgreement={chitAgreement} bidAgreement={bidAgreement} gurantor={gurantor} gurantor2={gurantor2}/>
           </div>
         )}
         {selectedForm.bidPayableMemo && (
           <div className="print-page">
-            <BidPayableMemo chit={chit} user={user} chitAgreementData={chitAgreementData} />
+            <BidPayableMemo chit={chit} user={user} chitAgreement={chitAgreement} bidAgreement={bidAgreement} gurantor={gurantor} gurantor2={gurantor2}/>
           </div>
         )}
         {selectedForm.debitParticulars && (
           <div className="print-page">
-            <DebitParticulars chit={chit} user={user} chitAgreementData={chitAgreementData} />
+            <DebitParticulars chit={chit} user={user} chitAgreement={chitAgreement} bidAgreement={bidAgreement} gurantor={gurantor} gurantor2={gurantor2}/>
           </div>
         )}
         {selectedForm.cashVoucher && (
           <div className="print-page">
-            <CashVoucher chit={chit} user={user} chitAgreementData={chitAgreementData} />
+            <CashVoucher chit={chit} user={user} chitAgreement={chitAgreement} bidAgreement={bidAgreement} gurantor={gurantor} gurantor2={gurantor2}/>
           </div>
         )}
         {selectedForm.noClaim && (
           <div className="print-page">
-            <NoClaim chit={chit} user={user} chitAgreementData={chitAgreementData} />
+            <NoClaim chit={chit} user={user} chitAgreement={chitAgreement} bidAgreement={bidAgreement} gurantor={gurantor} gurantor2={gurantor2}/>
           </div>
         )}
         {selectedForm.noc && (
           <div className="print-page">
-            <NOC chit={chit} user={user} chitAgreementData={chitAgreementData} />
+            <NOC chit={chit} user={user} chitAgreement={chitAgreement} bidAgreement={bidAgreement} gurantor={gurantor} gurantor2={gurantor2}/>
           </div>
         )}
       </div>
