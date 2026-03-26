@@ -69,7 +69,7 @@ const ViewChitAgreement = () => {
 
           {/* Table */}
           <div className="overflow-x-auto mt-3">
-            <table className="w-full border border-neutral-300 text-sm rounded-md">
+            <table className="w-full border border-neutral-300 text-sm rounded-md ">
               <thead className="bg-[#004f9e]">
                 <tr>
                   <th className="border p-2 text-white font-medium border-black">
