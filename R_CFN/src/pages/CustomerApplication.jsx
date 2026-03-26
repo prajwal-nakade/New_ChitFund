@@ -134,8 +134,8 @@ const CustomerApplication = () => {
   }
 
   // Common Table Classes
-  const labelCell = "bg-gray-50 border border-neutral-300 px-4 py-2 text-sm font-medium text-neutral-700 w-1/3";
-  const inputCell = "border border-neutral-300 px-4 py-2 w-2/3";
+  const labelCell = "bg-gray-50 border border-neutral-300 px-3 py-1 text-sm font-medium text-neutral-700 w-1/3";
+  const inputCell = "border border-neutral-300 px-3 py-1 w-2/3 text-sm";
 
   return (
     <Layout>
@@ -145,7 +145,7 @@ const CustomerApplication = () => {
         <form onSubmit={handleSubmit} className="bg-white shadow-lg rounded-b-md border border-neutral-300 overflow-hidden">
           
           {/* SEARCH & RESET SECTION */}
-          <div className='p-5 border-b border-neutral-200 bg-slate-50 flex flex-col lg:flex-row items-center gap-4'>
+          <div className='p-3 border-b border-neutral-200 bg-slate-50 flex flex-col lg:flex-row items-center gap-4'>
             <div className="relative group flex-1">
               <Search size={14} className="absolute left-3 top-2.5 text-neutral-500" />
               <input
@@ -192,7 +192,7 @@ const CustomerApplication = () => {
           )}
 
           {/* CHIT DETAILS TABLE */}
-          <div className="px-5 py-2 bg-[#004f9e] text-white text-md font-medium">Chit Details</div>
+          <div className="px-3 py-1 bg-[#004f9e] text-white text-md font-medium">Chit Details</div>
           <table className="w-full border-collapse">
             <tbody>
               <tr>
@@ -249,7 +249,7 @@ const CustomerApplication = () => {
           </table>
 
           {/* CUSTOMER DETAILS TABLE */}
-          <div className="px-5 py-2 bg-[#004f9e] text-white text-md font-medium mt-1">Customer Details</div>
+          <div className="px-3 py-1 bg-[#004f9e] text-white text-md font-medium mt-1">Customer Details</div>
           <table className="w-full border-collapse">
             <tbody>
               <tr>
@@ -297,7 +297,7 @@ const CustomerApplication = () => {
           </table>
 
           {/* NOMINEE DETAILS TABLE */}
-          <div className="px-5 py-2 bg-[#004f9e] text-white text-md font-medium mt-1">Nominee Details</div>
+          <div className="px-3 py-1 bg-[#004f9e] text-white text-md font-medium mt-1">Nominee Details</div>
           <table className="w-full border-collapse">
             <tbody>
               <tr>

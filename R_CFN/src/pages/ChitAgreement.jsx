@@ -136,9 +136,9 @@ const ChitAgreement = () => {
   };
 
   // Styles for the tabular structure
-  const labelClass = "bg-gray-50 border border-neutral-300 px-4 py-2 text-sm font-medium text-neutral-700 w-1/3";
-  const inputClass = "border border-neutral-300 px-4 py-2 w-2/3";
-  const sectionHeader = "bg-[#004c9e] text-white px-4 py-2 font-semibold text-lg";
+  const labelClass = "bg-gray-50 border border-neutral-300 px-3 py-1 text-sm font-medium text-neutral-700 w-1/3";
+  const inputClass = "border border-neutral-300 px-3 py-1 w-2/3 text-sm";
+  const sectionHeader = "bg-[#004c9e] text-white px-3 py-1 font-medium text-base";
 
   return (
     <Layout>
@@ -151,7 +151,7 @@ const ChitAgreement = () => {
 
         <form onSubmit={handleSubmit} className="bg-white">
 
-          <div className="flex items-center gap-2 text-xs lg:text-sm relative bg-neutral-100 px-10 py-2">
+          <div className="flex items-center gap-2 text-xs lg:text-sm relative bg-neutral-100 px-10 py-2 border border-neutral-300">
             <label className="font-semibold">Application No. <span className="text-red-500">*</span></label>
             <input
               type="text"
@@ -189,7 +189,7 @@ const ChitAgreement = () => {
                   <textarea
                     
                     value={displayData.fullName || displayData.permanent_address ? `${displayData.fullName}\n${displayData.permanent_address}` : ""}
-                    className="w-full px-3 py-1 border border-neutral-300 rounded-md bg-gray-100"
+                    className="w-full px-3 py-1 border border-neutral-300 rounded-md "
                     rows="2"
                   />
                 </td>
