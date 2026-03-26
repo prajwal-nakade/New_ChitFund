@@ -134,7 +134,10 @@ const Navbar = () => {
       )}
 
       {/* 🔹 TOP NAVBAR */}
-      <header className="flex items-center justify-start h-14 px-6 border-b border-neutral-300 bg-white">
+      <header className="flex items-center justify-center h-17 px-6 border-b border-neutral-300 bg-white">
+        <div className="w-full flex items-center justify-end me-auto">
+          <img src="./Logo3.jpeg" width={200} alt="" className="ms-auto"/>
+        </div>
         <button
           onClick={() => setOpen(!open)}
           className="md:hidden text-neutral-700"
