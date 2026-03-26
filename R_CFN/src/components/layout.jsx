@@ -4,7 +4,7 @@ import { Outlet } from 'react-router-dom'
 
 const Layout = ({ children }) => {
     return (
-        <div className="flex min-h-screen lg:h-screen">
+        <div className="flex min-h-screen lg:h-screen ">
             <div className="hidden md:block">
                 <Sidebar />
             </div>

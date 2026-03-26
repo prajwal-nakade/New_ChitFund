@@ -9,7 +9,7 @@ import { numberToWords } from "amount-to-words";
 const PromissoryNote = ({ chit, user, chitAgreement, bidAgreement, gurantor, gurantor2 }) => {
   const inWords = numberToWords(chit?.ChitValue)
   return (
-    <div className="max-w-4xl mx-auto bg-white border border-black px-8 py-6 text-[16px] leading-6 ">
+    <div className="max-w-4xl mx-auto bg-white border border-black px-8 py-6 text-[14px] leading-6 print-page">
 
       {/* TOP RIGHT CIN */}
       <div className="text-end text-xs">CIN NO.U64990MH2023PTC400938</div>
@@ -131,7 +131,7 @@ const PromissoryNote = ({ chit, user, chitAgreement, bidAgreement, gurantor, gur
         {/* Guarantor 02 */}
         <div className="flex justify-between items-end ">
           <div className="w-[400px] flex flex-col items-center justify-center">
-            {gurantor2 && <span className="text-center w-full">{`${gurantor2?.firstname} ${gurantor2?.middlename} ${gurantor2?.lastname} `}</span>}
+            {gurantor2 && <span className="text-center w-full">{`${gurantor2?.firstname || ""} ${gurantor2?.middlename || ""} ${gurantor2?.lastname || ""} `}</span>}
             <div className="border-b border-black w-full"></div>
             <p className="text-sm text-center mt-1">Name Of Guarantor 02</p>
           </div>

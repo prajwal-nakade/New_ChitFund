@@ -1,13 +1,12 @@
 import { useContext, useEffect, useState } from "react";
 import Layout from "../components/layout";
 import { getUserEntries, userEntry } from "../api/endpoint";
-import { Factory, Loader2, X } from "lucide-react";
+import { Factory, Loader2, Upload, X } from "lucide-react";
 import { toast } from "react-toastify";
 import UserManagement from "../components/UserManagement";
 import { UserContext } from "../context/UserContext";
 
 const ApplicationForm = () => {
-  // const { fetchUserEntriesData } = useContext(UserContext)
   const [formData, setFormData] = useState({
     firstName: "",
     middleName: "",
@@ -25,11 +24,8 @@ const ApplicationForm = () => {
   });
 
   const [errors, setErrors] = useState({});
-
   const [loading, setLoading] = useState(false);
-
   const [userEntriesData, setUserEntriesData] = useState([]);
-
   const [nomineeData, setNomineeData] = useState({
     nominee_firstname: "",
     nominee_middlename: "",
@@ -39,23 +35,13 @@ const ApplicationForm = () => {
     nomineeMobile: "",
   });
 
-  const [preview, setPreview] = useState({
-    pan_image: null,
-    aadhar_image: null,
-  });
-
-  const [backPreview, setBackPreview] = useState({
-    aadhar_image_back: null,
-  });
+  const [preview, setPreview] = useState({ pan_image: null, aadhar_image: null });
+  const [backPreview, setBackPreview] = useState({ aadhar_image_back: null });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-
-    setErrors((prev) => ({
-      ...prev,
-      [name]: "",
-    }));
+    setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
   const handleNomineeChange = (e) => {
@@ -63,24 +49,19 @@ const ApplicationForm = () => {
     setNomineeData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // ======== SINGLE BUTTON -> TWO IMAGES ========
   const handleImageChange = (e) => {
     const { name, files } = e.target;
     if (!files || files.length === 0) return;
-
-    const file = files[0]; // Only one file per button now
+    const file = files[0];
 
     if (name === "pan_image") {
       setFormData((prev) => ({ ...prev, pan_image: file }));
       setPreview((p) => ({ ...p, pan_image: file?.name || null }));
     }
-
-
     if (name === "aadhar_image") {
       setFormData((prev) => ({ ...prev, aadhar_image: file }));
       setPreview((p) => ({ ...p, aadhar_image: file?.name || null }));
     }
-
     if (name === "aadhar_image_back") {
       setFormData((prev) => ({ ...prev, aadhar_image_back: file }));
       setBackPreview((p) => ({ ...p, aadhar_image_back: file?.name || null }));
@@ -89,53 +70,34 @@ const ApplicationForm = () => {
 
   const removePanImage = (e) => {
     e.preventDefault();
-    e.stopPropagation();
     setFormData((p) => ({ ...p, pan_image: null }));
     setPreview((p) => ({ ...p, pan_image: null }));
   };
 
   const removeAadharImage = (e) => {
     e.preventDefault();
-    e.stopPropagation();
     setFormData((p) => ({ ...p, aadhar_image: null }));
     setPreview((p) => ({ ...p, aadhar_image: null }));
   };
 
   const removeAadharBackImage = (e) => {
     e.preventDefault();
-    e.stopPropagation();
     setFormData((p) => ({ ...p, aadhar_image_back: null }));
     setBackPreview((p) => ({ ...p, aadhar_image_back: null }));
   };
 
-  const validatePan = (panNo) => {
-    const panRegex = /^[A-Z]{5}[0-9]{4}[A-Z]$/i;
-    return panRegex.test(panNo);
-  };
-
-  const validateAadhar = (aadharNo) => {
-    const aadharRegex = /^[2-9]{1}[0-9]{3}\s?[0-9]{4}\s?[0-9]{4}$/;
-    return aadharRegex.test(aadharNo);
-  };
+  const validatePan = (panNo) => /^[A-Z]{5}[0-9]{4}[A-Z]$/i.test(panNo);
+  const validateAadhar = (aadharNo) => /^[2-9]{1}[0-9]{3}\s?[0-9]{4}\s?[0-9]{4}$/.test(aadharNo);
 
   const validateAadharAndPan = () => {
     let newError = {};
-
-    if (!validatePan(formData.pan)) {
-      newError.pan =
-        "Invalid PAN number. Please enter a valid PAN in the format ABCDE1234F.";
-    }
-
-    if (!validateAadhar(formData.aadhar)) {
-      newError.aadhar =
-        "Invalid Aadhaar number. Please enter a 12-digit Aadhaar number starting with 2–9.";
-    }
-
+    if (!validatePan(formData.pan)) newError.pan = "Invalid PAN format (ABCDE1234F).";
+    if (!validateAadhar(formData.aadhar)) newError.aadhar = "Invalid 12-digit Aadhaar.";
     setErrors(newError);
     return Object.keys(newError).length === 0;
   };
 
-  const handleSubmit = async (e) => {
+ const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.pan_image && !formData.aadhar_image) {
       toast.error("PAN & Aadhar image is required");
@@ -236,363 +198,143 @@ const ApplicationForm = () => {
     setUserEntriesData(data);
   };
 
-  useEffect(() => {
-    fetchUserEntriesData();
-  }, []);
-  console.log(localStorage.getItem('username'))
+  useEffect(() => { fetchUserEntriesData(); }, []);
+
+  // Utility class for table cells
+  const tdLabel = "p-3 border border-neutral-300 bg-gray-50 font-medium text-sm w-1/3";
+  const tdInput = "p-3 border border-neutral-300 w-2/3 ";
+
   return (
-   <Layout>
-      <div className="max-w-7xl mx-auto rounded-md p-6">
-        <h1 className="text-lg font-medium  w-full text-start px-5 py-1 rounded-t-md bg-[#004f9e]   text-white tracking-tight">
+    <Layout>
+      <div className="mx-auto rounded-md p-6">
+        <h1 className="text-lg font-medium w-full text-start px-5 py-2 rounded-t-md bg-[#004f9e] text-white">
           Customer Master Form
         </h1>
-        <form
-          onSubmit={handleSubmit}
-          className="flex flex-col gap-4 w-full bg-white shadow-lg rounded-b-md border border-neutral-300"
-        >
-          {/* User Name */}
-          <div className="px-5 py-3 flex flex-col gap-4">
-            <div className="flex flex-col sm:flex-row items-center w-full gap-4">
-              <div className="flex flex-col items-start w-full text-sm">
-                <label>
-                  First Name <span className="text-red-500">*</span>
-                </label>
-                <input
-                  className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
-                  name="firstName"
-                  value={formData.firstName}
-                  onChange={handleChange}
-                  placeholder="First Name"
-                  required
-                />
-              </div>
-              <div className="flex flex-col items-start w-full text-sm">
-                <label className="text-sm">
-                  Middle Name <span className="text-red-500">*</span>
-                </label>
-                <input
-                  className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
-                  name="middleName"
-                  value={formData.middleName}
-                  onChange={handleChange}
-                  placeholder="Middle Name"
-                  required
-                />
-              </div>
-              <div className="flex flex-col items-start w-full text-sm">
-                <label className="text-sm">
-                  Last Name <span className="text-red-500">*</span>
-                </label>
-                <input
-                  className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
-                  name="lastName"
-                  value={formData.lastName}
-                  onChange={handleChange}
-                  placeholder="Last Name"
-                  required
-                />
-              </div>
-            </div>
+        <form onSubmit={handleSubmit} className="bg-white shadow-lg rounded-b-md border border-neutral-300 overflow-hidden">
+          
+          <table className="w-full border-collapse">
+            <tbody>
+              {/* Personal Details Section */}
+              <tr><td colSpan="2" className="bg-gray-100 p-2 font-bold text-[#004f9e] border-b border-neutral-300 text-center">Personal Information</td></tr>
+              
+              <tr>
+                <td className={tdLabel}>Full Name <span className="text-red-500">*</span></td>
+                <td className="flex gap-2 p-3">
+                  <input className="w-full px-3 py-1 border border-neutral-300 rounded-md" placeholder="First Name" name="firstName" value={formData.firstName} onChange={handleChange} required />
 
-            {/* Contact */}
-            <div className="flex flex-col sm:flex-row items-center gap-4 w-full">
-              <div className="flex flex-col items-start w-full text-sm">
-                <label>
-                  Mobile Number <span className="text-red-500">*</span>
-                </label>
-                <input
-                  className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
-                  name="mobile"
-                  value={formData.mobile}
-                  onChange={handleChange}
-                  placeholder="Mobile"
-                  required
-                />
-              </div>
-              <div className="flex flex-col items-start w-full text-sm">
-                <label>Email</label>
-                <input
-                  className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  placeholder="Email"
-                />
-              </div>
-              <div className="flex flex-col items-start w-full text-sm">
-                <label>
-                  Date of Birth <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="date"
-                  className="w-full min-w-0 mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
-                  name="dob"
-                  value={formData.dob}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-            </div>
+                  <input className="w-full px-3 py-1 border border-neutral-300 rounded-md" placeholder="Middle Name" name="middleName" value={formData.middleName} onChange={handleChange} required />
 
-            {/* Address */}
-            <div>
-              <label className="text-sm">
-                Permanent Address <span className="text-red-500">*</span>
-              </label>
-              <textarea
-                className="w-full mt-1 px-3 py-1 border border-neutral-300 rounded-md text-sm"
-                name="address"
-                value={formData.address}
-                onChange={handleChange}
-                placeholder="Permanent Address"
-                required
-              />
-            </div>
+                  <input className="w-full px-3 py-1 border border-neutral-300 rounded-md" placeholder="Last Name" name="lastName" value={formData.lastName} onChange={handleChange} required />
+                </td>
+              </tr>
 
-            {/* IDs */}
-            <div className="w-full text-sm flex flex-col lg:flex-row items-center gap-4">
-              <div className="flex flex-col items-start w-full text-sm">
-                <label>
-                  Gender <span className="text-red-500">*</span>
-                </label>
-                <select
-                  className="w-full min-w-0 mt-1 px-3 py-1.5 border border-neutral-300 rounded-md text-sm"
-                  required
-                >
-                  <option value="">Select Gender</option>
-                  <option value="male">Male</option>
-                  <option value="female">Female</option>
-                  <option value="other">Other</option>
-                </select>
-              </div>
+              
 
-              {/* PIN CODE */}
-              <div className="flex flex-col gap-1 w-full text-sm">
-                <label className="text-sm">
-                  PIN Code <span className="text-red-500">*</span>
-                </label>
-                <input
-                  className="w-full px-3 py-1 border border-neutral-300 rounded-md"
-                  name="pincode"
-                  value={formData.pincode}
-                  onChange={handleChange}
-                  placeholder="Pincode"
-                  required
-                />
-              </div>
-            </div>
-            {/* PAN */}
+              <tr>
+                <td className={tdLabel}>Mobile Number <span className="text-red-500">*</span></td>
+                <td className={tdInput}>
+                  <input className="w-full px-3 py-1 border border-neutral-300 rounded-md" placeholder="Mobile Number" name="mobile" value={formData.mobile} onChange={handleChange} required />
+                </td>
+              </tr>
 
-            <div className="w-full text-sm flex flex-col lg:flex-row items-center gap-4">
-              <div className="flex flex-col gap-1 relative w-full">
-                <label className="text-sm">
-                  PAN Number <span className="text-red-500">*</span>
-                </label>
+              <tr>
+                <td className={tdLabel}>Email</td>
+                <td className={tdInput}>
+                  <input className="w-full px-3 py-1 border border-neutral-300 rounded-md" placeholder="Email" name="email" value={formData.email} onChange={handleChange} />
+                </td>
+              </tr>
 
-                <div className="flex flex-col lg:flex-row items-start lg:items-center gap-2">
-                  <input
-                    className="w-full px-3 py-1 border border-neutral-300 rounded-md uppercase"
-                    name="pan"
-                    value={formData.pan}
-                    onChange={handleChange}
-                    placeholder="PAN"
-                    required
-                  />
+              <tr>
+                <td className={tdLabel}>Date of Birth <span className="text-red-500">*</span></td>
+                <td className={tdInput}>
+                  <input type="date" className="w-full px-3 py-1 border border-neutral-300 rounded-md" name="dob" value={formData.dob} onChange={handleChange} required />
+                </td>
+              </tr>
 
+              <tr>
+                <td className={tdLabel}>Permanent Address <span className="text-red-500">*</span></td>
+                <td className={tdInput}>
+                  <textarea className="w-full px-3 py-1 border border-neutral-300 rounded-md resize-none" name="address" value={formData.address} onChange={handleChange} placeholder="Permanent Address" required />
+                </td>
+              </tr>
+
+              <tr>
+                <td className={tdLabel}>Gender <span className="text-red-500">*</span></td>
+                <td className={tdInput}>
+                  <select className="w-full px-3 py-1.5 border border-neutral-300 rounded-md bg-white" required>
+                    <option value="">Select Gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                  </select>
+                </td>
+              </tr>
+
+              <tr>
+                <td className={tdLabel}>PIN Code <span className="text-red-500">*</span></td>
+                <td className={tdInput}>
+                  <input className="w-full px-3 py-1 border border-neutral-300 rounded-md" name="pincode" value={formData.pincode} onChange={handleChange} placeholder="PIN Code" required />
+                </td>
+              </tr>
+
+              {/* ID Details */}
+              <tr>
+                <td className={tdLabel}>PAN Number <span className="text-red-500">*</span></td>
+                <td className={tdInput}>
+                  <div className="flex flex-col gap-2">
+                    <div className="flex gap-2">
+                        <input className="flex-1 px-3 py-1 border border-neutral-300 rounded-md uppercase" name="pan" value={formData.pan} onChange={handleChange} placeholder="ABCDE1234F" required />
+                        <label className="px-3 py-1 bg-gray-200 rounded-md cursor-pointer text-xs flex items-center gap-1">
+                           <Upload size={16} /> Upload PAN <input type="file" hidden name="pan_image" accept=".png,.jpg,.jpeg" onChange={handleImageChange} />
+                        </label>
+                    </div>
+                    {errors.pan && <span className="text-red-600 text-xs">{errors.pan}</span>}
+                    {preview.pan_image && <div className="text-green-600 text-xs flex items-center gap-1">{preview.pan_image} <X size={14} className="cursor-pointer" onClick={removePanImage}/></div>}
+                  </div>
+                </td>
+              </tr>
+
+              <tr>
+                <td className={tdLabel}>Aadhar Number <span className="text-red-500">*</span></td>
+                <td className={tdInput}>
+                  <div className="flex flex-col gap-2">
+                    <div className="flex gap-2">
+                        <input className="flex-1 px-3 py-1 border border-neutral-300 rounded-md" name="aadhar" value={formData.aadhar} onChange={handleChange} placeholder="12 Digit Aadhar" required />
+                        <label className="px-3 py-1 bg-gray-200 rounded-md cursor-pointer text-xs flex items-center gap-1">
+                           <Upload size={16} />Upload Aadhar Front <input type="file" hidden name="aadhar_image" accept=".png,.jpg,.jpeg" onChange={handleImageChange} />
+                        </label>
+                        <label className="px-3 py-1 bg-gray-200 rounded-md cursor-pointer text-xs flex items-center gap-1">
+                           <Upload size={16} /> Upload Aadhar Back <input type="file" hidden name="aadhar_image_back" accept=".png,.jpg,.jpeg" onChange={handleImageChange} />
+                        </label>
+                    </div>
+                    {errors.aadhar && <span className="text-red-600 text-xs">{errors.aadhar}</span>}
+                    <div className="flex flex-col gap-1">
+                        {preview.aadhar_image && <div className="text-green-600 text-xs flex items-center gap-1">Front: {preview.aadhar_image} <X size={14} className="cursor-pointer" onClick={removeAadharImage}/></div>}
+                        {backPreview.aadhar_image_back && <div className="text-green-600 text-xs flex items-center gap-1">Back: {backPreview.aadhar_image_back} <X size={14} className="cursor-pointer" onClick={removeAadharBackImage}/></div>}
+                    </div>
+                  </div>
+                </td>
+              </tr>
+
+              {/* Nominee Details Section */}
+              <tr><td colSpan="2" className="bg-gray-100 p-2 font-bold text-[#004f9e] border-y border-neutral-300 text-center">Nominee Details</td></tr>
+
+              <tr>
+                <td className={tdLabel}>Nominee Name <span className="text-red-500">*</span></td>
+                <td className={tdInput}>
                   <div className="flex gap-2">
-                    <label className="px-3 py-1 border border-neutral-300 bg-gray-200 rounded-md cursor-pointer hover:bg-gray-300 shadow-inner text-xs whitespace-nowrap">
-                      PAN Front
-                      <input
-                        type="file"
-                        hidden
-                        name="pan_image"
-                        accept=".png,.jpg,.jpeg"
-                        onChange={handleImageChange}
-                      />
-                    </label>
-
-                    {/* <label className="px-3 py-1 border border-neutral-300 bg-gray-200 rounded-md cursor-pointer hover:bg-gray-300 shadow-inner text-xs whitespace-nowrap">
-                      PAN Back
-                      <input
-                        type="file"
-                        hidden
-                        name="pan_image_back"
-                        accept=".png,.jpg,.jpeg"
-                        onChange={handleImageChange}
-                      />
-                    </label> */}
+                    <input className="w-full px-2 py-1 border border-neutral-300 rounded-md" name="nominee_firstname" value={nomineeData.nominee_firstname} onChange={handleNomineeChange} placeholder="First" required />
+                    <input className="w-full px-2 py-1 border border-neutral-300 rounded-md" name="nominee_middlename" value={nomineeData.nominee_middlename} onChange={handleNomineeChange} placeholder="Middle" required />
+                    <input className="w-full px-2 py-1 border border-neutral-300 rounded-md" name="nominee_lastname" value={nomineeData.nominee_lastname} onChange={handleNomineeChange} placeholder="Last" required />
                   </div>
-                </div>
-                {errors.pan && (
-                  <div className="mt-1 text-xs text-red-600">{errors.pan}</div>
-                )}
+                </td>
+              </tr>
 
-                {(preview.pan_image || backPreview.pan_image_back) && (
-                  <div className="flex items-center gap-2 text-green-600 text-xs mt-1 absolute top-14">
-                    {preview.pan_image && (
-                      <>
-                        <span className="truncate">{preview.pan_image}</span>
-                        <button type="button" onClick={removePanImage}>
-                          <X size={14} />
-                        </button>
-                      </>
-                    )}
-
-                    {backPreview.pan_image_back && (
-                      <>
-                        <span className="truncate">
-                          {backPreview.pan_image_back}
-                        </span>
-                        <button type="button" onClick={removePanBackImage}>
-                          <X size={14} />
-                        </button>
-                      </>
-                    )}
-                  </div>
-                )}
-              </div>
-
-              {/* ===== AADHAR FIELD ===== */}
-              <div className="flex flex-col gap-1 relative w-full">
-
-                <label className="text-sm">
-                  Aadhar Number <span className="text-red-500">*</span>
-                </label>
-
-                <div className="flex flex-col lg:flex-row items-start lg:items-center gap-2">
-                  <input
-                    className="w-full px-3 py-1 border border-neutral-300 rounded-md"
-                    name="aadhar"
-                    value={formData.aadhar}
-                    onChange={handleChange}
-                    placeholder="Enter your 12 digit Aadhar number"
-                    required
-                  />
-
-                  <div className="flex gap-2">
-                    <label className="px-3 py-1 border border-neutral-300 bg-gray-200 rounded-md cursor-pointer hover:bg-gray-300 shadow-inner text-xs whitespace-nowrap">
-                      Aadhaar Front
-                      <input
-                        type="file"
-                        hidden
-                        name="aadhar_image"
-                        accept=".png,.jpg,.jpeg"
-                        onChange={handleImageChange}
-                      />
-                    </label>
-
-                    <label className="px-3 py-1 border border-neutral-300 bg-gray-200 rounded-md cursor-pointer hover:bg-gray-300 shadow-inner text-xs whitespace-nowrap">
-                      Aadhaar Back
-                      <input
-                        type="file"
-                        hidden
-                        name="aadhar_image_back"
-                        accept=".png,.jpg,.jpeg"
-                        onChange={handleImageChange}
-                      />
-                    </label>
-                  </div>
-                </div>
-
-                {errors.aadhar && (
-                  <div className="mt-1 text-xs text-red-600">
-                    {errors.aadhar}
-                  </div>
-                )}
-
-                {(preview.aadhar_image || backPreview.aadhar_image_back) && (
-
-                  <div className="flex items-center gap-2 text-green-600 text-xs mt-1 absolute top-14">
-                  
-                    {preview.aadhar_image && (
-                      <>
-                        <span className="truncate">{preview.aadhar_image}</span>
-                        <button type="button" onClick={removeAadharImage}>
-                          <X size={14} />
-                        </button>
-                      </>
-                    )}
-
-                    {backPreview.aadhar_image_back && (
-                      <>
-                        <span className="truncate">
-                          {backPreview.aadhar_image_back}
-                        </span>
-                        <button type="button" onClick={removeAadharBackImage}>
-                          <X size={14} />
-                        </button>
-                      </>
-                    )}
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-
-          <div className=" flex flex-col gap-4 mt-1">
-            <h2 className="text-lg font-medium mt-4 w-full text-start px-5 py-1  bg-[#004f9e]  text-white  tracking-tight">
-              Nominee Details
-            </h2>
-
-            <div className="px-5 py-3 flex flex-col gap-4">
-              <div className="flex flex-col sm:flex-row gap-4 mt-4">
-                <div className="flex flex-col items-start w-full text-sm">
-                  <label>
-                    First Name <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    className="w-full min-w-0 border px-3 py-1 rounded text-sm border-neutral-300"
-                    name="nominee_firstname"
-                    value={nomineeData.nominee_firstname}
-                    onChange={handleNomineeChange}
-                    placeholder="First Name"
-                    required
-                  />
-                </div>
-                <div className="flex flex-col items-start w-full text-sm">
-                  <label>
-                    Middle Name <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    className="w-full min-w-0 border px-3 py-1 rounded text-sm border-neutral-300"
-                    name="nominee_middlename"
-                    value={nomineeData.nominee_middlename}
-                    onChange={handleNomineeChange}
-                    placeholder="Middle Name"
-                    required
-                  />
-                </div>
-                <div className="flex flex-col items-start w-full text-sm">
-                  <label>
-                    Last Name <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    className="w-full min-w-0 border px-3 py-1 rounded text-sm border-neutral-300"
-                    name="nominee_lastname"
-                    value={nomineeData.nominee_lastname}
-                    onChange={handleNomineeChange}
-                    placeholder="Last Name"
-                    required
-                  />
-                </div>
-              </div>
-
-              <div className="flex flex-col sm:flex-row gap-4">
-                <div className="flex flex-col items-start w-full text-sm">
-                  <label>
-                    Relationship <span className="text-red-500">*</span>
-                  </label>
-                  <select
-                    className="w-full min-w-0 border px-3 py-1 rounded text-sm border-neutral-300 bg-white relative z-50"
-                    style={{ position: "relative" }}
-                    name="relationship"
-                    value={nomineeData.relationship}
-                    onChange={handleNomineeChange}
-                    required
-                  >
-                    <option value="" disabled>
-                      Select Relationship
-                    </option>
+              <tr>
+                <td className={tdLabel}>Relationship <span className="text-red-500">*</span></td>
+                <td className={tdInput}>
+                  <select className="w-full px-3 py-1.5 border border-neutral-300 rounded-md bg-white" name="relationship" value={nomineeData.relationship} onChange={handleNomineeChange} required>
+                    <option value="" disabled>Select Relationship</option>
                     <option value="Father">Father</option>
                     <option value="Mother">Mother</option>
                     <option value="Brother">Brother</option>
@@ -601,71 +343,37 @@ const ApplicationForm = () => {
                     <option value="Daughter">Daughter</option>
                     <option value="Wife">Wife</option>
                   </select>
-                </div>
-                <div className="flex flex-col items-start w-full text-sm">
-                  <label>
-                    Date of Birth <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="date"
-                    className="w-full min-w-0 border px-3 py-1 rounded text-sm border-neutral-300"
-                    name="nomineeDob"
-                    value={nomineeData.nomineeDob}
-                    onChange={handleNomineeChange}
-                    required
-                  />
-                </div>
-                <div className="flex flex-col items-start w-full text-sm">
-                  <label>
-                    Mobile Number <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    className="w-full min-w-0 border px-3 py-1 rounded text-sm border-neutral-300"
-                    name="nomineeMobile"
-                    value={nomineeData.nomineeMobile}
-                    onChange={handleNomineeChange}
-                    placeholder="Mobile"
-                    required
-                  />
-                </div>
-              </div>
+                </td>
+              </tr>
 
-              <div className="flex flex-col items-start w-full lg:w-96 text-sm">
-                <label>
-                  Gender <span className="text-red-500">*</span>
-                </label>
-                <select
-                  className="w-95 min-w-0 mt-1 px-2 py-1.5 border border-neutral-300 rounded-md text-sm"
-                  required
-                >
-                  <option value="">Select Gender</option>
-                  <option value="male">Male</option>
-                  <option value="female">Female</option>
-                  <option value="other">Other</option>
-                </select>
-              </div>
-            </div>
-          </div>
+              <tr>
+                <td className={tdLabel}>Nominee DOB / Mobile <span className="text-red-500">*</span></td>
+                <td className={tdInput}>
+                  <div className="flex gap-2">
+                    <input type="date" className="w-full px-2 py-1 border border-neutral-300 rounded-md" name="nomineeDob" value={nomineeData.nomineeDob} onChange={handleNomineeChange} required />
+                    <input className="w-full px-2 py-1 border border-neutral-300 rounded-md" name="nomineeMobile" value={nomineeData.nomineeMobile} onChange={handleNomineeChange} placeholder="Mobile" required />
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
 
-          <div className="flex justify-center mt-4 pb-3">
+          <div className="flex justify-center p-6 bg-gray-50 border-t border-neutral-300">
             {loading ? (
-              <button className="px-6 py-1 bg-[#06c] transition-all duration-300 cursor-pointer text-white rounded-md text-sm shadow-md flex items-center gap-2">
-                <Loader2 size={18} className="animate-spin" />
-                Registering Customer...
+              <button disabled className="px-8 py-2 bg-[#06c] text-white rounded-md text-sm shadow-md flex items-center gap-2 opacity-70">
+                <Loader2 size={18} className="animate-spin" /> Registering...
               </button>
             ) : (
-              <button className="px-6 py-1 bg-[#004f9e] hover:bg-[#06c] transition-all duration-300 cursor-pointer text-white rounded-md text-sm shadow-md">
+              <button type="submit" className="px-8 py-2 bg-[#004f9e] hover:bg-[#06c] transition-all text-white rounded-md text-sm shadow-md">
                 Register Customer
               </button>
             )}
           </div>
         </form>
-        <UserManagement
-          data={userEntriesData}
-          setUserEntriesData={setUserEntriesData}
-        />
+
+        <UserManagement data={userEntriesData} setUserEntriesData={setUserEntriesData} />
       </div>
-    </Layout> 
+    </Layout>
   );
 };
 

@@ -5,7 +5,7 @@ import { numberToWords } from "amount-to-words";
 const ReceiptForAuction = ({chit, user, chitAgreement, bidAgreement, gurantor, gurantor2}) => {
   return (
     <>
-      <div className="max-w-4xl mx-auto bg-white border border-black px-8 py-6 text-[15px] leading-5.5 text-justify">
+      <div className="max-w-4xl mx-auto bg-white border border-black px-8 py-6 text-[14px] leading-5.5 text-justify print-page">
         {/* CIN */}
         <div className="text-end text-xs">CIN NO.U64990MH2023PTC400938</div>
 
@@ -115,25 +115,37 @@ const ReceiptForAuction = ({chit, user, chitAgreement, bidAgreement, gurantor, g
           <b>Signed By Shri- </b>
         </div>
 
-        <div className="space-y-2 mx-10">
+        <div className="space-y-2">
           <div className="flex items-center">
-            <input className="border-b border-black w-100 outline-none bg-transparent text-center" value={`${user?.firstname} ${user?.middlename} ${user?.lastname} `} />
-            <div className="w-20 h-24 border border-black ml-10"></div>
+            <input
+              className="border-b text-xs border-black w-70 outline-none bg-transparent text-center"
+              value={`${user?.firstname} ${user?.middlename} ${user?.lastname} `}
+            />
+            <div className="w-12 h-16 border border-black ml-10"></div>
           </div>
 
-          <div className="flex items-center">
-            <input className="border-b border-black w-100 outline-none bg-transparent text-center" value={`${gurantor?.firstname} ${gurantor?.middlename} ${gurantor?.lastname} `} />
-            <div className="w-20 h-24 border border-black ml-10"></div>
+          
+           <div className="flex w-full  justify-between mt-5">
+            <div className="flex items-center">
+             <input
+              className="border-b border-black w-70 outline-none bg-transparent text-center"
+              value={`${gurantor?.firstname} ${gurantor?.middlename} ${gurantor?.lastname} `}
+            />
+            <div className="w-12 h-16 border border-black ml-10"></div>
           </div>
 
-          <div className="flex items-center">
-            <input className="border-b border-black w-100 outline-none bg-transparent text-center" value={
-              gurantor2
-                ? `${gurantor2?.firstname || ""} ${gurantor2?.middlename || ""} ${gurantor2?.lastname || ""}`
-                : ""
-            }/>
-            <div className="w-20 h-24 border border-black ml-10"></div>
+          <div className="flex items-center ">
+            <input
+              className="border-b border-black w-70 outline-none bg-transparent text-center"
+              value={
+                gurantor2
+                  ? `${gurantor2?.firstname || ""} ${gurantor2?.middlename || ""} ${gurantor2?.lastname || ""}`
+                  : ""
+              }
+            />
+            <div className="w-12 h-16 border border-black ml-10"></div>
           </div>
+           </div>
         </div>
       </div>
     </>

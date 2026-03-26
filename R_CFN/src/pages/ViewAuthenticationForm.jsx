@@ -1,24 +1,23 @@
-import React, { useEffect, useState } from 'react'
-import Layout from '../components/layout'
+import React, { useEffect, useState } from "react";
+import Layout from "../components/layout";
 import { getAllChitAgreement } from "../api/endpoint";
 import { CircleCheckBig, Printer } from "lucide-react";
-import { useNavigate } from 'react-router'
-import { toast } from 'react-toastify';
+import { useNavigate } from "react-router";
+import { toast } from "react-toastify";
 
 const ViewAuthenticationForm = () => {
-
-  const [chitAgreementData, setChitAgreementData] = useState([])
-  const navigate = useNavigate()
+  const [chitAgreementData, setChitAgreementData] = useState([]);
+  const navigate = useNavigate();
 
   const fetchData = async () => {
-    const data = await getAllChitAgreement()
-    setChitAgreementData(data)
-    console.log(data)
-  }
+    const data = await getAllChitAgreement();
+    setChitAgreementData(data);
+    console.log(data);
+  };
 
   useEffect(() => {
-    fetchData()
-  }, [])
+    fetchData();
+  }, []);
   return (
     <Layout>
       <div className="bg-white border rounded p-4 mt-10 border-neutral-300 shadow-lg max-w-sm mx-auto lg:max-w-7xl">
@@ -27,8 +26,6 @@ const ViewAuthenticationForm = () => {
           <h2 className="text-lg font-medium mb-4 tracking-tight text-neutral-800">
             Authentication Form
           </h2>
-
-
         </div>
 
         {/* Table */}
@@ -70,7 +67,6 @@ const ViewAuthenticationForm = () => {
               {chitAgreementData.length > 0 ? (
                 chitAgreementData.map((item) => (
                   <tr key={item.id} className="text-center border-t">
-
                     {/* Agreement Id */}
                     <td className="border p-2">{item.id}</td>
 
@@ -88,9 +84,7 @@ const ViewAuthenticationForm = () => {
                     </td>
 
                     {/* Ticket No */}
-                    <td className="border p-2">
-                      {item.number_of_tickets}
-                    </td>
+                    <td className="border p-2">{item.number_of_tickets}</td>
 
                     {/* Chit Value */}
                     <td className="border p-2">
@@ -105,30 +99,29 @@ const ViewAuthenticationForm = () => {
                     </td>
 
                     {/* Branch */}
-                    <td className="border p-2">
-                      {item.branchName}
-                    </td>
+                    <td className="border p-2">{item.branchName}</td>
 
                     {/* Action */}
                     <td className="border p-2">
                       <button
-                        
                         onClick={() => {
                           if (item.has_bid) {
-                            toast.error("Bid already exists for this Group Code");
+                            toast.error(
+                              "Bid already exists for this Customer's Group Code",
+                            );
                             return;
                           }
                           navigate(`/BidAgreementDetails/${item.id}`);
                         }}
-                        className={`px-1 py-1 text-xs rounded ${item.has_bid
+                        className={`px-1 py-1 text-xs rounded ${
+                          item.has_bid
                             ? "bg-gray-400 cursor-not-allowed"
                             : "bg-blue-500 hover:bg-blue-700 text-white cursor-pointer"
-                          }`}
+                        }`}
                       >
                         <CircleCheckBig size={18} />
                       </button>
                     </td>
-
                   </tr>
                 ))
               ) : (
@@ -143,9 +136,7 @@ const ViewAuthenticationForm = () => {
         </div>
       </div>
     </Layout>
-  )
-}
+  );
+};
 
-export default ViewAuthenticationForm
-
-
+export default ViewAuthenticationForm;
