@@ -10,7 +10,12 @@ import {
 import React, { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import ViewUserDetails from "./ViewUserDetails";
-import { deleteUser, getUserEntries, is_admin, toggleStatus } from "../api/endpoint";
+import {
+  deleteUser,
+  getUserEntries,
+  is_admin,
+  toggleStatus,
+} from "../api/endpoint";
 import { toast } from "react-toastify";
 import EditUserDetails from "./EditUserDetails";
 import axios from "axios";
@@ -19,7 +24,7 @@ const UserManagement = ({ data, setUserEntriesData }) => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [userData, setUserData] = useState([]);
   const [activeModal, setActiveModal] = useState(null);
-  const [isSuperuser, setIssuperuser] = useState(false)
+  const [isSuperuser, setIssuperuser] = useState(false);
 
   const handleSearch = (e) => {
     const keyword = e.toLowerCase();
@@ -29,40 +34,39 @@ const UserManagement = ({ data, setUserEntriesData }) => {
       const filterd = data.filter(
         (f) =>
           f?.firstname.toLowerCase().includes(keyword) ||
-          f?.mobile_no.toLowerCase().includes(keyword)
+          f?.mobile_no.toLowerCase().includes(keyword),
       );
       setUserData(filterd);
     }
   };
 
-  const superUser = localStorage.getItem('is_superuser')
+  const superUser = localStorage.getItem("is_superuser");
   // const isAdmin = async()=>{
   //   const data = await is_admin()
   //   console.log(data)
 
   // }
-  const [visibleCount, setVisibleCount] = useState(10)
-  const [loading, setLoading] = useState(false)
-
+  const [visibleCount, setVisibleCount] = useState(10);
+  const [loading, setLoading] = useState(false);
 
   const infiniteScroll = () => {
-    setLoading(true)
+    setLoading(true);
     setTimeout(() => {
-      setVisibleCount(prev => prev + 1)
-      setLoading(false)
-    }, 1000)
-  }
+      setVisibleCount((prev) => prev + 1);
+      setLoading(false);
+    }, 1000);
+  };
   const handleScroll = (e) => {
-    const { scrollTop, scrollHeight, clientHeight } = e.target
+    const { scrollTop, scrollHeight, clientHeight } = e.target;
     if (scrollTop + clientHeight >= scrollHeight - 10) {
       if (!loading && visibleCount < userData.length) {
-        infiniteScroll()
+        infiniteScroll();
       }
     }
-  }
+  };
   useEffect(() => {
     setUserData(data);
-    setIssuperuser(superUser)
+    setIssuperuser(superUser);
   }, [data]);
 
   const handleDelete = async (id, firstname) => {
@@ -97,8 +101,8 @@ const UserManagement = ({ data, setUserEntriesData }) => {
         // 🔥 update UI immediately
         setUserData((prev) =>
           prev.map((user) =>
-            user.id === id ? { ...user, status: newStatus } : user
-          )
+            user.id === id ? { ...user, status: newStatus } : user,
+          ),
         );
       } else {
         toast.error(response.message || "Failed to update status");
@@ -108,7 +112,6 @@ const UserManagement = ({ data, setUserEntriesData }) => {
       toast.error("Something went wrong");
     }
   };
-
 
   return (
     <>
@@ -131,8 +134,11 @@ const UserManagement = ({ data, setUserEntriesData }) => {
           </div>
         </div>
 
-        <div className="hidden md:block mt-3 overflow-y-scroll max-h-[600px]" onScroll={handleScroll}>
-          <table className="w-full border border-neutral-300 text-sm rounded-md overflow-hidden " >
+        <div
+          className="hidden md:block mt-3 overflow-y-scroll max-h-[600px]"
+          onScroll={handleScroll}
+        >
+          <table className="w-full border border-neutral-300 text-sm rounded-md overflow-hidden ">
             <thead className="bg-[#004f9e] ">
               <tr>
                 <th className="border border-neutral-300 text-white font-medium p-2">
@@ -153,9 +159,7 @@ const UserManagement = ({ data, setUserEntriesData }) => {
                 <th className="border border-neutral-300 text-white font-medium p-2">
                   D.O.B
                 </th>
-                <th className="border border-neutral-300 text-white font-medium p-2">
-                  Address
-                </th>
+
                 {isSuperuser === "true" && (
                   <th className="border border-neutral-300 text-white font-medium p-2">
                     Status
@@ -200,14 +204,12 @@ const UserManagement = ({ data, setUserEntriesData }) => {
                       {item.mobile_no}
                     </td>
                     <td className="border border-neutral-300 text-center p-2">
-                      {item.email === null ? 'N/A' : item.email}
+                      {item.email === null ? "N/A" : item.email}
                     </td>
                     <td className="border border-neutral-300 text-center p-2">
-                      {dayjs(item.dob).format('DD MMM YYYY')}
+                      {dayjs(item.dob).format("DD MMM YYYY")}
                     </td>
-                    <td className="border border-neutral-300 text-center p-2">
-                      {item.permanent_address}
-                    </td>
+
                     {isSuperuser === "true" && (
                       <td className="border border-neutral-300 text-center p-2">
                         <button
@@ -243,7 +245,9 @@ const UserManagement = ({ data, setUserEntriesData }) => {
                               </span>
                             </button>
                             <button
-                              onClick={() => handleDelete(item.id, item.firstname)}
+                              onClick={() =>
+                                handleDelete(item.id, item.firstname)
+                              }
                               className="relative group  p-1 bg-red-500 text-white rounded-sm hover:bg-red-600 transition-colors duration-300 cursor-pointer"
                             >
                               <Trash size={16} />
@@ -275,7 +279,10 @@ const UserManagement = ({ data, setUserEntriesData }) => {
                 <tr>
                   <td colSpan={10} className="text-center ">
                     <div className="w-full text-neutral-500">
-                      <label className="flex items-center justify-center mt-5 gap-1"><Loader2 size={20} className="animate-spin" />Loding Data...</label>
+                      <label className="flex items-center justify-center mt-5 gap-1">
+                        <Loader2 size={20} className="animate-spin" />
+                        Loding Data...
+                      </label>
                     </div>
                   </td>
                 </tr>
@@ -298,9 +305,14 @@ const UserManagement = ({ data, setUserEntriesData }) => {
             onClose={() => setSelectedUser(null)}
           />
         )}
-        <div className="block md:hidden mt-4 space-y-4 overflow-y-scroll max-h-[400px]" onScroll={handleScroll}>
+        <div
+          className="block md:hidden mt-4 space-y-4 overflow-y-scroll max-h-[400px]"
+          onScroll={handleScroll}
+        >
           {userData.length === 0 ? (
-            <p className="text-center text-neutral-500 font-medium">No user found</p>
+            <p className="text-center text-neutral-500 font-medium">
+              No user found
+            </p>
           ) : (
             userData.slice(0, visibleCount).map((item, index) => (
               <div
@@ -317,11 +329,23 @@ const UserManagement = ({ data, setUserEntriesData }) => {
                 </div>
 
                 <div className="mt-2 space-y-1 text-sm text-neutral-700">
-                  <p><strong>Mobile:</strong> {item.mobile_no}</p>
-                  <p><strong>Email:</strong> {item.email}</p>
-                  <p><strong>DOB:</strong> {dayjs(item.dob).format("DD MMM YYYY")}</p>
-                  <p><strong>Address:</strong> {item.permanent_address}</p>
-                  <p><strong>Created:</strong> {dayjs(item.created_at).format("DD MMM YYYY")}</p>
+                  <p>
+                    <strong>Mobile:</strong> {item.mobile_no}
+                  </p>
+                  <p>
+                    <strong>Email:</strong> {item.email}
+                  </p>
+                  <p>
+                    <strong>DOB:</strong>{" "}
+                    {dayjs(item.dob).format("DD MMM YYYY")}
+                  </p>
+                  <p>
+                    <strong>Address:</strong> {item.permanent_address}
+                  </p>
+                  <p>
+                    <strong>Created:</strong>{" "}
+                    {dayjs(item.created_at).format("DD MMM YYYY")}
+                  </p>
                 </div>
 
                 <div className="mt-3 flex justify-between items-center">
@@ -371,21 +395,20 @@ const UserManagement = ({ data, setUserEntriesData }) => {
                       <BookUser size={14} />
                     </button>
                   </div>
-                  
                 </div>
                 {loading && (
-                  
-                    <div className="w-full flex items-center justify-center text-neutral-500">
-                      <label className="flex items-center justify-center mt-5 gap-1"><Loader2 size={20} className="animate-spin" />Loding Data...</label>
-                    </div>
-
-              )}
+                  <div className="w-full flex items-center justify-center text-neutral-500">
+                    <label className="flex items-center justify-center mt-5 gap-1">
+                      <Loader2 size={20} className="animate-spin" />
+                      Loding Data...
+                    </label>
+                  </div>
+                )}
               </div>
             ))
           )}
         </div>
       </div>
-
     </>
   );
 };

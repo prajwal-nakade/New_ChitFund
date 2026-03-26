@@ -76,11 +76,10 @@ const AuthenticationForm = () => {
           -webkit-print-color-adjust: exact;
           color-adjust: exact;
           font-family: Arial, sans-serif;
-          font-size: 8px;
+          font-size: 7px;
         }
           .print-page {
-  width: 210mm;
-  min-height: 297mm;
+  width: 220mm;
   page-break-after: always;
   break-after: page;
   box-sizing: border-box;
@@ -89,6 +88,8 @@ const AuthenticationForm = () => {
   .print-page {
   page-break-after: always;
   break-after: page;
+  min-height: 297mm;
+
 }
 
 .print-page:last-child {
@@ -102,7 +103,7 @@ const AuthenticationForm = () => {
         /* ✅ FORCE NEW PAGE */
         .print-page-break {
           break-before: page;
-          page-break-before: always; /* fallback for older browsers */
+          page-break-before: always; 
         }
       }
     `,
@@ -140,7 +141,7 @@ const gurantor2 = bidAgreementData[0]?.gurantor[1] ?? [];
 
   return (
     <Layout>
-      <div className="max-w-4xl mx-5 lg:mx-auto mt-4" >
+      <div className="max-w-4xl mx-5 lg:mx-auto mt-4 " >
         <div className="w-full flex flex-col items-start justify-start gap-1 ">
           <h1 className="w-full font-semibold text-neutral-800 tracking-tight text-2xl flex items-center gap-1"><File size={22} className="text-neutral-800"/>Select Forms</h1>
           <span className="text-sm text-neutral-500 tracking-tight leading-3">Choose the forms you need to process.</span>
@@ -190,7 +191,7 @@ const gurantor2 = bidAgreementData[0]?.gurantor[1] ?? [];
       <div ref={ref}>
         {selectedForm.authenticationForm && (
           <div className="print-page">
-            <div className="max-w-4xl mx-auto bg-white border border-black p-6 text-[16px] leading-5.5">
+            <div className="max-w-4xl mx-auto bg-white border border-black p-6 text-[14px] leading-5.5 print-page">
               {/* CIN */}
               <div className="text-end text-xs">CIN NO.U64990MH2023PTC400938</div>
 
@@ -266,7 +267,7 @@ const gurantor2 = bidAgreementData[0]?.gurantor[1] ?? [];
 
                 {/* POINT 1 */}
                 <div>
-                  <p className="font-semibold">
+                  <p className="">
                     • I wish to inform you that I would not be able to personally
                     attend and participate in the auction
 
@@ -282,7 +283,7 @@ const gurantor2 = bidAgreementData[0]?.gurantor[1] ?? [];
                   </p>
                 </div>
                 <div>
-                  <p className="font-semibold">
+                  <p className="">
                     • I therefore request you to please allow
 
                     <p className="lg:ms-2">
@@ -301,7 +302,7 @@ const gurantor2 = bidAgreementData[0]?.gurantor[1] ?? [];
                 </div>
 
                 {/* POINT 2 */}
-                <div className="flex flex-wrap items-center font-semibold">
+                <div className="flex flex-wrap items-center ">
                   <span>
                     • I request you accept my bid offer in which I am ready to forego
                     up to Rs.

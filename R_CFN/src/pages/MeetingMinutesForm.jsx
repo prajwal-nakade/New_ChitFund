@@ -6,7 +6,7 @@ const MeetingMinutesForm = ({ chit, user, chitAgreement, bidAgreement}) => {
   const Amtperperson = Math.floor(bidAgreement?.dividend/bidAgreement?.totalMemberofGroup)
   return (
     <>
-      <div className="max-w-4xl mx-auto bg-white border border-black p-6 text-[16px] leading-7 mt-2">
+      <div className="max-w-4xl mx-auto bg-white border border-black p-6 text-[14px] leading-7 mt-2 print-page">
         {/* HEADER */}
         <div className="text-end text-xs">CIN NO.U64990MH2023PTC400938</div>
 

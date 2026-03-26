@@ -5,7 +5,7 @@ import { numberToWords } from "amount-to-words";
 const BidPayableMemo = ({ chit, user, chitAgreement, bidAgreement, gurantor }) => {
   return (
     <>
-      <div className="max-w-4xl mx-auto bg-white border border-black px-8 py-6 text-[15px] leading-8 text-justify">
+      <div className="max-w-4xl mx-auto bg-white border border-black px-8 py-6 text-[15px] leading-8 text-justify print-page">
         {/* CIN */}
         <div className="text-end text-xs">CIN NO.U64990MH2023PTC400938</div>
 

@@ -2,9 +2,13 @@ import React, { useState, useEffect } from "react";
 
 const NOC = ({ chit, user, chitAgreement, bidAgreement, gurantor }) => {
   const [marathiName, setMarathiName] = useState("");
+  const [isNameEdited, setIsNameEdited] = useState(false);
 
   useEffect(() => {
     const translateName = async () => {
+      // Only auto-translate if the name hasn't been manually edited
+      if (isNameEdited) return;
+      
       const fullName = `${user?.firstname || ""} ${user?.middlename || ""} ${user?.lastname || ""}`.trim();
       
       if (!fullName) return;
@@ -31,11 +35,16 @@ const NOC = ({ chit, user, chitAgreement, bidAgreement, gurantor }) => {
     };
 
     translateName();
-  }, [user]);
+  }, [user, isNameEdited]);
+
+  const handleNameChange = (e) => {
+    setMarathiName(e.target.value);
+    setIsNameEdited(true);
+  };
 
   return (
     <>
-      <div className="max-w-4xl mx-auto bg-white border border-black px-8 py-6 text-[15px] leading-8 text-justify">
+      <div className="max-w-4xl mx-auto bg-white border border-black px-8 py-6 text-[15px] leading-8 text-justify print-page">
         {/* CIN */}
         <div className="text-end text-xs">CIN NO.U64990MH2023PTC400938</div>
 
@@ -75,7 +84,8 @@ const NOC = ({ chit, user, chitAgreement, bidAgreement, gurantor }) => {
             <input 
               className="border-b border-black w-72 outline-none bg-transparent px-2 text-center" 
               value={marathiName} 
-               
+              onChange={handleNameChange}
+              placeholder="नाव येथे टाका"
             />{" "}
             ग्रुप नं.{" "}
             <input 
@@ -111,10 +121,8 @@ const NOC = ({ chit, user, chitAgreement, bidAgreement, gurantor }) => {
               <input
                 type="text"
                 className="border-b border-black w-64 outline-none bg-transparent text-center font-bold"
-                
                 readOnly
               />
-              
             </div>
           </div>
         </div>

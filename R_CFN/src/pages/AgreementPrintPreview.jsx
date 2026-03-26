@@ -122,8 +122,8 @@ const AgreementPrintPreview = () => {
 
   return (
     <Layout>
-      <div className="container">
-        <div className="max-w-7xl mx-auto leading-5" ref={ref}>
+      <div className="container max-w-7xl mx-auto">
+        <div className=" leading-5" ref={ref}>
         <div className="text-end text-xs text-gray-600 pt-3 px-3 ">
           <p>Regd. No.: U64990MH2023PTC400938 </p>
         </div>
