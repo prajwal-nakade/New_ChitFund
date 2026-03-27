@@ -152,7 +152,7 @@ const CustomerApplication = () => {
                 onChange={(e) => handleSearch(e.target.value)}
                 value={search}
                 type="text"
-                className="w-full lg:w-100 border border-neutral-300 pl-10 pr-4 py-1.5 text-sm rounded-md outline-none uppercase bg-white shadow-sm"
+                className="w-full lg:w-100 border border-neutral-300 pl-10 pr-4 py-1.5 text-xs rounded-md outline-none uppercase bg-white shadow-sm"
                 placeholder="Enter CustomerID or mobile no."
               />
               {search && data.length > 0 && (
