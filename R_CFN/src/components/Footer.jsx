@@ -5,34 +5,12 @@ const Footer = () => {
 
   return (
     <footer className="relative w-full overflow-hidden bg-[#1E3A8A]">
-      {/* Decorative top wave divider */}
-      <div className="absolute top-0 left-0 right-0">
-        <svg
-          viewBox="0 0 400 12"
-          xmlns="http://www.w3.org/2000/svg"
-          className="w-full"
-        >
-          <path
-            d="M0,6 C100,12 300,0 400,6 L400,0 L0,0 Z"
-            fill="rgba(255,255,255,0.06)"
-          />
-        </svg>
-      </div>
+   
 
-      {/* Subtle dot grid background */}
-      <div
-        className="absolute inset-0 opacity-10"
-        style={{
-          backgroundImage:
-            "radial-gradient(circle, rgba(255,255,255,0.4) 1px, transparent 1px)",
-          backgroundSize: "16px 16px",
-        }}
-      />
-
-      <div className="relative z-10 flex flex-col items-center justify-center gap-3 px-4 pt-5">
+      <div className="relative z-10 flex flex-col items-center justify-center gap-2 px-4 pt-5">
         {/* Logo + Developed by */}
         <div className="flex flex-col items-center ">
-          <span className="text-[10px] font-semibold tracking-[0.2em] uppercase text-blue-200 opacity-80">
+          <span className="text-[10px] font-semibold tracking-[0.2em] uppercase text-blue-100 opacity-100">
             Developed by
           </span>
           <a
@@ -75,7 +53,7 @@ const Footer = () => {
         </a>
 
         {/* Copyright */}
-        <div className="flex w-full items-center justify-center gap-1 text-[10px] text-blue-200/60 tracking-wide mb-2">
+        <div className="flex w-full items-center justify-center gap-1 text-[10px] text-blue-100/80 tracking-wide mb-2">
           
           <span>©{year}.</span>
           <span className="font-semibold text-blue-200/80">Redogroup</span>
