@@ -182,7 +182,7 @@ const CustomerApplication = () => {
               </div>
               <div className="flex overflow-x-auto p-2 gap-2">
                 {userApplications.map(app => (
-                  <div key={app.id} className="flex-shrink-0 border border-neutral-300 px-3 py-1.5 rounded bg-white text-xs flex items-center gap-3">
+                  <div key={app.id} className="shrink-0 border border-neutral-300 px-3 py-1.5 rounded bg-white text-xs flex items-center gap-3">
                     <span className="font-bold cursor-pointer hover:text-blue-600" onClick={() => autoFillChitDetails(app)}>APP_{app.application_id}</span>
                     <button type="button" onClick={() => navigate(`/chit/print/${app.id}`)} className="text-blue-600 underline">View</button>
                   </div>
@@ -261,7 +261,7 @@ const CustomerApplication = () => {
                     <input name="lastName" value={formData.lastName} onChange={handleChange} placeholder="Last" className="w-full border border-neutral-300 px-2 py-1 rounded" required />
                   </div>
                 </td>
-              </tr>
+              </tr> 
               <tr>
                 <td className={labelCell}>Contact Information <span className="text-red-500">*</span></td>
                 <td className={inputCell}>
