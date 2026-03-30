@@ -88,7 +88,7 @@ const DebitParticulars = ({chit, user, chitAgreement, bidAgreement, gurantor }) 
             (Rupees{" "}
             <input className="border-b border-black w-64 outline-none bg-transparent" />{" "}
             ) being the Bid Payable Amount paid to Shri/Smt.{" "}
-            <input className="border-b border-black w-64 outline-none bg-transparent text-center" disabled value={`${user?.firstname} ${user?.middlename} ${user?.lastname} `} />{" "}
+            <input className="border-b border-black w-84 outline-none bg-transparent text-center text-sm" disabled value={`${user?.firstname} ${user?.middlename} ${user?.lastname} `} />{" "}
           </p>
         </div>
 

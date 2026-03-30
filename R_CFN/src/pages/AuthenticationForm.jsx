@@ -69,6 +69,7 @@ const AuthenticationForm = () => {
       @page {
         size: A4;
         margin: 5mm;
+        border : 1px solid
       }
   
       @media print {
@@ -83,29 +84,60 @@ const AuthenticationForm = () => {
   page-break-after: always;
   break-after: page;
   box-sizing: border-box;
-  flex-grow : 1
+  
 }
+  .for-2pages{
+        margin-top: 8mm;
+        margin-bottom: 8mm;
+        padding-bottom: 115mm;
+        padding-top: 3mm;
+        border: 1px solid
+      }
+        .for-3pages{
+        margin-top: 8mm;
+        margin-bottom: 8mm;
+        padding-bottom: 135mm;
+        padding-top: 3mm;
+        border: none !important
+      }
   .print-page {
   page-break-after: always;
   break-after: page;
   min-height: 297mm;
+  border: none !important
 
 }
+  .print-page-2{
+  height: 297mm;
+    display: flex;
+    flex-direction: column;
+  }
+  print-page-extra{
+  margin-top: auto;
+  }
+
 
 .print-page:last-child {
   page-break-after: auto;
 }
-        .print-container {
-          padding: 0;
-          margin: 0;
+          .print-container {
+            padding: 0;
+            margin: 0;
+          }
+    
+          /* ✅ FORCE NEW PAGE */
+          .print-page-break {
+            break-before: page;
+            page-break-before: always;
+            display : flex
+            flex-direction : column
+
+          }
+            .print-container {
+          width: 100%;
+          margin: 0 auto;
         }
-  
-        /* ✅ FORCE NEW PAGE */
-        .print-page-break {
-          break-before: page;
-          page-break-before: always; 
         }
-      }
     `,
   });
 

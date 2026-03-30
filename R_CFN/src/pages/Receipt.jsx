@@ -58,8 +58,8 @@ const Receipt = ({
           <div className="flex flex-col mt-2">
             <div className="flex">
               <p>
-                04) (Hereinaftercalled the Payee)
-                <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1" />
+                04) (Here in after called the Payee)
+                <input className="border-b border-black w-24 outline-none bg-transparent mx-2 flex-1" />
                 (Rupees{" "}
               </p>
               <input className="border-b border-black w-64 outline-none bg-transparent mx-2 flex-1" />
@@ -175,7 +175,7 @@ const Receipt = ({
         <div className="space-y-2">
           <div className="flex items-center">
             <input
-              className="border-b text-xs border-black w-70 outline-none bg-transparent text-center"
+              className="border-b text-xs border-black w-70 outline-none bg-transparent text-center text-[12.5px]"
               value={`${user?.firstname} ${user?.middlename} ${user?.lastname} `}
             />
             <div className="w-12 h-16 border border-black ml-10"></div>
@@ -185,7 +185,7 @@ const Receipt = ({
            <div className="flex w-full  justify-between mt-5">
             <div className="flex items-center">
              <input
-              className="border-b border-black w-70 outline-none bg-transparent text-center"
+              className="border-b border-black w-70 outline-none bg-transparent text-center text-[12.5px]"
               value={`${gurantor?.firstname} ${gurantor?.middlename} ${gurantor?.lastname} `}
             />
             <div className="w-12 h-16 border border-black ml-10"></div>
@@ -193,7 +193,7 @@ const Receipt = ({
 
           <div className="flex items-center ">
             <input
-              className="border-b border-black w-70 outline-none bg-transparent text-center"
+              className="border-b border-black w-70 outline-none bg-transparent text-center text-[12.5px]"
               value={
                 gurantor2
                   ? `${gurantor2?.firstname || ""} ${gurantor2?.middlename || ""} ${gurantor2?.lastname || ""}`
