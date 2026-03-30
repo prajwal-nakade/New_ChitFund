@@ -69,7 +69,7 @@ const AuthenticationForm = () => {
       @page {
         size: A4;
         margin: 5mm;
-        border : 1px solid
+        border : 1px solid #000000
       }
   
       @media print {
@@ -91,7 +91,7 @@ const AuthenticationForm = () => {
         margin-bottom: 8mm;
         padding-bottom: 115mm;
         padding-top: 3mm;
-        border: 1px solid
+        border: 1px solid #000000
       }
         .for-3pages{
         margin-top: 8mm;
