@@ -335,13 +335,13 @@ const ChitAgreement = () => {
                 </td>
               </tr>
               <tr>
-                <td className={labelClass}>Recovery of Loss <span className="text-red-500">*</span></td>
+                <td className={labelClass}>Recovery of Loss</td>
                 <td className={inputClass}>
-                  <input name="prize_collection" value={formData.prize_collection} onChange={handleChange} className="w-full px-3 py-1 border border-neutral-300 rounded-md" required />
+                  <input name="prize_collection" value={formData.prize_collection} onChange={handleChange} className="w-full px-3 py-1 border border-neutral-300 rounded-md" />
                 </td>
               </tr>
               <tr>
-                <td className={labelClass}>Jurisdiction Place <span className="text-red-500">*</span></td>
+                <td className={labelClass}>Jurisdiction Place</td>
                 <td className={inputClass}>
                   <input name="jurisdiction_place" value={formData.jurisdiction_place} onChange={handleChange} className="w-full px-3 py-1 border border-neutral-300 rounded-md" required />
                 </td>

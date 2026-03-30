@@ -4,7 +4,7 @@ import React from "react";
 const GuaranteeAgreement = ({ chit, user, chitAgreement, bidAgreement, gurantor, gurantor2 }) => {
   return (
     <>
-      <div className="max-w-4xl mx-auto bg-white border border-black px-8 py-6 text-[14px] leading-7 print-page">
+      <div className="max-w-4xl mx-auto bg-white border border-black px-8 py-6 text-[14px] leading-7  for-3pages">
         {/* CIN */}
         <div className="text-end text-xs">CIN NO.U64990MH2023PTC400938</div>
 

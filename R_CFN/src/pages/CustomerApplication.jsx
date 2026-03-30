@@ -321,6 +321,7 @@ const CustomerApplication = () => {
                     <option value="Sister">Sister</option>
                     <option value="Son">Son</option>
                     <option value="Daughter">Daughter</option>
+                    <option value="Wife">Wife</option>
                   </select>
                 </td>
               </tr>

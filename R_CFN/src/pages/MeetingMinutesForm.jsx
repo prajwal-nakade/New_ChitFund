@@ -6,7 +6,7 @@ const MeetingMinutesForm = ({ chit, user, chitAgreement, bidAgreement}) => {
   const Amtperperson = Math.floor(bidAgreement?.dividend/bidAgreement?.totalMemberofGroup)
   return (
     <>
-      <div className="max-w-4xl mx-auto bg-white border border-black p-6 text-[14px] leading-7 mt-2 print-page">
+      <div className="max-w-4xl mx-auto  bg-white border border-black p-6 text-[14px] leading-7 mt-2 print-page for-2pages">
         {/* HEADER */}
         <div className="text-end text-xs">CIN NO.U64990MH2023PTC400938</div>
 
@@ -102,7 +102,7 @@ const MeetingMinutesForm = ({ chit, user, chitAgreement, bidAgreement}) => {
             <tbody>
               <tr className="h-20">
                 <td className="border-r border-black">
-                  <input
+                  <textarea
                     className="w-full text-center outline-none bg-transparent resize-none overflow-hidden"
                     rows={2}
                     disabled
@@ -228,7 +228,8 @@ const MeetingMinutesForm = ({ chit, user, chitAgreement, bidAgreement}) => {
             Withdrawals, if any.
           </p>
 
-          <p className="font-semibold mt-3">7. Any Other Particulars :</p>
+          <div className="">
+            <p className="font-semibold mt-3">7. Any Other Particulars :</p>
           <p>
             Name and signature of the Forman and the subscribers including
             signature of the prized subscribers:
@@ -255,11 +256,11 @@ const MeetingMinutesForm = ({ chit, user, chitAgreement, bidAgreement}) => {
 
           <p className="flex flex-wrap items-center">
             Cheque No :
-            <input className="border-b border-black mx-2 w-28 outline-none bg-transparent text-center" value={bidAgreement?.chequeNo}/>
+            <input className="border-b border-black mx-2 w-28 outline-none bg-transparent text-center"/>
             Date :
-            <input className="border-b border-black mx-2 w-28 outline-none bg-transparent text-center" value={bidAgreement?.cheqDate}/>
+            <input className="border-b border-black mx-2 w-28 outline-none bg-transparent text-center" />
             Bank :
-            <input className="border-b border-black mx-2 w-28 outline-none bg-transparent text-center" value={bidAgreement?.cheqBank}/>
+            <input className="border-b border-black mx-2 w-28 outline-none bg-transparent text-center" />
           </p>
 
           <p className="flex flex-wrap items-center">
@@ -270,6 +271,7 @@ const MeetingMinutesForm = ({ chit, user, chitAgreement, bidAgreement}) => {
             Ticket No :
             <input className="border-b border-black mx-2 w-24 outline-none bg-transparent text-center" disabled value={chit?.TicketNmber} />
           </p>
+          </div>
         </div>
 
         {/* SIGNATURES */}
