@@ -69,7 +69,8 @@ const AuthenticationForm = () => {
       @page {
         size: A4;
         margin: 5mm;
-        border : 1px solid #000000
+        border : 3px solid #737373
+        
       }
   
       @media print {
@@ -91,7 +92,7 @@ const AuthenticationForm = () => {
         margin-bottom: 8mm;
         padding-bottom: 115mm;
         padding-top: 3mm;
-        border: 1px solid #000000
+        border: 1px solid
       }
         .for-3pages{
         margin-top: 8mm;
@@ -104,6 +105,7 @@ const AuthenticationForm = () => {
   page-break-after: always;
   break-after: page;
   min-height: 297mm;
+  overflow: hidden;
   border: none !important
 
 }
