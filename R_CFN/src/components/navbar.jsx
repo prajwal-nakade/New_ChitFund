@@ -136,7 +136,7 @@ const Navbar = () => {
       {/* 🔹 TOP NAVBAR */}
       <header className="flex items-center justify-center h-17 px-6 border-b border-neutral-300 bg-white">
         <div className="w-full flex items-center justify-end me-auto">
-          <img src="./Logo3.jpeg" width={220} alt="" className="ms-auto"/>
+          <img src="/Logo3.jpeg" width={220} alt="" className="ms-auto"/>
         </div>
         <button
           onClick={() => setOpen(!open)}

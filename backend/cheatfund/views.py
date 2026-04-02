@@ -28,16 +28,16 @@ class CustomTokenObtainPairView(TokenObtainPairView):
                 key = 'access_token',
                 value = access_token,
                 httponly = True,
-                secure = True,
-                samesite = 'None',
+                secure = False,
+                samesite = 'Lax',
                 path = '/'
             )
             res.set_cookie(
                 key = 'refresh_token',
                 value = refresh_token,
                 httponly = True,
-                secure = True,
-                samesite = 'None',
+                secure = False,
+                samesite = 'Lax',
                 path = '/'
             )
             return res

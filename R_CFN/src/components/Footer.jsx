@@ -21,7 +21,7 @@ const Footer = () => {
           >
             <div className="relative px-2   transition-all duration-300 group-hover:bg-white/20 group-hover:border-white/40 group-hover:scale-105">
               <img
-                src="./Redo.png"
+                src="/Redo.png"
                 alt="Redo Group Logo"
                 className="h-12 w-auto object-contain brightness-0 invert"
               />

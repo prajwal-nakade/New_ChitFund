@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 import Layout from "../components/layout";
 import { useNavigate, useParams } from "react-router";
 import { createBidAgreement, getChitAgreementbyID } from "../api/endpoint";
-import { ShipWheel, X, Paperclip } from "lucide-react";
+import { ShipWheel, X, Paperclip, Loader2 } from "lucide-react";
 import { toast } from "react-toastify";
 
 const BidAgreementDetails = () => {
     const { id } = useParams();
     const [chitAgreementData, setChitAgreementData] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [submitloading, setSubmitLoading] = useState(false);
     const navigate = useNavigate()
     const [error, setError] = useState(null);
     const [images, setImages] = useState({
@@ -162,7 +163,7 @@ const BidAgreementDetails = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+        setSubmitLoading(true)
         // Validate that required data exists
         if (!chitAgreementData?.user) {
             alert("Unable to submit: Missing user information");
@@ -287,6 +288,9 @@ const BidAgreementDetails = () => {
             } else {
                 toast.error("Failed to submit bid agreement.");
             }
+            setSubmitLoading(false)
+        }finally{
+            setSubmitLoading(false)
         }
     };
 
@@ -846,12 +850,21 @@ const BidAgreementDetails = () => {
                     </table>
 
                     <div className="flex justify-center py-6 bg-neutral-50 border-t border-neutral-200">
-                        <button
+                        {submitloading ? (
+                            <button
                             type="submit"
-                            className="px-10 py-2 bg-[#004f9e] hover:bg-[#06c] transition-all text-white rounded-md text-sm font-medium shadow-md"
+                            className="px-10 py-2 bg-[#06c] transition-all text-white rounded-md text-sm font-medium shadow-md flex items-center gap-2"
+                        ><Loader2 className="animate-spin " size={18}/>
+                            Proceeding...
+                        </button>
+                        ) : (
+                            <button
+                            type="submit"
+                            className="px-10 py-2 bg-[#004f9e] hover:bg-[#06c] transition-all text-white rounded-md text-sm font-medium shadow-md cursor-pointer"
                         >
                             Proceed
                         </button>
+                        )}
                     </div>
                 </form>
             </div>
